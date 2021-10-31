@@ -1,0 +1,73 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp.use_jdbc_metadata_defaults: false
+        default_schema: events
+    open-in-view: false
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+  datasource:
+    url: {{ spring.datasource.url }}
+    username: {{ spring.datasource.username }}
+    password: "${DATABASE_PASSWORD}"
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: {{ spring.datasource.hikari.pool_name | default('HikariPool') }}
+      max-lifetime: {{ spring.datasource.hikari.max_lifetime | default(600000) }}
+      connection-timeout: {{ spring.datasource.hikari.connection_timeout | default(15000) }}
+      maximum-pool-size: {{ spring.datasource.hikari.maximum_pool_size | default(10) }}
+      idle-timeout: {{ spring.datasource.hikari.pool_name | default(200000) }}
+      minimum-idle: {{ spring.datasource.hikari.idle_timeout | default(2) }}
+      schema: users
+  liquibase:
+    enabled: false
+  groovy:
+    template:
+      check-template-location: false
+  security:
+    api-key:
+      name: X-ApiKey-Authorization
+      token:
+        outgoing: ${API_KEY_OUTGOING}
+  cache:
+    oauth2:
+      expire-after-write-in-sec: {{ spring.cache.oauth2.expire_after_write_in_sec | default(900) }}
+      size: {{ spring.cache.oauth2.size | default(1000000) }}
+
+springdoc:
+  api-docs:
+    path: "/swagger-api"
+    enabled: {{ springdoc.api_docs.enabled | default('false') | lower }}
+  swagger-ui:
+    path: "/"
+  info:
+    title: Events RESTful API
+    description: Сервис управления событиями
+    version: V1
+    licence-url: https://qrchk.ru/licence
+    owner-name: QRCheck
+    owner-url: https://qrchk.ru
+    owner-email: it.support@softdarom.ru
+
+outbound:
+  feign:
+    auth-handler:
+      host: "http://auth-handler:8000"
+
+logging:
+  config: config/logback.groovy
+
+logbook:
+  strategy: {{ logbook.strategy }}
+  format:
+    style: {{ logbook.format.style | default('http') }}
+  logger:
+    name: EVENTS-REST
+  exclude: {{ logbook.exclude | join(', ') }}

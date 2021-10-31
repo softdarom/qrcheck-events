@@ -1,0 +1,8 @@
+image:
+  application:
+    project: qrcheck
+    image: events
+  filebeat:
+    project: elastic
+    image: filebeat
+    version: 7.13.2
