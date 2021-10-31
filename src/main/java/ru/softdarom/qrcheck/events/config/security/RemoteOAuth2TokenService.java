@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import ru.softdarom.qrcheck.events.model.dto.OAuth2TokenDto;
+import ru.softdarom.qrcheck.events.model.dto.security.OAuth2TokenDto;
 import ru.softdarom.qrcheck.events.service.AuthHandlerExternalService;
 
 import java.util.Map;

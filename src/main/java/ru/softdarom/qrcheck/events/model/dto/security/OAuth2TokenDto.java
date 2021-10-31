@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.model.dto;
+package ru.softdarom.qrcheck.events.model.dto.security;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
