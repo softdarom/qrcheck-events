@@ -16,7 +16,7 @@ import ru.softdarom.qrcheck.events.service.AuthHandlerExternalService;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j(topic = "USER-HANDLER-SECURITY")
+@Slf4j(topic = "EVENTS-SECURITY")
 public class RemoteOAuth2TokenService implements ResourceServerTokenServices {
 
     private static final AccessTokenConverter DEFAULT_ACCESS_TOKEN_CONVERTER = new DefaultAccessTokenConverter();
