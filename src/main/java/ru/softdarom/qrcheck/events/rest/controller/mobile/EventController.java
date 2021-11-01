@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
+import ru.softdarom.qrcheck.events.model.base.TicketType;
 import ru.softdarom.qrcheck.events.model.dto.*;
 import ru.softdarom.qrcheck.events.model.dto.request.EventAddressRequest;
 import ru.softdarom.qrcheck.events.model.dto.request.EventDescriptionRequest;
@@ -640,6 +641,7 @@ public class EventController {
             var dto = new TickerDto();
             dto.setTicketId(DEFAULT_ID);
             dto.setPrice(1500.64);
+            dto.setType(TicketType.PORTER);
             return dto;
         }
 
