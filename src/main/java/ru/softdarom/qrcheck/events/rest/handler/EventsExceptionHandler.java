@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.softdarom.qrcheck.events.exception.NotFoundException;
-import ru.softdarom.qrcheck.events.model.dto.response.BaseResponse;
+import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -15,9 +15,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class EventsExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    ResponseEntity<BaseResponse> notFound(NotFoundException e) {
+    ResponseEntity<ErrorResponse> notFound(NotFoundException e) {
         LOGGER.error(e.getMessage(), e);
-        return ResponseEntity.status(NOT_FOUND).body(new BaseResponse(e.getMessage()));
+        return ResponseEntity.status(NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

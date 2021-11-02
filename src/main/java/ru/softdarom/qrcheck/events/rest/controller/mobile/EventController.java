@@ -20,7 +20,7 @@ import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.base.TicketType;
 import ru.softdarom.qrcheck.events.model.dto.*;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
-import ru.softdarom.qrcheck.events.model.dto.response.BaseResponse;
+import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 
 import javax.validation.Valid;
@@ -56,20 +56,20 @@ public class EventController {
                             responseCode = "401",
                             description = "Отсутствует авторизация",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "403",
                             description = "Неавторизованный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "500", description = "Неизвестная ошибка",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     )
             }
@@ -98,34 +98,34 @@ public class EventController {
                             responseCode = "400",
                             description = "Некорректный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Событие не найдено",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Отсутствует авторизация",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "403",
                             description = "Неавторизованный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "500", description = "Неизвестная ошибка",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     )
             }
@@ -147,27 +147,33 @@ public class EventController {
                             responseCode = "200",
                             description = "Новое событие полностью создано",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
+                                    @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(
+//                                                    implementation = EventResponse.class,
+                                                    example = "{ \"eventId\": 0 }"
+                                            )
+                                    )
                             }
                     ),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Отсутствует авторизация",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "403",
                             description = "Неавторизованный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "500", description = "Неизвестная ошибка",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     )
             }
@@ -194,27 +200,27 @@ public class EventController {
                             responseCode = "401",
                             description = "Отсутствует авторизация",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Существующие событие не найдено",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "403",
                             description = "Неавторизованный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "500", description = "Неизвестная ошибка",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     )
             }
@@ -242,34 +248,34 @@ public class EventController {
                             responseCode = "400",
                             description = "Некорректный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Отсутствует авторизация",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Событие не найдено",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "403",
                             description = "Неавторизованный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "500", description = "Неизвестная ошибка",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     )
             }
@@ -298,42 +304,42 @@ public class EventController {
                             responseCode = "400",
                             description = "Некорректный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Отсутствует авторизация",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Событие не найдено",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "403",
                             description = "Неавторизованный запрос",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
                             responseCode = "500", description = "Неизвестная ошибка",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     )
             }
     )
     @PostMapping(value = "/images/cover/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EventResponse> saveEventCover(@RequestHeader(value = "X-Application-Version") String version,
-                                                         @PathVariable("eventId") Long eventId,
-                                                         @RequestParam("cover") MultipartFile cover) {
+                                                        @PathVariable("eventId") Long eventId,
+                                                        @RequestParam("cover") MultipartFile cover) {
         return ResponseEntity.ok(StubGenerator.generateCoverEventResponse());
     }
 
@@ -350,7 +356,7 @@ public class EventController {
                     @ApiResponse(
                             responseCode = "500", description = "Неизвестная ошибка",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     )
             }
