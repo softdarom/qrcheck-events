@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Generated;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import ru.softdarom.qrcheck.events.model.dto.response.BaseResponse;
+import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -33,6 +33,6 @@ public abstract class DefaultExceptionHandler {
         var spanId = tracer.currentSpan().context().spanIdString();
         response.setHeader(DEFAULT_TRACE_ID_HEADER_NAME, traceId);
         response.setHeader(DEFAULT_SPAN_ID_HEADER_NAME, spanId);
-        response.getWriter().write(objectMapper.writeValueAsString(new BaseResponse(exception.getMessage())));
+        response.getWriter().write(objectMapper.writeValueAsString(new ErrorResponse(exception.getMessage())));
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
-import ru.softdarom.qrcheck.events.model.dto.response.BaseResponse;
+import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 
 import java.util.Collection;
 import java.util.EnumSet;
@@ -35,7 +35,7 @@ public class GenreController {
                     @ApiResponse(
                             responseCode = "500", description = "Неизвестная ошибка",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     )
             }

@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Generated
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BaseResponse {
+public class ErrorResponse {
 
     private Long errorId;
     private String message;
 
-    public BaseResponse(String message) {
+    public ErrorResponse(String message) {
         this.message = message;
     }
 }
