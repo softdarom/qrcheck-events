@@ -9,6 +9,7 @@ import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.dto.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Data
@@ -17,6 +18,7 @@ import java.util.Collection;
 @EqualsAndHashCode(callSuper = false)
 public class EventResponse extends BaseResponse {
 
+    @NotNull
     @JsonProperty("eventId")
     private Long eventId;
 
