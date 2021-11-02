@@ -19,10 +19,7 @@ import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.base.TicketType;
 import ru.softdarom.qrcheck.events.model.dto.*;
-import ru.softdarom.qrcheck.events.model.dto.request.EventAddressRequest;
-import ru.softdarom.qrcheck.events.model.dto.request.EventDescriptionRequest;
-import ru.softdarom.qrcheck.events.model.dto.request.EventPeriodRequest;
-import ru.softdarom.qrcheck.events.model.dto.request.EventTicketRequest;
+import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.BaseResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 
@@ -33,6 +30,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static ru.softdarom.qrcheck.events.config.OpenApiConfig.BEARER_SECURITY_NAME;
 
@@ -104,6 +102,13 @@ public class EventController {
                             }
                     ),
                     @ApiResponse(
+                            responseCode = "404",
+                            description = "Событие не найдено",
+                            content = {
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                            }
+                    ),
+                    @ApiResponse(
                             responseCode = "401",
                             description = "Отсутствует авторизация",
                             content = {
@@ -133,14 +138,14 @@ public class EventController {
     }
 
     @Operation(
-            summary = "Создание нового события",
+            summary = "Пре-создания нового события",
             security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Новое событие создано",
+                            description = "Новое событие полностью создано",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
                             }
@@ -167,34 +172,34 @@ public class EventController {
                     )
             }
     )
-    @PostMapping("/")
-    public ResponseEntity<EventResponse> saveEvent(@RequestHeader(value = "X-Application-Version") String version) {
+    @PostMapping(value = "/", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
         return ResponseEntity.ok(StubGenerator.generateIdEventResponse());
     }
 
     @Operation(
-            summary = "Добавление адреса к ранее созданному событию",
+            summary = "Завершение создания нового события",
             security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Адрес добавлен",
+                            description = "Новое событие полностью создано",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
                             }
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Некорректный запрос",
+                            responseCode = "401",
+                            description = "Отсутствует авторизация",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
                             }
                     ),
                     @ApiResponse(
-                            responseCode = "401",
-                            description = "Отсутствует авторизация",
+                            responseCode = "404",
+                            description = "Существующие событие не найдено",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
                             }
@@ -214,62 +219,14 @@ public class EventController {
                     )
             }
     )
-    @PostMapping("/address")
-    public ResponseEntity<EventResponse> saveEventAddress(@RequestHeader(value = "X-Application-Version") String version,
-                                                          @Valid @RequestBody EventAddressRequest request) {
-        return ResponseEntity.ok(StubGenerator.generateAddressEventResponse());
+    @PutMapping(value = "/", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<EventResponse> saveEvent(@RequestHeader(value = "X-Application-Version") String version,
+                                                   @RequestBody @Valid EventRequest request) {
+        return ResponseEntity.ok(StubGenerator.generateFullEventResponse());
     }
 
     @Operation(
-            summary = "Добавление времени проведения к ранее созданному событию",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Адрес добавлен",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Некорректный запрос",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Отсутствует авторизация",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Неавторизованный запрос",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "500", description = "Неизвестная ошибка",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    )
-            }
-    )
-    @PostMapping("/period")
-    public ResponseEntity<EventResponse> saveEventPeriod(@RequestHeader(value = "X-Application-Version") String version,
-                                                         @Valid @RequestBody EventPeriodRequest request) {
-        return ResponseEntity.ok(StubGenerator.generatePeriodEventResponse());
-    }
-
-    @Operation(
-            summary = "Добавление фотографий к ранее созданному событию",
+            summary = "Добавление фотографий к событию",
             security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
     )
     @ApiResponses(
@@ -296,6 +253,13 @@ public class EventController {
                             }
                     ),
                     @ApiResponse(
+                            responseCode = "404",
+                            description = "Событие не найдено",
+                            content = {
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                            }
+                    ),
+                    @ApiResponse(
                             responseCode = "403",
                             description = "Неавторизованный запрос",
                             content = {
@@ -310,21 +274,22 @@ public class EventController {
                     )
             }
     )
-    @PostMapping(value = "/image", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<EventResponse> saveEventImage(@RequestHeader(value = "X-Application-Version") String version,
-                                                        @RequestParam("images") Collection<MultipartFile> images) {
+    @PostMapping(value = "/images/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<EventResponse> saveEventImages(@RequestHeader(value = "X-Application-Version") String version,
+                                                         @PathVariable("eventId") Long eventId,
+                                                         @RequestParam("images") Collection<MultipartFile> images) {
         return ResponseEntity.ok(StubGenerator.generateImagesEventResponse());
     }
 
     @Operation(
-            summary = "Добавление обложки к ранее созданному событию",
+            summary = "Добавление обложки к событию",
             security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Обложка добавлена",
+                            description = "Обложка добавлены",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
                             }
@@ -344,6 +309,13 @@ public class EventController {
                             }
                     ),
                     @ApiResponse(
+                            responseCode = "404",
+                            description = "Событие не найдено",
+                            content = {
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
+                            }
+                    ),
+                    @ApiResponse(
                             responseCode = "403",
                             description = "Неавторизованный запрос",
                             content = {
@@ -358,154 +330,11 @@ public class EventController {
                     )
             }
     )
-    @PostMapping(value = "/cover", consumes = MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/images/cover/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EventResponse> saveEventCover(@RequestHeader(value = "X-Application-Version") String version,
-                                                        @RequestParam("cover") MultipartFile cover) {
+                                                         @PathVariable("eventId") Long eventId,
+                                                         @RequestParam("cover") MultipartFile cover) {
         return ResponseEntity.ok(StubGenerator.generateCoverEventResponse());
-    }
-
-    @Operation(
-            summary = "Добавление описания к ранее созданному событию",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Описание добавлено",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Некорректный запрос",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Отсутствует авторизация",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Неавторизованный запрос",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "500", description = "Неизвестная ошибка",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    )
-            }
-    )
-    @PostMapping("/description")
-    public ResponseEntity<EventResponse> saveEventDescription(@RequestHeader(value = "X-Application-Version") String version,
-                                                              @Valid @RequestBody EventDescriptionRequest request) {
-        return ResponseEntity.ok(StubGenerator.generateDescriptionEventResponse());
-    }
-
-    @Operation(
-            summary = "Добавление билетов к ранее созданному событию",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Билеты добавлены",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Некорректный запрос",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Отсутствует авторизация",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Неавторизованный запрос",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "500", description = "Неизвестная ошибка",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    )
-            }
-    )
-    @PostMapping("/tickets")
-    public ResponseEntity<EventResponse> saveEventTicket(@RequestHeader(value = "X-Application-Version") String version,
-                                                         @Valid @RequestBody EventTicketRequest request) {
-        return ResponseEntity.ok(StubGenerator.generateTicketsEventResponse());
-    }
-
-    @Operation(
-            summary = "Добавление дополнительных QR-кодов к ранее созданному событию",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "QR-коды добавлены",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Некорректный запрос",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Отсутствует авторизация",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Неавторизованный запрос",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "500", description = "Неизвестная ошибка",
-                            content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))
-                            }
-                    )
-            }
-    )
-    @PostMapping("/option")
-    public ResponseEntity<EventResponse> saveEventOption(@RequestHeader(value = "X-Application-Version") String version,
-                                                         @Valid @RequestBody EventTicketRequest request) {
-        return ResponseEntity.ok(StubGenerator.generateOptionsEventResponse());
     }
 
     @Operation(summary = "Получение всех типов событий")
@@ -526,7 +355,7 @@ public class EventController {
                     )
             }
     )
-    @GetMapping("/type")
+    @GetMapping("/types")
     public ResponseEntity<Collection<EventType>> getAllTypes(@RequestHeader(value = "X-Application-Version") String version) {
         return ResponseEntity.ok(EnumSet.allOf(EventType.class));
     }
@@ -546,8 +375,8 @@ public class EventController {
             response.setName("Имя события");
             response.setEvent(EventType.CONCERT);
             response.setAgeRestrictions("16+");
-            response.setGenre(GenreType.ELECTRONICA);
-            response.setActive(Boolean.TRUE);
+            response.setGenres(List.of(GenreType.ELECTRONICA));
+            response.setActual(Boolean.TRUE);
             response.setDescription("Какое-то описание");
             response.setPeriod(generatePeriodDto());
             response.setAddress(generateAddressDto());
@@ -555,26 +384,6 @@ public class EventController {
             response.setImages(List.of(generateImageDto()));
             response.setTickets(List.of(generateTickerDto()));
             response.setOptions(List.of(generateOptionDto()));
-            return response;
-        }
-
-        private static EventResponse generateIdEventResponse() {
-            var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
-            return response;
-        }
-
-        private static EventResponse generateAddressEventResponse() {
-            var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
-            response.setAddress(generateAddressDto());
-            return response;
-        }
-
-        private static EventResponse generatePeriodEventResponse() {
-            var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
-            response.setPeriod(generatePeriodDto());
             return response;
         }
 
@@ -592,24 +401,9 @@ public class EventController {
             return response;
         }
 
-        private static EventResponse generateDescriptionEventResponse() {
+        private static EventResponse generateIdEventResponse() {
             var response = new EventResponse();
             response.setEventId(DEFAULT_ID);
-            response.setDescription("Какое-то описание");
-            return response;
-        }
-
-        private static EventResponse generateTicketsEventResponse() {
-            var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
-            response.setTickets(List.of(generateTickerDto()));
-            return response;
-        }
-
-        private static EventResponse generateOptionsEventResponse() {
-            var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
-            response.setOptions(List.of(generateOptionDto()));
             return response;
         }
 

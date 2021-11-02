@@ -4,12 +4,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.softdarom.qrcheck.events.exception.NotFoundException;
+import ru.softdarom.qrcheck.events.model.dto.response.BaseResponse;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 @Slf4j(topic = "EVENTS-EXCEPTION-HANDLER")
 public class EventsExceptionHandler {
+
+    @ExceptionHandler(NotFoundException.class)
+    ResponseEntity<BaseResponse> notFound(NotFoundException e) {
+        LOGGER.error(e.getMessage(), e);
+        return ResponseEntity.status(NOT_FOUND).body(new BaseResponse(e.getMessage()));
+    }
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<Void> unknown(Exception e) {

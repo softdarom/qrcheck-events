@@ -40,7 +40,7 @@ public class GenreController {
                     )
             }
     )
-    @GetMapping("/type")
+    @GetMapping("/types")
     public ResponseEntity<Collection<GenreType>> getAll(@RequestHeader(value = "X-Application-Version") String version) {
         return ResponseEntity.ok(EnumSet.allOf(GenreType.class));
     }
