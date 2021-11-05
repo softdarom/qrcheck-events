@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.api.annotations.ParameterObject;
@@ -41,10 +40,8 @@ public class EventController {
 
     @Operation(
             summary = "Получение всех событий",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
+            security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
+            responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "События получены",
@@ -83,10 +80,8 @@ public class EventController {
 
     @Operation(
             summary = "Получение события по id",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
+            security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
+            responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Событие получено",
@@ -139,10 +134,8 @@ public class EventController {
 
     @Operation(
             summary = "Пре-создания нового события",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
+            security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
+            responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Новое событие полностью создано",
@@ -150,7 +143,6 @@ public class EventController {
                                     @Content(
                                             mediaType = "application/json",
                                             schema = @Schema(
-//                                                    implementation = EventResponse.class,
                                                     example = "{ \"eventId\": 0 }"
                                             )
                                     )
@@ -178,17 +170,15 @@ public class EventController {
                     )
             }
     )
-    @PostMapping(value = "/", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/")
     public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
         return ResponseEntity.ok(StubGenerator.generateIdEventResponse());
     }
 
     @Operation(
             summary = "Завершение создания нового события",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
+            security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
+            responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Новое событие полностью создано",
@@ -233,10 +223,8 @@ public class EventController {
 
     @Operation(
             summary = "Добавление фотографий к событию",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
+            security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
+            responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Фотографии добавлены",
@@ -289,10 +277,8 @@ public class EventController {
 
     @Operation(
             summary = "Добавление обложки к событию",
-            security = @SecurityRequirement(name = BEARER_SECURITY_NAME)
-    )
-    @ApiResponses(
-            value = {
+            security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
+            responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Обложка добавлены",
@@ -343,9 +329,9 @@ public class EventController {
         return ResponseEntity.ok(StubGenerator.generateCoverEventResponse());
     }
 
-    @Operation(summary = "Получение всех типов событий")
-    @ApiResponses(
-            value = {
+    @Operation(
+            summary = "Получение всех типов событий",
+            responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "События получены",

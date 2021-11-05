@@ -50,7 +50,7 @@ springdoc:
   info:
     title: Events RESTful API
     description: Сервис управления событиями
-    version: V1
+    version: {{ lookup('env', 'DOCKER_VERSION') | default('unknown') }}
     licence-url: https://qrchk.ru/licence
     owner-name: QRCheck
     owner-url: https://qrchk.ru
