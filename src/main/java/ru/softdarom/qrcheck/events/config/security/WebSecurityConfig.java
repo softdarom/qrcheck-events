@@ -38,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/actuator/prometheus/**"
                 )
                 .antMatchers(
-                        "/mobile/events/type",
-                        "/mobile/genres/type"
+                        "/mobile/events/types",
+                        "/mobile/genres/types"
                 );
     }
 }
