@@ -8,20 +8,13 @@ public enum TokenValidType {
             return true;
         }
     },
-    EXPIRED {
-        @Override
-        public boolean isValid() {
-            return false;
-        }
-    },
-    INCORRECT {
-        @Override
-        public boolean isValid() {
-            return false;
-        }
-    };
+    EXPIRED,
+    INCORRECT,
+    UNKNOWN;
 
 
-    public abstract boolean isValid();
+    public boolean isValid() {
+        return false;
+    }
 
 }

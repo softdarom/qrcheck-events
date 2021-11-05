@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class CacheConfig {
 
     @Bean
-    CacheManager oauth2CacheManager(OAuth2CacheProperties properties) {
+    CacheManager oAuth2CacheManager(OAuth2CacheProperties properties) {
         return new ConcurrentMapCacheManager() {
             @Override
             protected Cache createConcurrentMapCache(String name) {
