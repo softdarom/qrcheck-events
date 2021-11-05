@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Generated;
+import lombok.NoArgsConstructor;
 import ru.softdarom.qrcheck.events.model.base.TokenValidType;
 
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Data
 @Generated
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class OAuth2TokenDto {
 
     @JsonProperty("user_id")
@@ -36,4 +38,7 @@ public class OAuth2TokenDto {
     @JsonProperty("valid")
     private TokenValidType valid;
 
+    public OAuth2TokenDto(TokenValidType valid) {
+        this.valid = valid;
+    }
 }
