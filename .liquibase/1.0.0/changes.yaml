@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.0
+      author: eekovtun
+      comment: Database Initial
+      changes:
+        - tagDatabase:
+            tag: 1.0.0
+
+  - include:
+      file: ddl/01_addresses.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/02_genres.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/03_event_types.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/04_events.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/05_images.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/06_events_genres.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/07_options.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/08_ticket.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: dml/01_event_types.sql
+      relativeToChangelogFile: true
+  - include:
+      file: dml/02_genres.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: grant/01_events.sql
+      relativeToChangelogFile: true
+  - include:
+      file: grant/02_editor.sql
+      relativeToChangelogFile: true
+  - include:
+      file: grant/03_viewer.sql
+      relativeToChangelogFile: true
