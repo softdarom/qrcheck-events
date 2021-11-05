@@ -21,9 +21,9 @@ public class EventsExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    ResponseEntity<Void> unknown(Exception e) {
+    ResponseEntity<ErrorResponse> unknown(Exception e) {
         LOGGER.error(e.getMessage(), e);
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ErrorResponse(e.getMessage()));
     }
 
 }
