@@ -14,6 +14,7 @@ create table events.tickets
         constraint tickets_events_id_fk
             references events.events,
     quantity int,
+    available_quantity int,
     cost     decimal(7, 4)                                     not null,
     price    decimal(7, 4)                                     not null,
     created  timestamp(0) default now()                        not null,
@@ -25,6 +26,7 @@ comment on table events.tickets is 'Table stores event tickets';
 comment on column events.tickets.id is 'Primary key of the table';
 comment on column events.tickets.event_id is 'Reference on event id';
 comment on column events.tickets.quantity is 'Count of tickets';
+comment on column events.tickets.available_quantity is 'Count of tickets available';
 comment on column events.tickets.cost is 'Value without tax';
 comment on column events.tickets.price is 'Value with tax';
 comment on column events.tickets.created is 'Time of created';

@@ -428,6 +428,8 @@ public class EventController {
             dto.setTicketId(DEFAULT_ID);
             dto.setPrice(1500.64);
             dto.setType(TicketType.PORTER);
+            dto.setQuantity(1000);
+            dto.setAvailableQuantity(1000);
             return dto;
         }
 
