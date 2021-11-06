@@ -20,6 +20,9 @@ public class TickerDto {
     @JsonProperty("quantity")
     private Integer quantity;
 
+    @JsonProperty("availableQuantity")
+    private Integer availableQuantity;
+
     @NotNull
     @JsonProperty("cost")
     private Double cost;
