@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.model.base.EventType;
@@ -21,6 +23,7 @@ import ru.softdarom.qrcheck.events.model.dto.*;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
+import ru.softdarom.qrcheck.events.service.EventService;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -37,6 +40,13 @@ import static ru.softdarom.qrcheck.events.config.OpenApiConfig.BEARER_SECURITY_N
 @RestController(value = "mobileEventController")
 @RequestMapping("/mobile/events")
 public class EventController {
+
+    private final EventService eventService;
+
+    @Autowired
+    EventController(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     @Operation(
             summary = "Получение всех событий",
@@ -171,8 +181,9 @@ public class EventController {
             }
     )
     @PostMapping(value = "/")
-    public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
-        return ResponseEntity.ok(StubGenerator.generateIdEventResponse());
+    public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version,
+                                                      Authentication authentication) {
+        return ResponseEntity.ok(eventService.preSave((Long) authentication.getPrincipal()));
     }
 
     @Operation(
