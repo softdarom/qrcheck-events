@@ -71,4 +71,7 @@ public class EventResponse {
     @JsonProperty("options")
     private Collection<OptionDto> options;
 
+    public EventResponse(Long eventId) {
+        this.eventId = eventId;
+    }
 }
