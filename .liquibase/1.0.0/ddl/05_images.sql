@@ -1,22 +1,22 @@
 --liquibase formatted sql
 
---changeset eekovtun:1.0.0/ddl/images_seq
---rollback drop sequence events.images_seq;
-create sequence events.images_seq;
+--changeset eekovtun:1.0.0/ddl/image_seq
+--rollback drop sequence events.image_seq;
+create sequence events.image_seq;
 
 --changeset eekovtun:1.0.0/ddl/images
 --rollback drop table events.images;
 create table events.images
 (
-    id                bigint       default nextval('events.images_seq') not null
+    id                bigint       default nextval('events.image_seq') not null
         constraint images_pk primary key,
     event_id          bigint
         constraint images_events_id_fk
-            references events.events                                    not null,
-    external_image_id bigint                                            not null,
+            references events.events                                   not null,
+    external_image_id bigint                                           not null,
     cover             boolean      default false,
-    created           timestamp(0) default now()                        not null,
-    updated           timestamp(0) default now()                        not null,
+    created           timestamp(0) default now()                       not null,
+    updated           timestamp(0) default now()                       not null,
     active            boolean      default true
 );
 

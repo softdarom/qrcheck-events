@@ -25,7 +25,7 @@ spring:
       maximum-pool-size: {{ spring.datasource.hikari.maximum_pool_size | default(10) }}
       idle-timeout: {{ spring.datasource.hikari.pool_name | default(200000) }}
       minimum-idle: {{ spring.datasource.hikari.idle_timeout | default(2) }}
-      schema: users
+      schema: events
   liquibase:
     enabled: false
   groovy:
