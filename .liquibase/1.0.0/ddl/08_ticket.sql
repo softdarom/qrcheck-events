@@ -8,18 +8,18 @@ create sequence events.ticket_seq;
 --rollback drop table events.tickets;
 create table events.tickets
 (
-    id       bigint       default nextval('events.ticket_seq') not null
+    id                 bigint       default nextval('events.ticket_seq') not null
         constraint tickets_pk primary key,
-    event_id bigint
+    event_id           bigint
         constraint tickets_events_id_fk
             references events.events,
-    quantity int,
-    available_quantity int,
-    cost     decimal(7, 4)                                     not null,
-    price    decimal(7, 4)                                     not null,
-    created  timestamp(0) default now()                        not null,
-    updated  timestamp(0) default now()                        not null,
-    active   boolean      default true
+    quantity           int                                               not null,
+    available_quantity int                                               not null,
+    cost               decimal(9, 2)                                     not null,
+    price              decimal(9, 2)                                     not null,
+    created            timestamp(0) default now()                        not null,
+    updated            timestamp(0) default now()                        not null,
+    active             boolean      default true
 );
 
 comment on table events.tickets is 'Table stores event tickets';

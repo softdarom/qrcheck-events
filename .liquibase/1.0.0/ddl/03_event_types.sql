@@ -13,6 +13,9 @@ create table events.event_types
     name varchar(255)
 );
 
+create unique index event_types_name_uindex
+    on events.event_types (name);
+
 comment on table events.event_types is 'Table stores event types as enums';
 comment on column events.event_types.id is 'Primary key of the table';
 comment on column events.event_types.name is 'Type name';

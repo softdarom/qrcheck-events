@@ -8,7 +8,7 @@ create sequence events.event_seq;
 --rollback drop table events.events;
 create table events.events
 (
-    id               bigint        default nextval('events.event_seq') not null
+    id               bigint         default nextval('events.event_seq') not null
         constraint events_pk primary key,
     address_id       bigint
         constraint events_addresses_id_fk
@@ -16,18 +16,18 @@ create table events.events
     event_type_id    bigint
         constraint events_events_types_id_fk
             references events.event_types,
-    external_user_id bigint                                            not null,
+    external_user_id bigint                                             not null,
     name             varchar(255),
     description      text,
-    start_time       time with time zone,
+    start_time       time,
     start_date       date,
-    total_amount     decimal(7, 4),
-    current_amount   decimal(7, 4) default 0.0,
-    over_date        timestamp(0) with time zone,
-    draft            boolean       default true,
-    created          timestamp(0)  default now()                       not null,
-    updated          timestamp(0)  default now()                       not null,
-    active           boolean       default true
+    total_amount     decimal(11, 2),
+    current_amount   decimal(11, 2) default 0.0,
+    over_date        timestamp(0),
+    draft            boolean        default true,
+    created          timestamp(0)   default now()                       not null,
+    updated          timestamp(0)   default now()                       not null,
+    active           boolean        default true
 );
 
 comment on table events.events is 'Table stores events';
