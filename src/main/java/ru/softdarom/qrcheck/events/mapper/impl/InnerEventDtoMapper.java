@@ -73,6 +73,8 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
         @Override
         public void accept(InnerEventDto destination, EventEntity source) {
             source.setExternalUserId((Long) getAuthentication().getPrincipal());
+            source.setCurrentAmount(DEFAULT_CURRENT_AMOUNT);
+            source.setDraft(Boolean.TRUE);
             updateSource(destination, source);
         }
 
@@ -83,7 +85,6 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
 
             source.setTotalAmount(calculateTotalAmount(destination.getTickets()));
             source.setOverDate(calculateOverDate(destination.getPeriod().getStartDate(), destination.getPeriod().getStartTime()));
-            source.setCurrentAmount(DEFAULT_CURRENT_AMOUNT);
             source.setType(getEvent(destination.getEvent()));
             source.setGenres(getGenres(destination.getGenres()));
         }
