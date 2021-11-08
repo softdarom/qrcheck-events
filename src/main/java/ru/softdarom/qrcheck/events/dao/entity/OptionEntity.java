@@ -11,6 +11,7 @@ import org.hibernate.annotations.Where;
 import ru.softdarom.qrcheck.events.util.JsonHelper;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Generated
 @Data
@@ -29,6 +30,18 @@ public class OptionEntity {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @Column(name = "available_quantity", nullable = false)
+    private Integer availableQuantity;
+
+    @Column(name = "cost", nullable = false)
+    private BigDecimal cost;
+
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

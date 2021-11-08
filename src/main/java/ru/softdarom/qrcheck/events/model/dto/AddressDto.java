@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 public class AddressDto {
 
     @JsonProperty("addressId")
-    private Long addressId;
+    private Long id;
 
     @NotEmpty
     @JsonProperty("placeName")

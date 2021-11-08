@@ -1,9 +1,11 @@
 package ru.softdarom.qrcheck.events.dao.access;
 
-import ru.softdarom.qrcheck.events.model.dto.inner.EventDto;
+import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 
 public interface EventAccessService {
 
-    EventDto save(EventDto dto);
+    InnerEventDto save(InnerEventDto dto);
+
+    boolean exist(Long id);
 
 }
