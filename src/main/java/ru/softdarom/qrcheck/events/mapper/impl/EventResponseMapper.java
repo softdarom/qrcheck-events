@@ -41,7 +41,7 @@ public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerE
 
         private Boolean isActual(InnerPeriodDto period) {
             var overDateTime = LocalDateTime.of(period.getStartDate(), period.getStartTime());
-            return overDateTime.isBefore(LocalDateTime.now());
+            return overDateTime.isAfter(LocalDateTime.now());
         }
 
         private ImageDto coverStub() {
