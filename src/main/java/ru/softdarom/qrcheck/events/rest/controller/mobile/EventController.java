@@ -10,23 +10,19 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
-import ru.softdarom.qrcheck.events.model.base.TicketType;
-import ru.softdarom.qrcheck.events.model.dto.*;
+import ru.softdarom.qrcheck.events.model.dto.ImageDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.service.EventService;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
@@ -84,7 +80,7 @@ public class EventController {
     @GetMapping("/")
     public ResponseEntity<Page<EventResponse>> getAll(@RequestHeader(value = "X-Application-Version") String version,
                                                       @ParameterObject Pageable pageable) {
-        return ResponseEntity.ok(StubGenerator.generatePage(StubGenerator.generateFullEventResponse(), pageable));
+        return ResponseEntity.ok(eventService.getAll(pageable));
     }
 
     @Operation(
@@ -134,13 +130,13 @@ public class EventController {
                     )
             }
     )
-    @PageableAsQueryParam
     @GetMapping("/{eventId}")
     public ResponseEntity<EventResponse> get(@RequestHeader(value = "X-Application-Version") String version,
                                              @PathVariable("eventId") Long eventId) {
-        return ResponseEntity.ok(StubGenerator.generateFullEventResponse());
+        return ResponseEntity.ok(eventService.getById(eventId));
     }
 
+    //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-57
     @Operation(
             summary = "Пре-создания нового события",
             security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
@@ -184,6 +180,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.preSave());
     }
 
+    //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-57
     @Operation(
             summary = "Завершение создания нового события",
             security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
@@ -363,30 +360,7 @@ public class EventController {
 
     private static class StubGenerator {
 
-        private static final long DEFAULT_PAGES_TOTAL = 1;
         private static final Long DEFAULT_ID = 1L;
-
-        private static <T> Page<T> generatePage(T response, Pageable pageable) {
-            return new PageImpl<>(List.of(response, response), pageable, DEFAULT_PAGES_TOTAL);
-        }
-
-        private static EventResponse generateFullEventResponse() {
-            var response = new EventResponse();
-            response.setId(DEFAULT_ID);
-            response.setName("Имя события");
-            response.setEvent(EventType.CONCERT);
-            response.setAgeRestrictions("16+");
-            response.setGenres(List.of(GenreType.ELECTRONICA));
-            response.setActual(Boolean.TRUE);
-            response.setDescription("Какое-то описание");
-            response.setPeriod(generatePeriodDto());
-            response.setAddress(generateAddressDto());
-            response.setCover(generateImageDto());
-            response.setImages(List.of(generateImageDto()));
-            response.setTickets(List.of(generateTickerDto()));
-            response.setOptions(List.of(generateOptionDto()));
-            return response;
-        }
 
         private static EventResponse generateImagesEventResponse() {
             var response = new EventResponse();
@@ -410,38 +384,5 @@ public class EventController {
             return dto;
         }
 
-        private static AddressDto generateAddressDto() {
-            var dto = new AddressDto();
-            dto.setId(DEFAULT_ID);
-            dto.setAddress("г. Москва, ул. Лубянка, 1");
-            dto.setPlaceName("Имя места проведения события");
-            return dto;
-        }
-
-        private static PeriodDto generatePeriodDto() {
-            var dto = new PeriodDto();
-            dto.setStartDate(LocalDate.of(2021, 12, 31));
-            dto.setStartTime(LocalTime.of(23, 0));
-            return dto;
-        }
-
-        private static TickerDto generateTickerDto() {
-            var dto = new TickerDto();
-            dto.setId(DEFAULT_ID);
-            dto.setPrice(1500.64);
-            dto.setType(TicketType.PORTER);
-            dto.setQuantity(1000);
-            dto.setAvailableQuantity(1000);
-            return dto;
-        }
-
-        private static OptionDto generateOptionDto() {
-            var dto = new OptionDto();
-            dto.setId(DEFAULT_ID);
-            dto.setName("Бар");
-            dto.setCost(123.45);
-            dto.setQuantity(100);
-            return dto;
-        }
     }
 }
