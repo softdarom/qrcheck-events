@@ -35,8 +35,7 @@ spring:
     api-key:
       name: X-ApiKey-Authorization
       token:
-#        outgoing: 3f877c2e-c378-46c9-9737-7aed66aed8d5
-        outgoing: a157bbae-1db5-4914-8a7a-93dcda57fab7
+        outgoing: 3f877c2e-c378-46c9-9737-7aed66aed8d5
   cache:
     oauth2:
       expire-after-write-in-sec: 900
@@ -59,8 +58,7 @@ springdoc:
 outbound:
   feign:
     auth-handler:
-#      host: "http://localhost:${OUTBOUND_FEIGN_AUTH_HANDLER_PORT}"
-      host: "http://auth-handler.test.qrchk.ru"
+      host: "http://localhost:${OUTBOUND_FEIGN_AUTH_HANDLER_PORT}"
 
 logbook:
   strategy: body-only-if-status-at-least
