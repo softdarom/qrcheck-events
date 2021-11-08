@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.model.base.EventType;
@@ -181,9 +180,8 @@ public class EventController {
             }
     )
     @PostMapping(value = "/")
-    public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version,
-                                                      Authentication authentication) {
-        return ResponseEntity.ok(eventService.preSave((Long) authentication.getPrincipal()));
+    public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
+        return ResponseEntity.ok(eventService.preSave());
     }
 
     @Operation(
@@ -229,7 +227,7 @@ public class EventController {
     @PutMapping(value = "/", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<EventResponse> saveEvent(@RequestHeader(value = "X-Application-Version") String version,
                                                    @RequestBody @Valid EventRequest request) {
-        return ResponseEntity.ok(StubGenerator.generateFullEventResponse());
+        return ResponseEntity.ok(eventService.endSave(request));
     }
 
     @Operation(
@@ -374,7 +372,7 @@ public class EventController {
 
         private static EventResponse generateFullEventResponse() {
             var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
+            response.setId(DEFAULT_ID);
             response.setName("Имя события");
             response.setEvent(EventType.CONCERT);
             response.setAgeRestrictions("16+");
@@ -392,27 +390,21 @@ public class EventController {
 
         private static EventResponse generateImagesEventResponse() {
             var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
+            response.setId(DEFAULT_ID);
             response.setImages(List.of(generateImageDto()));
             return response;
         }
 
         private static EventResponse generateCoverEventResponse() {
             var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
+            response.setId(DEFAULT_ID);
             response.setCover(generateImageDto());
-            return response;
-        }
-
-        private static EventResponse generateIdEventResponse() {
-            var response = new EventResponse();
-            response.setEventId(DEFAULT_ID);
             return response;
         }
 
         private static ImageDto generateImageDto() {
             var dto = new ImageDto();
-            dto.setImageId(DEFAULT_ID);
+            dto.setId(DEFAULT_ID);
             dto.setContent("https://www.golddisk.ru/goods_img/70/70501.jpg");
             dto.setFormat("JPG");
             return dto;
@@ -420,7 +412,7 @@ public class EventController {
 
         private static AddressDto generateAddressDto() {
             var dto = new AddressDto();
-            dto.setAddressId(DEFAULT_ID);
+            dto.setId(DEFAULT_ID);
             dto.setAddress("г. Москва, ул. Лубянка, 1");
             dto.setPlaceName("Имя места проведения события");
             return dto;
@@ -428,7 +420,6 @@ public class EventController {
 
         private static PeriodDto generatePeriodDto() {
             var dto = new PeriodDto();
-            dto.setPeriodId(DEFAULT_ID);
             dto.setStartDate(LocalDate.of(2021, 12, 31));
             dto.setStartTime(LocalTime.of(23, 0));
             return dto;
@@ -436,7 +427,7 @@ public class EventController {
 
         private static TickerDto generateTickerDto() {
             var dto = new TickerDto();
-            dto.setTicketId(DEFAULT_ID);
+            dto.setId(DEFAULT_ID);
             dto.setPrice(1500.64);
             dto.setType(TicketType.PORTER);
             dto.setQuantity(1000);
@@ -446,7 +437,7 @@ public class EventController {
 
         private static OptionDto generateOptionDto() {
             var dto = new OptionDto();
-            dto.setOptionId(DEFAULT_ID);
+            dto.setId(DEFAULT_ID);
             dto.setName("Бар");
             dto.setCost(123.45);
             dto.setQuantity(100);

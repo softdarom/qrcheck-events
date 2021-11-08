@@ -17,7 +17,7 @@ public class EventRequest {
 
     @NotNull
     @JsonProperty("eventId")
-    private Long eventId;
+    private Long id;
 
     @NotEmpty
     @JsonProperty("name")

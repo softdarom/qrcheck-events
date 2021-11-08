@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class TickerDto {
 
     @JsonProperty("ticketId")
-    private Long ticketId;
+    private Long id;
 
     @NotNull
     @JsonProperty("quantity")

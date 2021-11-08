@@ -11,7 +11,7 @@ import lombok.Generated;
 public class ImageDto {
 
     @JsonProperty("imageId")
-    private Long imageId;
+    private Long id;
 
     @JsonProperty("content")
     private String content;

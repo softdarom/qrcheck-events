@@ -18,6 +18,7 @@ create table events.events
             references events.event_types,
     external_user_id bigint                                             not null,
     name             varchar(255),
+    age_restrictions varchar(255),
     description      text,
     start_time       time,
     start_date       date,
@@ -35,6 +36,7 @@ comment on column events.events.id is 'Primary key of the table';
 comment on column events.events.address_id is 'Reference on address id';
 comment on column events.events.address_id is 'User primary key of the user-handler service';
 comment on column events.events.name is 'Event name';
+comment on column events.events.name is 'Event age restrictions';
 comment on column events.events.description is 'Description of event';
 comment on column events.events.start_time is 'Time of start event';
 comment on column events.events.start_date is 'Date of start event';

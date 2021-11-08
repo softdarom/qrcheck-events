@@ -40,6 +40,9 @@ public class EventEntity extends AbstractBaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "age_restrictions")
+    private String ageRestrictions;
+
     @Column(name = "description")
     private String description;
 
@@ -76,7 +79,8 @@ public class EventEntity extends AbstractBaseEntity {
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE
-            }
+            },
+            orphanRemoval = true
     )
     @JoinColumn(name = "address_id")
     private AddressEntity address;

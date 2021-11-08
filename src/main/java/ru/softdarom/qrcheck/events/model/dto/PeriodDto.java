@@ -16,9 +16,6 @@ import java.time.LocalTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PeriodDto {
 
-    @JsonProperty("periodId")
-    private Long periodId;
-
     @NotNull
     @JsonProperty("startDate")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

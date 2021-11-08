@@ -21,7 +21,7 @@ public class EventResponse {
 
     @NotNull
     @JsonProperty("eventId")
-    private Long eventId;
+    private Long id;
 
     @NotEmpty
     @JsonProperty("name")
@@ -71,7 +71,7 @@ public class EventResponse {
     @JsonProperty("options")
     private Collection<OptionDto> options;
 
-    public EventResponse(Long eventId) {
-        this.eventId = eventId;
+    public EventResponse(Long id) {
+        this.id = id;
     }
 }
