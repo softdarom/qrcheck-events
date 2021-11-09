@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.dto.ImageDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerPeriodDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 
 import javax.transaction.Transactional;
@@ -27,6 +26,7 @@ public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerE
         modelMapper.createTypeMap(sourceClass, destinationClass);
         modelMapper
                 .createTypeMap(destinationClass, sourceClass)
+                .addMappings(mapping -> mapping.map(InnerEventDto::getType, EventResponse::setEvent))
                 .setPostConverter(toSourceConverter(new SourceConverter()));
     }
 
@@ -34,14 +34,14 @@ public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerE
 
         @Override
         public void accept(InnerEventDto destination, EventResponse source) {
-            source.setActual(isActual(destination.getPeriod()));
+            source.setActual(isActual(destination));
             source.setCover(coverStub());
             source.setImages(imagesStub());
         }
 
-        private Boolean isActual(InnerPeriodDto period) {
-            var overDateTime = LocalDateTime.of(period.getStartDate(), period.getStartTime());
-            return overDateTime.isAfter(LocalDateTime.now());
+        private Boolean isActual(InnerEventDto destination) {
+            var overDateTime = LocalDateTime.of(destination.getStartDate(), destination.getStartTime());
+            return overDateTime.isAfter(LocalDateTime.now()) && !destination.getDraft();
         }
 
         private ImageDto coverStub() {

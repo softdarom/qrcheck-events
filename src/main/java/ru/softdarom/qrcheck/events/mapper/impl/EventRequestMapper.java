@@ -17,7 +17,12 @@ public class EventRequestMapper extends AbstractDtoMapper<EventRequest, InnerEve
     protected void setupMapper() {
         modelMapper
                 .createTypeMap(sourceClass, destinationClass)
-                .addMappings(mapping -> mapping.map(src -> Boolean.FALSE, InnerEventDto::setDraft));
+                .addMappings(mapping -> {
+                    mapping.map(src -> Boolean.FALSE, InnerEventDto::setDraft);
+                    mapping.map(src -> src.getPeriod().getStartDate(), InnerEventDto::setStartDate);
+                    mapping.map(src -> src.getPeriod().getStartTime(), InnerEventDto::setStartTime);
+                    mapping.map(EventRequest::getEvent, InnerEventDto::setType);
+                });
         modelMapper.createTypeMap(destinationClass, sourceClass);
     }
 }

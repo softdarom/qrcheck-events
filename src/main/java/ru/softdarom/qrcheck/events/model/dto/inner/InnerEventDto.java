@@ -6,6 +6,10 @@ import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.util.JsonHelper;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
 
 @Data
@@ -18,11 +22,19 @@ public class InnerEventDto {
 
     private String name;
 
+    private String ageRestrictions;
+
     private String description;
 
-    private EventType event;
+    private LocalTime startTime;
 
-    private String ageRestrictions;
+    private LocalDate startDate;
+
+    private BigDecimal totalAmount;
+
+    private BigDecimal currentAmount;
+
+    private LocalDateTime overDate;
 
     private Boolean draft;
 
@@ -30,11 +42,13 @@ public class InnerEventDto {
 
     private InnerAddressDto address;
 
-    private InnerPeriodDto period;
+    private EventType type;
 
-    private Collection<InnerTickerDto> tickets;
+    private Collection<InnerImageDto> images;
 
     private Collection<InnerOptionDto> options;
+
+    private Collection<InnerTickerDto> tickets;
 
     @Override
     public String toString() {

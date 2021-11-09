@@ -8,6 +8,7 @@ import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerOptionDto;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.function.BiConsumer;
 
 @Component
@@ -23,7 +24,10 @@ public class InnerOptionDtoMapper extends AbstractDtoMapper<OptionEntity, InnerO
 
     @Override
     protected void setupMapper() {
-        modelMapper.createTypeMap(sourceClass, destinationClass);
+        modelMapper
+                .createTypeMap(sourceClass, destinationClass)
+                .addMappings(mapping -> mapping.skip(InnerOptionDto::setPrice))
+                .setPostConverter(toDestinationConverter(new DestinationConverter()));
         modelMapper
                 .createTypeMap(destinationClass, sourceClass)
                 .addMappings(mapping -> mapping.map(InnerOptionDto::getQuantity, OptionEntity::setAvailableQuantity))
@@ -41,6 +45,15 @@ public class InnerOptionDtoMapper extends AbstractDtoMapper<OptionEntity, InnerO
             var costAsBigDecimal = BigDecimal.valueOf(cost);
             var taxSum = costAsBigDecimal.multiply(BigDecimal.valueOf(properties.getGeneralTax()));
             return costAsBigDecimal.add(taxSum);
+        }
+    }
+
+    public static class DestinationConverter implements BiConsumer<OptionEntity, InnerOptionDto> {
+
+        @Override
+        public void accept(OptionEntity source, InnerOptionDto destination) {
+            var scaledPrice = source.getPrice().setScale(0, RoundingMode.UP);
+            destination.setPrice(scaledPrice.doubleValue());
         }
     }
 }
