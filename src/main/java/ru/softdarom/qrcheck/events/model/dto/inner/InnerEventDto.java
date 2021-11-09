@@ -26,9 +26,7 @@ public class InnerEventDto {
 
     private String description;
 
-    private LocalTime startTime;
-
-    private LocalDate startDate;
+    private LocalDateTime startDateTime;
 
     private BigDecimal totalAmount;
 

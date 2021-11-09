@@ -20,8 +20,7 @@ create table events.events
     name             varchar(255),
     age_restrictions varchar(255),
     description      text,
-    start_time       time,
-    start_date       date,
+    start_date_time  timestamp(0),
     total_amount     decimal(11, 2),
     current_amount   decimal(11, 2) default 0.0,
     over_date        timestamp(0),
@@ -38,8 +37,7 @@ comment on column events.events.address_id is 'User primary key of the user-hand
 comment on column events.events.name is 'Event name';
 comment on column events.events.name is 'Event age restrictions';
 comment on column events.events.description is 'Description of event';
-comment on column events.events.start_time is 'Time of start event';
-comment on column events.events.start_date is 'Date of start event';
+comment on column events.events.start_date_time is 'Time and date of start event';
 comment on column events.events.total_amount is 'Total amount for the event';
 comment on column events.events.current_amount is 'Current amount of fundraising';
 comment on column events.events.over_date is 'Deadline of fundraising';

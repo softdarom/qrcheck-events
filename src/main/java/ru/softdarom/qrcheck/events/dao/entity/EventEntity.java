@@ -46,11 +46,8 @@ public class EventEntity extends AbstractBaseEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "start_time")
-    private LocalTime startTime;
-
-    @Column(name = "start_date")
-    private LocalDate startDate;
+    @Column(name = "start_date_time")
+    private LocalDateTime startDateTime;
 
     @Column(name = "total_amount")
     private BigDecimal totalAmount;

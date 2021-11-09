@@ -6,6 +6,10 @@ import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+
 @Component
 public class EventRequestMapper extends AbstractDtoMapper<EventRequest, InnerEventDto> {
 
@@ -19,10 +23,25 @@ public class EventRequestMapper extends AbstractDtoMapper<EventRequest, InnerEve
                 .createTypeMap(sourceClass, destinationClass)
                 .addMappings(mapping -> {
                     mapping.map(src -> Boolean.FALSE, InnerEventDto::setDraft);
-                    mapping.map(src -> src.getPeriod().getStartDate(), InnerEventDto::setStartDate);
-                    mapping.map(src -> src.getPeriod().getStartTime(), InnerEventDto::setStartTime);
                     mapping.map(EventRequest::getEvent, InnerEventDto::setType);
-                });
+                })
+                .setPostConverter(toDestinationConverter(new DestinationConverter()));
         modelMapper.createTypeMap(destinationClass, sourceClass);
+    }
+
+    public static class DestinationConverter implements BiConsumer<EventRequest, InnerEventDto> {
+
+        @Override
+        public void accept(EventRequest source, InnerEventDto destination) {
+            setStartDateTime(source, destination);
+        }
+
+        private void setStartDateTime(EventRequest source, InnerEventDto destination) {
+            if (Objects.nonNull(source) && Objects.nonNull(source.getPeriod())) {
+                var period = source.getPeriod();
+                var startDateTime = LocalDateTime.of(period.getStartDate(), period.getStartTime());
+                destination.setStartDateTime(startDateTime);
+            }
+        }
     }
 }
