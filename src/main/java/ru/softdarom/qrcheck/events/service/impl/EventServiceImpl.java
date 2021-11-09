@@ -68,7 +68,7 @@ public class EventServiceImpl implements EventService {
         LOGGER.info("Getting all events for a user (id: {}) has roles: {}", externalUserId, authentication.getAuthorities());
         var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
         if (authorities.contains("ROLE_USER")) {
-            return eventAccessService.findAll(pageable).map(eventResponseMapper::convertToSource);
+            return eventAccessService.findAllActual(pageable).map(eventResponseMapper::convertToSource);
         }
         //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-58
         else if (authorities.contains("????")) {

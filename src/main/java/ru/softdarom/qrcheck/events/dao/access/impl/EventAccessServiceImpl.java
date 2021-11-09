@@ -13,6 +13,7 @@ import ru.softdarom.qrcheck.events.mapper.impl.InnerEventDtoMapper;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 @Slf4j(topic = "EVENTS-ACCESS-SERVICE")
@@ -56,8 +57,8 @@ public class EventAccessServiceImpl implements EventAccessService {
 
     @Override
     @Transactional
-    public Page<InnerEventDto> findAll(Pageable pageable) {
-        return eventRepository.findAll(pageable).map(eventMapper::convertToDestination);
+    public Page<InnerEventDto> findAllActual(Pageable pageable) {
+        return eventRepository.findAllByDraftIsFalseAndStartDateTimeAfter(LocalDateTime.now(), pageable).map(eventMapper::convertToDestination);
     }
 
     @Override

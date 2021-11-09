@@ -43,7 +43,6 @@ ext {
     set("logbackVersion", "1.2.3")
     set("postgresVersion", "42.2.5")
     set("snakeyamlVersion", "1.29")
-    set("postgresVersion", "42.2.5")
     set("junitVersion", "5.4.2")
     set("wiremockVersion", "2.27.2")
 }

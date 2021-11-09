@@ -12,7 +12,7 @@ public interface EventAccessService {
 
     InnerEventDto findById(Long id);
 
-    Page<InnerEventDto> findAll(Pageable pageable);
+    Page<InnerEventDto> findAllActual(Pageable pageable);
 
     Page<InnerEventDto> findAllByUserId(Long externalUserId, Pageable pageable);
 

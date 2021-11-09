@@ -17,9 +17,7 @@ import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerTickerDto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -82,7 +80,7 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
 
             source.setDraft(Boolean.FALSE);
             source.setTotalAmount(calculateTotalAmount(destination.getTickets()));
-            source.setOverDate(calculateOverDate(destination.getStartDate(), destination.getStartTime()));
+            source.setOverDate(calculateOverDate(destination.getStartDateTime()));
             source.setType(getEvent(destination.getType()));
             source.setGenres(getGenres(destination.getGenres()));
         }
@@ -100,8 +98,7 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
 
-        private LocalDateTime calculateOverDate(LocalDate startDate, LocalTime startTime) {
-            var startDateTime = LocalDateTime.of(startDate, startTime);
+        private LocalDateTime calculateOverDate(LocalDateTime startDateTime) {
             return startDateTime.minusHours(DEFAULT_OVER_HOURS);
         }
 
