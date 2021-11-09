@@ -14,7 +14,6 @@ import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerPeriodDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerTickerDto;
 
 import java.math.BigDecimal;
@@ -62,8 +61,6 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
                     mapping.skip(EventEntity::setExternalUserId);
                     mapping.skip(EventEntity::setType);
                     mapping.skip(EventEntity::setGenres);
-                    mapping.map(source -> source.getPeriod().getStartDate(), EventEntity::setStartDate);
-                    mapping.map(source -> source.getPeriod().getStartTime(), EventEntity::setStartTime);
                 })
                 .setPostConverter(toSourceConverter(new SourceConverter()));
     }
@@ -83,9 +80,10 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
                 return;
             }
 
+            source.setDraft(Boolean.FALSE);
             source.setTotalAmount(calculateTotalAmount(destination.getTickets()));
-            source.setOverDate(calculateOverDate(destination.getPeriod().getStartDate(), destination.getPeriod().getStartTime()));
-            source.setType(getEvent(destination.getEvent()));
+            source.setOverDate(calculateOverDate(destination.getStartDate(), destination.getStartTime()));
+            source.setType(getEvent(destination.getType()));
             source.setGenres(getGenres(destination.getGenres()));
         }
 
@@ -124,13 +122,12 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
 
         @Override
         public void accept(EventEntity source, InnerEventDto destination) {
-            if (Objects.isNull(source.getDraft()) || source.getDraft()) {
+            if (Objects.isNull(source.getDraft()) || Boolean.TRUE.equals(source.getDraft())) {
                 return;
             }
 
-            destination.setEvent(source.getType().getName());
+            destination.setType(source.getType().getName());
             destination.setGenres(source.getGenres().stream().map(GenreEntity::getName).collect(Collectors.toSet()));
-            destination.setPeriod(new InnerPeriodDto(source.getStartDate(), source.getStartTime()));
             destination.setTickets(innerTicketDtoMapper.convertToDestinations(source.getTickets()));
             destination.setOptions(innerOptionDtoMapper.convertToDestinations(source.getOptions()));
         }
