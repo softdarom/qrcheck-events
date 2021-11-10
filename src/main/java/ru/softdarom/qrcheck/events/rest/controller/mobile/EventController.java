@@ -14,9 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.softdarom.qrcheck.events.model.base.ImageType;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
-import ru.softdarom.qrcheck.events.model.dto.ImageDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
@@ -25,7 +25,7 @@ import ru.softdarom.qrcheck.events.service.EventService;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
+import java.util.Set;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -253,15 +253,15 @@ public class EventController {
                             }
                     ),
                     @ApiResponse(
-                            responseCode = "404",
-                            description = "Событие не найдено",
+                            responseCode = "403",
+                            description = "Неавторизованный запрос",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
-                            responseCode = "403",
-                            description = "Неавторизованный запрос",
+                            responseCode = "404",
+                            description = "Событие не найдено",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
@@ -278,7 +278,7 @@ public class EventController {
     public ResponseEntity<EventResponse> saveEventImages(@RequestHeader(value = "X-Application-Version") String version,
                                                          @PathVariable("eventId") Long eventId,
                                                          @RequestParam("images") Collection<MultipartFile> images) {
-        return ResponseEntity.ok(StubGenerator.generateImagesEventResponse());
+        return ResponseEntity.ok(eventService.saveImages(eventId, images, ImageType.PHOTOGRAPHY));
     }
 
     @Operation(
@@ -307,15 +307,15 @@ public class EventController {
                             }
                     ),
                     @ApiResponse(
-                            responseCode = "404",
-                            description = "Событие не найдено",
+                            responseCode = "403",
+                            description = "Неавторизованный запрос",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
                     ),
                     @ApiResponse(
-                            responseCode = "403",
-                            description = "Неавторизованный запрос",
+                            responseCode = "404",
+                            description = "Событие не найдено",
                             content = {
                                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                             }
@@ -332,7 +332,7 @@ public class EventController {
     public ResponseEntity<EventResponse> saveEventCover(@RequestHeader(value = "X-Application-Version") String version,
                                                         @PathVariable("eventId") Long eventId,
                                                         @RequestParam("cover") MultipartFile cover) {
-        return ResponseEntity.ok(StubGenerator.generateCoverEventResponse());
+        return ResponseEntity.ok(eventService.saveImages(eventId, Set.of(cover), ImageType.COVER));
     }
 
     @Operation(
@@ -356,33 +356,5 @@ public class EventController {
     @GetMapping("/types")
     public ResponseEntity<Collection<EventType>> getAllTypes(@RequestHeader(value = "X-Application-Version") String version) {
         return ResponseEntity.ok(EnumSet.allOf(EventType.class));
-    }
-
-    private static class StubGenerator {
-
-        private static final Long DEFAULT_ID = 1L;
-
-        private static EventResponse generateImagesEventResponse() {
-            var response = new EventResponse();
-            response.setId(DEFAULT_ID);
-            response.setImages(List.of(generateImageDto()));
-            return response;
-        }
-
-        private static EventResponse generateCoverEventResponse() {
-            var response = new EventResponse();
-            response.setId(DEFAULT_ID);
-            response.setCover(generateImageDto());
-            return response;
-        }
-
-        private static ImageDto generateImageDto() {
-            var dto = new ImageDto();
-            dto.setId(DEFAULT_ID);
-            dto.setContent("https://www.golddisk.ru/goods_img/70/70501.jpg");
-            dto.setFormat("JPG");
-            return dto;
-        }
-
     }
 }
