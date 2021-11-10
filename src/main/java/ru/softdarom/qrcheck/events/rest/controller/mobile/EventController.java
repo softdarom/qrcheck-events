@@ -1,6 +1,7 @@
 package ru.softdarom.qrcheck.events.rest.controller.mobile;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,9 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.softdarom.qrcheck.events.model.base.ImageType;
 import ru.softdarom.qrcheck.events.model.base.EventType;
-import ru.softdarom.qrcheck.events.model.base.GenreType;
+import ru.softdarom.qrcheck.events.model.base.ImageType;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
@@ -342,7 +342,10 @@ public class EventController {
                             responseCode = "200",
                             description = "События получены",
                             content = {
-                                    @Content(mediaType = "application/json", schema = @Schema(implementation = GenreType.class))
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = EventType.class))
+                                    )
                             }
                     ),
                     @ApiResponse(
