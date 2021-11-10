@@ -32,7 +32,10 @@ public class GenreController {
                             content = {
                                     @Content(
                                             mediaType = "application/json",
-                                            array = @ArraySchema(schema = @Schema(implementation = GenreType.class))
+                                            array = @ArraySchema(
+                                                    schema = @Schema(implementation = GenreType.class),
+                                                    uniqueItems = true
+                                            )
                                     )
                             }
                     ),

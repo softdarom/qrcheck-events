@@ -344,7 +344,10 @@ public class EventController {
                             content = {
                                     @Content(
                                             mediaType = "application/json",
-                                            array = @ArraySchema(schema = @Schema(implementation = EventType.class))
+                                            array = @ArraySchema(
+                                                    schema = @Schema(implementation = EventType.class),
+                                                    uniqueItems = true
+                                            )
                                     )
                             }
                     ),
