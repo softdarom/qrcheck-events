@@ -9,7 +9,7 @@ import ru.softdarom.qrcheck.events.model.dto.TicketDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerTicketDto;
 
 @Component
-@Slf4j(topic = "TICKETS-MAPPER")
+@Slf4j(topic = "EVENTS-MAPPER")
 public class TicketResponseMapper extends AbstractDtoMapper<InnerTicketDto, TicketDto> {
 
     @Autowired
