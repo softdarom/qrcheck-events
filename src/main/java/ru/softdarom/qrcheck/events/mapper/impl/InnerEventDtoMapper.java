@@ -14,7 +14,7 @@ import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerTickerDto;
+import ru.softdarom.qrcheck.events.model.dto.inner.InnerTicketDto;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -91,7 +91,7 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
             source.setGenres(getGenres(destination.getGenres()));
         }
 
-        private BigDecimal calculateTotalAmount(Collection<InnerTickerDto> tickets) {
+        private BigDecimal calculateTotalAmount(Collection<InnerTicketDto> tickets) {
             return tickets.stream()
                     .map(it -> {
                         var costAsBigDecimal = BigDecimal.valueOf(it.getCost());

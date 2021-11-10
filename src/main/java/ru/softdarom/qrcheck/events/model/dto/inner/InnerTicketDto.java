@@ -7,7 +7,7 @@ import ru.softdarom.qrcheck.events.util.JsonHelper;
 
 @Data
 @Generated
-public class InnerTickerDto {
+public class InnerTicketDto {
 
     private Long id;
 
