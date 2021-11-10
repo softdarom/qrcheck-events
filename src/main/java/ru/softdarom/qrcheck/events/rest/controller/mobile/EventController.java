@@ -94,7 +94,7 @@ public class EventController {
     }
 
     @ApiGetAvailableTickets
-    @GetMapping("/{eventId}/availableTickets")
+    @GetMapping("/{eventId}/tickets/available")
     public ResponseEntity<TicketResponse> getAvailableTickets(@RequestHeader(value = "X-Application-Version") String version,
                                                               @PathVariable @Min(0) Long eventId) {
         return ResponseEntity.ok(ticketService.getAvailableTickets(eventId));
