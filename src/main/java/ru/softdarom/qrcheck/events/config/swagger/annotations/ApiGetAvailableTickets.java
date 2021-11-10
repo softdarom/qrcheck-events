@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import ru.softdarom.qrcheck.events.model.dto.TicketDto;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
+import ru.softdarom.qrcheck.events.model.dto.response.TicketResponse;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,7 +28,7 @@ import static java.lang.annotation.ElementType.METHOD;
                                         mediaType = "application/json",
                                         array = @ArraySchema(
                                                 uniqueItems = true,
-                                                schema = @Schema(implementation = TicketDto.class)
+                                                schema = @Schema(implementation = TicketResponse.class)
                                         )
                                 )
                         }

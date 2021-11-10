@@ -1,10 +1,8 @@
 package ru.softdarom.qrcheck.events.service;
 
-import ru.softdarom.qrcheck.events.model.dto.TicketDto;
-
-import java.util.Set;
+import ru.softdarom.qrcheck.events.model.dto.response.TicketResponse;
 
 public interface TicketService {
 
-    Set<TicketDto> getAvailableTickets(Long eventId);
+    TicketResponse getAvailableTickets(Long eventId);
 }

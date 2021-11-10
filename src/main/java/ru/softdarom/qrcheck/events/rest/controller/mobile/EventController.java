@@ -12,9 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.*;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.ImageType;
-import ru.softdarom.qrcheck.events.model.dto.TicketDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
+import ru.softdarom.qrcheck.events.model.dto.response.TicketResponse;
 import ru.softdarom.qrcheck.events.service.EventService;
 import ru.softdarom.qrcheck.events.service.TicketService;
 
@@ -95,7 +95,7 @@ public class EventController {
 
     @ApiGetAvailableTickets
     @GetMapping("/{eventId}/availableTickets")
-    public ResponseEntity<Set<TicketDto>> getAvailableTickets(@RequestHeader(value = "X-Application-Version") String version,
+    public ResponseEntity<TicketResponse> getAvailableTickets(@RequestHeader(value = "X-Application-Version") String version,
                                                               @PathVariable @Min(0) Long eventId) {
         return ResponseEntity.ok(ticketService.getAvailableTickets(eventId));
     }
