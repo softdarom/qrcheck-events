@@ -16,6 +16,7 @@ import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerTickerDto;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -36,16 +37,20 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
     private final EventTypeRepository eventTypeRepository;
     private final InnerTicketDtoMapper innerTicketDtoMapper;
     private final InnerOptionDtoMapper innerOptionDtoMapper;
+    private final InnerImageDtoMapper innerImageDtoMapper;
 
     protected InnerEventDtoMapper(ModelMapper modelMapper, TaxProperties properties,
                                   GenreRepository genreRepository, EventTypeRepository eventTypeRepository,
-                                  InnerTicketDtoMapper innerTicketDtoMapper, InnerOptionDtoMapper innerOptionDtoMapper) {
+                                  InnerTicketDtoMapper innerTicketDtoMapper,
+                                  InnerOptionDtoMapper innerOptionDtoMapper,
+                                  InnerImageDtoMapper innerImageDtoMapper) {
         super(modelMapper);
         this.properties = properties;
         this.genreRepository = genreRepository;
         this.eventTypeRepository = eventTypeRepository;
         this.innerTicketDtoMapper = innerTicketDtoMapper;
         this.innerOptionDtoMapper = innerOptionDtoMapper;
+        this.innerImageDtoMapper = innerImageDtoMapper;
     }
 
     @Override
@@ -63,6 +68,7 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
                 .setPostConverter(toSourceConverter(new SourceConverter()));
     }
 
+    @Transactional
     public class SourceConverter implements BiConsumer<InnerEventDto, EventEntity> {
 
         @Override
@@ -127,6 +133,7 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
             destination.setGenres(source.getGenres().stream().map(GenreEntity::getName).collect(Collectors.toSet()));
             destination.setTickets(innerTicketDtoMapper.convertToDestinations(source.getTickets()));
             destination.setOptions(innerOptionDtoMapper.convertToDestinations(source.getOptions()));
+            destination.setImages(innerImageDtoMapper.convertToDestinations(source.getImages()));
         }
     }
 }

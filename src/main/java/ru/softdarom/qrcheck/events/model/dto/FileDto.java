@@ -2,25 +2,24 @@ package ru.softdarom.qrcheck.events.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
+import ru.softdarom.qrcheck.events.util.JsonHelper;
 
 @Data
-@Generated
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ImageDto {
+public class FileDto {
 
-    @JsonProperty("imageId")
+    @JsonProperty("id")
     private Long id;
 
-    @JsonProperty("content")
-    private String content;
+    @JsonProperty("url")
+    private String url;
 
-    @JsonProperty("format")
-    private String format;
+    @Override
+    public String toString() {
+        return JsonHelper.asJson(this);
+    }
 
 }

@@ -9,14 +9,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
 import ru.softdarom.qrcheck.events.mapper.impl.EventRequestMapper;
 import ru.softdarom.qrcheck.events.mapper.impl.EventResponseMapper;
+import ru.softdarom.qrcheck.events.model.base.ImageType;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
+import ru.softdarom.qrcheck.events.service.EventImageService;
 import ru.softdarom.qrcheck.events.service.EventService;
 
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +30,17 @@ public class EventServiceImpl implements EventService {
     private final EventAccessService eventAccessService;
     private final EventRequestMapper eventRequestMapper;
     private final EventResponseMapper eventResponseMapper;
+    private final EventImageService eventImageService;
 
     @Autowired
     EventServiceImpl(EventAccessService eventAccessService,
                      EventRequestMapper eventRequestMapper,
-                     EventResponseMapper eventResponseMapper) {
+                     EventResponseMapper eventResponseMapper,
+                     EventImageService eventImageService) {
         this.eventAccessService = eventAccessService;
         this.eventRequestMapper = eventRequestMapper;
         this.eventResponseMapper = eventResponseMapper;
+        this.eventImageService = eventImageService;
     }
 
     @Override
@@ -76,6 +83,15 @@ public class EventServiceImpl implements EventService {
         } else {
             throw new UnsupportedOperationException("Unknown role");
         }
+    }
+
+    @Override
+    public EventResponse saveImages(Long eventId, Collection<MultipartFile> images, ImageType imageType) {
+        Assert.notNull(eventId, "The 'eventId' must not be null!");
+        Assert.notNull(images, "The 'images' must not be null!");
+        Assert.notNull(imageType, "The 'imageType' must not be null!");
+        LOGGER.info("Images will be stored for a type: {}", imageType);
+        return eventImageService.save(eventId, images, imageType);
     }
 
     private Authentication getAuthentication() {
