@@ -11,7 +11,16 @@ import java.util.Objects;
 @Getter
 public enum EventType {
 
-    CONCERT("Концерт");
+    CONCERT("Концерт"),
+    OPERA("Опера"),
+    OPERETTA("Оперетта"),
+    MUSICAL("Мюзикл"),
+    SPECTACLE("Спектакль"),
+    TALK_SHOW("Ток-Шоу"),
+    FESTIVAL("Фестиваль"),
+    FLASH_MOB("Флешмоб"),
+    SHAW("Шоу"),
+    FAIR("Ярмарка");
 
     @JsonValue
     private final String type;
