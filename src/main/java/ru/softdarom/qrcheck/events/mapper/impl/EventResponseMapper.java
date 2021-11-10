@@ -8,10 +8,13 @@ import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
+import ru.softdarom.qrcheck.events.model.dto.response.FileResponse;
 import ru.softdarom.qrcheck.events.service.ContentHandlerExternalService;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -66,8 +69,26 @@ public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerE
                     ).getBody();
             var cover2Images = images.stream().collect(Collectors.partitioningBy(InnerImageDto::getCover));
 
-            source.setCover(new ImageBuilder(response.getImages(), cover2Images.get(Boolean.TRUE)).build().stream().findAny().orElseThrow());
-            source.setImages(new ImageBuilder(response.getImages(), cover2Images.get(Boolean.TRUE)).build());
+            setCover(source, response, cover2Images);
+            setImages(source, response, cover2Images);
+        }
+
+        private void setCover(EventResponse source, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
+            if (Objects.isNull(response)) {
+                return;
+            }
+            source.setCover(
+                    new ImageBuilder(
+                            response.getImages(), cover2Images.getOrDefault(Boolean.TRUE, List.of())
+                    ).build().stream().findAny().orElseThrow()
+            );
+        }
+
+        private void setImages(EventResponse source, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
+            if (Objects.isNull(response)) {
+                return;
+            }
+            source.setImages(new ImageBuilder(response.getImages(), cover2Images.getOrDefault(Boolean.FALSE, List.of())).build());
         }
     }
 }
