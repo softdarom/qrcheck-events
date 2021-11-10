@@ -66,7 +66,7 @@ public class EventResponse {
 
     @NotEmpty
     @JsonProperty("tickets")
-    private Collection<TickerDto> tickets;
+    private Collection<TicketDto> tickets;
 
     @NotEmpty
     @JsonProperty("options")

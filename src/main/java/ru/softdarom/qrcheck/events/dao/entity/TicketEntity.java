@@ -45,6 +45,10 @@ public class TicketEntity extends AbstractBaseEntity {
     @JoinColumn(name = "event_id")
     private EventEntity event;
 
+    @JsonIgnore
+    @Column(name = "event_id", insertable = false, updatable = false)
+    private Long eventId;
+
     @Override
     public String toString() {
         return JsonHelper.asJson(this);

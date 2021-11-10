@@ -5,7 +5,10 @@ import lombok.Data;
 import lombok.Generated;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
-import ru.softdarom.qrcheck.events.model.dto.*;
+import ru.softdarom.qrcheck.events.model.dto.AddressDto;
+import ru.softdarom.qrcheck.events.model.dto.OptionDto;
+import ru.softdarom.qrcheck.events.model.dto.PeriodDto;
+import ru.softdarom.qrcheck.events.model.dto.TicketDto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -49,7 +52,7 @@ public class EventRequest {
 
     @NotEmpty
     @JsonProperty("tickets")
-    private Collection<TickerDto> tickets;
+    private Collection<TicketDto> tickets;
 
     @NotEmpty
     @JsonProperty("options")

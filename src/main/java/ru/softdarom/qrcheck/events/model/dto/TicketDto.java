@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Generated
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TickerDto {
+public class TicketDto {
 
     @JsonProperty("ticketId")
     private Long id;

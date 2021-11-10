@@ -7,9 +7,7 @@ import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.util.JsonHelper;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collection;
 
 @Data
@@ -46,7 +44,7 @@ public class InnerEventDto {
 
     private Collection<InnerOptionDto> options;
 
-    private Collection<InnerTickerDto> tickets;
+    private Collection<InnerTicketDto> tickets;
 
     @Override
     public String toString() {
