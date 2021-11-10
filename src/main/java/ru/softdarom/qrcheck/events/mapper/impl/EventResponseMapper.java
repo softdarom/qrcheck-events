@@ -1,5 +1,6 @@
 package ru.softdarom.qrcheck.events.mapper.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.ImageBuilder;
@@ -20,6 +21,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j(topic = "EVENTS-MAPPER")
 public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerEventDto> {
 
     private static final String DEFAULT_VERSION = "v1.0.0";
@@ -75,17 +77,19 @@ public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerE
 
         private void setCover(EventResponse source, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
             if (Objects.isNull(response)) {
+                LOGGER.info("A cover is not existed. Do nothing. Return.");
                 return;
             }
             source.setCover(
                     new ImageBuilder(
                             response.getImages(), cover2Images.getOrDefault(Boolean.TRUE, List.of())
-                    ).build().stream().findAny().orElseThrow()
+                    ).build().stream().findAny().orElse(null)
             );
         }
 
         private void setImages(EventResponse source, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
             if (Objects.isNull(response)) {
+                LOGGER.info("Images are not existed. Do nothing. Return.");
                 return;
             }
             source.setImages(new ImageBuilder(response.getImages(), cover2Images.getOrDefault(Boolean.FALSE, List.of())).build());
