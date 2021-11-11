@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Generated;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.time.LocalTime;
 
 @Data
 @Generated
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PeriodDto {
 
@@ -27,4 +29,9 @@ public class PeriodDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     @Schema(example = "00:00:00")
     private LocalTime startTime;
+
+    public PeriodDto(LocalDate startDate, LocalTime startTime) {
+        this.startDate = startDate;
+        this.startTime = startTime;
+    }
 }

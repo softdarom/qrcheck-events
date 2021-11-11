@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.ImageBuilder;
 import ru.softdarom.qrcheck.events.config.property.ApiKeyProperties;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
+import ru.softdarom.qrcheck.events.model.dto.PeriodDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
@@ -51,11 +52,16 @@ public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerE
         @Override
         public void accept(InnerEventDto destination, EventResponse source) {
             source.setActual(isActual(destination));
+            setPeriod(source, destination.getStartDateTime());
             setImages(source, destination.getImages());
         }
 
         private Boolean isActual(InnerEventDto destination) {
             return destination.getOverDate().isAfter(LocalDateTime.now()) && !destination.getDraft();
+        }
+
+        private void setPeriod(EventResponse source, LocalDateTime startDateTime) {
+            source.setPeriod(new PeriodDto(startDateTime.toLocalDate(), startDateTime.toLocalTime()));
         }
 
         private void setImages(EventResponse source, Collection<InnerImageDto> images) {
