@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.TicketResponse;
 
@@ -14,11 +15,13 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
+import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.BEARER_SECURITY_NAME;
 
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
         summary = "Получение всех доступных билетов на активное событие",
+        security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
         responses = {
                 @ApiResponse(
                         responseCode = "200",

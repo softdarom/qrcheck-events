@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 import ru.softdarom.qrcheck.events.dao.access.TicketAccessService;
 import ru.softdarom.qrcheck.events.dao.repository.TicketRepository;
 import ru.softdarom.qrcheck.events.mapper.impl.InnerTicketDtoMapper;
+import ru.softdarom.qrcheck.events.model.base.ActiveType;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerTicketDto;
 
 import javax.transaction.Transactional;
@@ -28,7 +29,7 @@ public class TicketAccessServiceImpl implements TicketAccessService {
     @Transactional
     public Set<InnerTicketDto> findByEventIdAndActiveEvent(Long eventId) {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
-        return ticketRepository.findAllByEventIdAndEvent_Active(eventId, true).stream()
+        return ticketRepository.findAllByEventIdAndEvent_Active(eventId, ActiveType.ENABLED).stream()
                 .map(ticketMapper::convertToDestination)
                 .collect(Collectors.toSet());
     }
