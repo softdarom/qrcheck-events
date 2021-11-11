@@ -1,10 +1,10 @@
 package ru.softdarom.qrcheck.events.config.swagger.annotations;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 
@@ -17,8 +17,9 @@ import static java.lang.annotation.ElementType.METHOD;
 
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@ApiResponses(
-        value = {
+@Operation(
+        summary = "Получение всех жанров",
+        responses = {
                 @ApiResponse(
                         responseCode = "200",
                         description = "События получены",

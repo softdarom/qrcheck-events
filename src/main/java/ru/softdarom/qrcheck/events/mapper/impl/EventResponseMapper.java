@@ -3,7 +3,7 @@ package ru.softdarom.qrcheck.events.mapper.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import ru.softdarom.qrcheck.events.ImageBuilder;
+import ru.softdarom.qrcheck.events.builder.ImageBuilder;
 import ru.softdarom.qrcheck.events.config.property.ApiKeyProperties;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.dto.PeriodDto;

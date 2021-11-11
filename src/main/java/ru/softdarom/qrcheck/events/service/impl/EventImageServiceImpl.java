@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.softdarom.qrcheck.events.ImageBuilder;
+import ru.softdarom.qrcheck.events.builder.ImageBuilder;
 import ru.softdarom.qrcheck.events.config.property.ApiKeyProperties;
 import ru.softdarom.qrcheck.events.dao.access.ImageAccessService;
 import ru.softdarom.qrcheck.events.model.base.ImageType;
@@ -16,6 +16,7 @@ import ru.softdarom.qrcheck.events.service.ContentHandlerExternalService;
 import ru.softdarom.qrcheck.events.service.EventImageService;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,7 +59,7 @@ public class EventImageServiceImpl implements EventImageService {
         return response;
     }
 
-    private Collection<FileDto> executeExternalSaver(Collection<MultipartFile> images) {
+    private Set<FileDto> executeExternalSaver(Collection<MultipartFile> images) {
         LOGGER.info("Saving files in a storage via an external service");
         var response =
                 contentHandlerExternalService.upload(
@@ -66,6 +67,6 @@ public class EventImageServiceImpl implements EventImageService {
                         apiKeyProperties.getToken().getOutgoing(),
                         images
                 );
-        return response.getBody().getImages();
+        return Set.copyOf(response.getBody().getImages());
     }
 }
