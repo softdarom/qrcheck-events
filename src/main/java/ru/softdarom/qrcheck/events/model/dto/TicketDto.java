@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Generated;
-import ru.softdarom.qrcheck.events.model.base.TicketType;
 
 import javax.validation.constraints.NotNull;
 
@@ -29,9 +28,5 @@ public class TicketDto {
 
     @JsonProperty("price")
     private Double price;
-
-    @NotNull
-    @JsonProperty("type")
-    private TicketType type;
 
 }
