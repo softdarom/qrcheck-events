@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j(topic = "EVENTS-MAPPER")
-public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerEventDto> {
+public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventResponse> {
 
     private static final String DEFAULT_VERSION = "v1.0.0";
 
@@ -40,31 +40,30 @@ public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerE
 
     @Override
     protected void setupMapper() {
-        modelMapper.createTypeMap(sourceClass, destinationClass);
         modelMapper
-                .createTypeMap(destinationClass, sourceClass)
+                .createTypeMap(sourceClass, destinationClass)
                 .addMappings(mapping -> mapping.map(InnerEventDto::getType, EventResponse::setEvent))
-                .setPostConverter(toSourceConverter(new SourceConverter()));
+                .setPostConverter(toDestinationConverter(new DestinationConverter()));
     }
 
-    public class SourceConverter implements BiConsumer<InnerEventDto, EventResponse> {
+    public class DestinationConverter implements BiConsumer<InnerEventDto, EventResponse> {
 
         @Override
-        public void accept(InnerEventDto destination, EventResponse source) {
-            source.setActual(isActual(destination));
-            setPeriod(source, destination.getStartDateTime());
-            setImages(source, destination.getImages());
+        public void accept(InnerEventDto source, EventResponse destination) {
+            destination.setActual(isActual(source));
+            setPeriod(destination, source.getStartDateTime());
+            setImages(destination, source.getImages());
         }
 
-        private Boolean isActual(InnerEventDto destination) {
-            return destination.getOverDate().isAfter(LocalDateTime.now()) && !destination.getDraft();
+        private Boolean isActual(InnerEventDto source) {
+            return source.getOverDate().isAfter(LocalDateTime.now()) && !source.getDraft();
         }
 
-        private void setPeriod(EventResponse source, LocalDateTime startDateTime) {
-            source.setPeriod(new PeriodDto(startDateTime.toLocalDate(), startDateTime.toLocalTime()));
+        private void setPeriod(EventResponse destination, LocalDateTime startDateTime) {
+            destination.setPeriod(new PeriodDto(startDateTime.toLocalDate(), startDateTime.toLocalTime()));
         }
 
-        private void setImages(EventResponse source, Collection<InnerImageDto> images) {
+        private void setImages(EventResponse destination, Collection<InnerImageDto> images) {
             if (Objects.isNull(images) || images.isEmpty()) {
                 return;
             }
@@ -77,28 +76,28 @@ public class EventResponseMapper extends AbstractDtoMapper<EventResponse, InnerE
                     ).getBody();
             var cover2Images = images.stream().collect(Collectors.partitioningBy(InnerImageDto::getCover));
 
-            setCover(source, response, cover2Images);
-            setImages(source, response, cover2Images);
+            setCover(destination, response, cover2Images);
+            setImages(destination, response, cover2Images);
         }
 
-        private void setCover(EventResponse source, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
+        private void setCover(EventResponse destination, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
             if (Objects.isNull(response)) {
                 LOGGER.info("A cover is not existed. Do nothing. Return.");
                 return;
             }
-            source.setCover(
+            destination.setCover(
                     new ImageBuilder(
                             response.getImages(), cover2Images.getOrDefault(Boolean.TRUE, List.of())
                     ).build().stream().findAny().orElse(null)
             );
         }
 
-        private void setImages(EventResponse source, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
+        private void setImages(EventResponse destination, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
             if (Objects.isNull(response)) {
                 LOGGER.info("Images are not existed. Do nothing. Return.");
                 return;
             }
-            source.setImages(new ImageBuilder(response.getImages(), cover2Images.getOrDefault(Boolean.FALSE, List.of())).build());
+            destination.setImages(new ImageBuilder(response.getImages(), cover2Images.getOrDefault(Boolean.FALSE, List.of())).build());
         }
     }
 }
