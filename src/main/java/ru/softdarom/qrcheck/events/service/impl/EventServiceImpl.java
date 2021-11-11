@@ -58,14 +58,14 @@ public class EventServiceImpl implements EventService {
         LOGGER.info("Full information will be saved for an event {}", request.getId());
         var innerDto = eventRequestMapper.convertToDestination(request);
         var savedEvent = eventAccessService.save(innerDto);
-        return eventResponseMapper.convertToSource(savedEvent);
+        return eventResponseMapper.convertToDestination(savedEvent);
     }
 
     @Override
     public EventResponse getById(Long id) {
         Assert.notNull(id, "The 'id' must not be null!");
         LOGGER.info("Getting an event by id: {}", id);
-        return eventResponseMapper.convertToSource(eventAccessService.findById(id));
+        return eventResponseMapper.convertToDestination(eventAccessService.findById(id));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class EventServiceImpl implements EventService {
         LOGGER.info("Getting all events for a user (id: {}) has roles: {}", externalUserId, authentication.getAuthorities());
         var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
         if (authorities.contains("ROLE_USER")) {
-            return eventAccessService.findAllActual(pageable).map(eventResponseMapper::convertToSource);
+            return eventAccessService.findAllActual(pageable).map(eventResponseMapper::convertToDestination);
         }
         //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-58
         else if (authorities.contains("????")) {
