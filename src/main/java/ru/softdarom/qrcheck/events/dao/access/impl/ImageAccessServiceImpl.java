@@ -13,6 +13,7 @@ import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.Set;
 
 @Service
 public class ImageAccessServiceImpl implements ImageAccessService {
@@ -32,7 +33,7 @@ public class ImageAccessServiceImpl implements ImageAccessService {
 
     @Transactional
     @Override
-    public Collection<InnerImageDto> save(Long eventId, Collection<InnerImageDto> images) {
+    public Set<InnerImageDto> save(Long eventId, Collection<InnerImageDto> images) {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
         Assert.notNull(images, "The 'eventId' must not be null!");
         var event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Not found event by id: " + eventId));
