@@ -1,5 +1,6 @@
 package ru.softdarom.qrcheck.events.model.base;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public enum EventType {
     @JsonValue
     private final String type;
 
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static EventType typeOf(String type) {
         return EnumSet.allOf(EventType.class)
                 .stream()

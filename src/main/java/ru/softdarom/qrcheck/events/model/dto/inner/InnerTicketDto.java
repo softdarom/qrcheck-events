@@ -2,7 +2,6 @@ package ru.softdarom.qrcheck.events.model.dto.inner;
 
 import lombok.Data;
 import lombok.Generated;
-import ru.softdarom.qrcheck.events.model.base.TicketType;
 import ru.softdarom.qrcheck.events.util.JsonHelper;
 
 @Data
@@ -18,8 +17,6 @@ public class InnerTicketDto {
     private Double cost;
 
     private Double price;
-
-    private TicketType type;
 
     @Override
     public String toString() {
