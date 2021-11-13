@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.builder.ImageBuilder;
-import ru.softdarom.qrcheck.events.config.property.ApiKeyProperties;
 import ru.softdarom.qrcheck.events.dao.access.ImageAccessService;
 import ru.softdarom.qrcheck.events.model.base.ImageType;
 import ru.softdarom.qrcheck.events.model.dto.FileDto;
@@ -14,6 +13,7 @@ import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.service.ContentHandlerExternalService;
 import ru.softdarom.qrcheck.events.service.EventImageService;
+import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
 
 import java.util.Collection;
 import java.util.Set;

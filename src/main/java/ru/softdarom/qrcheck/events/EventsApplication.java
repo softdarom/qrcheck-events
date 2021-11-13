@@ -8,7 +8,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import ru.softdarom.qrcheck.events.config.property.*;
+import ru.softdarom.qrcheck.events.config.property.LogbookProperties;
+import ru.softdarom.qrcheck.events.config.property.OpenApiProperties;
+import ru.softdarom.qrcheck.events.config.property.TaxProperties;
 
 @Generated
 @SpringBootApplication
@@ -19,9 +21,7 @@ import ru.softdarom.qrcheck.events.config.property.*;
 @EnableConfigurationProperties(
         {
                 LogbookProperties.class,
-                SwaggerProperties.class,
-                ApiKeyProperties.class,
-                OAuth2CacheProperties.class,
+                OpenApiProperties.class,
                 TaxProperties.class
         }
 )

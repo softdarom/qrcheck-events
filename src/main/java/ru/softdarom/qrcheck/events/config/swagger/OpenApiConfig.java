@@ -9,7 +9,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.softdarom.qrcheck.events.config.property.SwaggerProperties;
+import ru.softdarom.qrcheck.events.config.property.OpenApiProperties;
 
 @Configuration
 public class OpenApiConfig {
@@ -20,11 +20,11 @@ public class OpenApiConfig {
     private static final String BEARER_TOKEN_DESCRIPTION = "Аутентификация через oAuth 2.0";
     private static final String LICENCE = "Лицензия API";
 
-    private final SwaggerProperties swaggerProperties;
+    private final OpenApiProperties openApiProperties;
 
     @Autowired
-    OpenApiConfig(SwaggerProperties swaggerProperties) {
-        this.swaggerProperties = swaggerProperties;
+    OpenApiConfig(OpenApiProperties openApiProperties) {
+        this.openApiProperties = openApiProperties;
     }
 
     @Bean
@@ -50,9 +50,9 @@ public class OpenApiConfig {
     @Bean
     Info info(License license, Contact contact) {
         return new Info()
-                .title(swaggerProperties.getTitle())
-                .version(swaggerProperties.getVersion())
-                .description(swaggerProperties.getDescription())
+                .title(openApiProperties.getTitle())
+                .version(openApiProperties.getVersion())
+                .description(openApiProperties.getDescription())
                 .license(license)
                 .contact(contact);
     }
@@ -61,15 +61,15 @@ public class OpenApiConfig {
     License license() {
         return new License()
                 .name(LICENCE)
-                .url(swaggerProperties.getLicenceUrl());
+                .url(openApiProperties.getLicenceUrl());
     }
 
     @Bean
     Contact contact() {
         return new Contact()
-                .name(swaggerProperties.getOwnerName())
-                .email(swaggerProperties.getOwnerEmail())
-                .url(swaggerProperties.getOwnerUrl());
+                .name(openApiProperties.getOwnerName())
+                .email(openApiProperties.getOwnerEmail())
+                .url(openApiProperties.getOwnerUrl());
     }
 
 }
