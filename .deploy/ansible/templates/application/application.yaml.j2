@@ -32,14 +32,10 @@ spring:
     template:
       check-template-location: false
   security:
-    api-key:
-      name: X-ApiKey-Authorization
-      token:
-        outgoing: ${API_KEY_OUTGOING}
-  cache:
-    oauth2:
-      expire-after-write-in-sec: {{ spring.cache.oauth2.expire_after_write_in_sec | default(900) }}
-      size: {{ spring.cache.oauth2.size | default(1000000) }}
+    qrcheck:
+      api-key:
+        token:
+          outgoing: ${API_KEY_OUTGOING}
 
 springdoc:
   api-docs:
@@ -58,8 +54,6 @@ springdoc:
 
 outbound:
   feign:
-    auth-handler:
-      host: "http://auth-handler:8000"
     content-handler:
       host: "http://content-handler:8000"
 
