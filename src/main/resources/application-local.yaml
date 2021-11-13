@@ -37,7 +37,6 @@ spring:
         token:
           outgoing: ${API_KEY_OUTGOING}
       oauth2:
-        enabled:
         auth-server:
           host: ${AUTH_HANDLER_URL}
 
