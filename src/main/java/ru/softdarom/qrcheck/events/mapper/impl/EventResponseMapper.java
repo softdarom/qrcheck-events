@@ -22,7 +22,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Component
-@Slf4j(topic = "EVENTS-MAPPER")
+@Slf4j(topic = "MAPPER")
 public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventResponse> {
 
     private static final String DEFAULT_VERSION = "v1.0.0";
@@ -82,7 +82,7 @@ public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventR
 
         private void setCover(EventResponse destination, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
             if (Objects.isNull(response)) {
-                LOGGER.info("A cover is not existed. Do nothing. Return.");
+                LOGGER.info("Обложки не существует. Ничего не делать");
                 return;
             }
             destination.setCover(
@@ -94,7 +94,7 @@ public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventR
 
         private void setImages(EventResponse destination, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
             if (Objects.isNull(response)) {
-                LOGGER.info("Images are not existed. Do nothing. Return.");
+                LOGGER.info("Изображений не существует. Ничего не делать");
                 return;
             }
             destination.setImages(new ImageBuilder(response.getImages(), cover2Images.getOrDefault(Boolean.FALSE, List.of())).build());

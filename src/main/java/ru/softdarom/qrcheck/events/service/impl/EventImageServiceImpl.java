@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j(topic = "EVENTS-SERVICE")
+@Slf4j(topic = "SERVICE")
 public class EventImageServiceImpl implements EventImageService {
 
     private static final String DEFAULT_VERSION = "v1.0.0";
@@ -60,7 +60,7 @@ public class EventImageServiceImpl implements EventImageService {
     }
 
     private Set<FileDto> executeExternalSaver(Collection<MultipartFile> images) {
-        LOGGER.info("Saving files in a storage via an external service");
+        LOGGER.info("Сохранение файлов в хранилище через внешний сервис");
         var response =
                 contentHandlerExternalService.upload(
                         DEFAULT_VERSION,

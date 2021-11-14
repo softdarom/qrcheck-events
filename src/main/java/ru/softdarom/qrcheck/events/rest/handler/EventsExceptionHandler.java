@@ -11,7 +11,7 @@ import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
-@Slf4j(topic = "EVENTS-EXCEPTION-HANDLER")
+@Slf4j(topic = "EXCEPTION-HANDLER")
 public class EventsExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)

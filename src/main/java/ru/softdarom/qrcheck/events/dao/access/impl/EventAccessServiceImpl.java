@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Service
-@Slf4j(topic = "EVENTS-ACCESS-SERVICE")
+@Slf4j(topic = "ACCESS-SERVICE")
 public class EventAccessServiceImpl implements EventAccessService {
 
     private final EventRepository eventRepository;
@@ -33,9 +33,9 @@ public class EventAccessServiceImpl implements EventAccessService {
     @Transactional
     public InnerEventDto save(InnerEventDto dto) {
         var entity = eventMapper.convertToSource(dto);
-        LOGGER.debug("A event will be saved: {}", entity);
+        LOGGER.debug("Сохранение события: {}", entity);
         var saved = eventRepository.save(entity);
-        LOGGER.debug("Event's id: {}", saved.getId());
+        LOGGER.debug("Событие сохранено с id: {}", saved.getId());
         return eventMapper.convertToDestination(saved);
     }
 
