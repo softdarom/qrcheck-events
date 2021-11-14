@@ -13,7 +13,7 @@ import ru.softdarom.qrcheck.events.service.TicketService;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j(topic = "EVENTS-SERVICE")
+@Slf4j(topic = "SERVICE")
 public class TicketServiceImpl implements TicketService {
 
     private final TicketAccessService ticketAccessService;

@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j(topic = "EVENTS-SERVICE")
+@Slf4j(topic = "SERVICE")
 public class EventServiceImpl implements EventService {
 
     private final EventAccessService eventAccessService;
@@ -46,8 +46,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventResponse preSave() {
         var savedEvent = eventAccessService.save(new InnerEventDto());
-        LOGGER.info("Pre-saving a new event for user: {}", savedEvent.getExternalUserId());
-        LOGGER.info("The new event was saved, id: {}", savedEvent.getId());
+        LOGGER.info("Пре-сохранение нового события для пользователя с id: {}", savedEvent.getExternalUserId());
+        LOGGER.info("Новое событие было сохранено, id: {}", savedEvent.getId());
         return new EventResponse(savedEvent.getId());
     }
 
@@ -55,7 +55,7 @@ public class EventServiceImpl implements EventService {
     public EventResponse endSave(EventRequest request) {
         Assert.notNull(request, "The 'request' must not be null!");
         Assert.isTrue(eventAccessService.exist(request.getId()), "A event must be created earlier!");
-        LOGGER.info("Full information will be saved for an event {}", request.getId());
+        LOGGER.info("Полная информация о событие с id {} будет сохранена", request.getId());
         var innerDto = eventRequestMapper.convertToDestination(request);
         var savedEvent = eventAccessService.save(innerDto);
         return eventResponseMapper.convertToDestination(savedEvent);
@@ -64,7 +64,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventResponse getById(Long id) {
         Assert.notNull(id, "The 'id' must not be null!");
-        LOGGER.info("Getting an event by id: {}", id);
+        LOGGER.info("Получить информации о событие по id: {}", id);
         return eventResponseMapper.convertToDestination(eventAccessService.findById(id));
     }
 
@@ -72,7 +72,7 @@ public class EventServiceImpl implements EventService {
     public Page<EventResponse> getAll(Pageable pageable) {
         var authentication = getAuthentication();
         var externalUserId = (Long) authentication.getPrincipal();
-        LOGGER.info("Getting all events for a user (id: {}) has roles: {}", externalUserId, authentication.getAuthorities());
+        LOGGER.info("Получение всех событий для пользователя (id: {}) имеющему роли: {}", externalUserId, authentication.getAuthorities());
         var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
         if (authorities.contains("ROLE_USER")) {
             return eventAccessService.findAllActual(pageable).map(eventResponseMapper::convertToDestination);
@@ -90,7 +90,7 @@ public class EventServiceImpl implements EventService {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
         Assert.notNull(images, "The 'images' must not be null!");
         Assert.notNull(imageType, "The 'imageType' must not be null!");
-        LOGGER.info("Images will be stored for a type: {}", imageType);
+        LOGGER.info("Сохранение изображений с типом: {}", imageType);
         return eventImageService.save(eventId, images, imageType);
     }
 
