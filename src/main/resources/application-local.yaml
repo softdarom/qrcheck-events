@@ -64,7 +64,7 @@ logbook:
   format:
     style: http
   logger:
-    name: EVENTS-REST
+    name: REST
   exclude:
     - /actuator/**
     - /v3/api-docs/**
