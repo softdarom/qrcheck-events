@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.*;
@@ -27,7 +28,7 @@ import java.util.Set;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
-@Tag(name = "Mobile Events", description = "Контроллер взаимодействия с events для frontend-to-backend")
+@Tag(name = "Mobile Events", description = "Контроллер взаимодействия с events")
 @RestController(value = "mobileEventController")
 @RequestMapping("/mobile/events")
 public class EventController {
@@ -41,6 +42,7 @@ public class EventController {
         this.ticketService = ticketService;
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'PROMOTER', 'CHECKMAN')")
     @ApiGetAllEvents
     @PageableAsQueryParam
     @GetMapping("/")
@@ -49,6 +51,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.getAll(pageable));
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'PROMOTER', 'CHECKMAN')")
     @ApiGetEvent
     @GetMapping("/{eventId}")
     public ResponseEntity<EventResponse> get(@RequestHeader(value = "X-Application-Version") String version,
@@ -56,14 +59,14 @@ public class EventController {
         return ResponseEntity.ok(eventService.getById(eventId));
     }
 
-    //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-57
+    @PreAuthorize("hasRole('PROMOTER')")
     @ApiPreSaveEvent
     @PostMapping(value = "/")
     public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
         return ResponseEntity.ok(eventService.preSave());
     }
 
-    //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-57
+    @PreAuthorize("hasRole('PROMOTER')")
     @ApiSaveEvent
     @PutMapping(value = "/", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<EventResponse> saveEvent(@RequestHeader(value = "X-Application-Version") String version,
@@ -71,6 +74,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.endSave(request));
     }
 
+    @PreAuthorize("hasRole('PROMOTER')")
     @ApiSaveEventImages
     @PostMapping(value = "/images/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EventResponse> saveEventImages(@RequestHeader(value = "X-Application-Version") String version,
@@ -79,6 +83,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.saveImages(eventId, images, ImageType.PHOTOGRAPHY));
     }
 
+    @PreAuthorize("hasRole('PROMOTER')")
     @ApiSaveEventCover
     @PostMapping(value = "/images/cover/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EventResponse> saveEventCover(@RequestHeader(value = "X-Application-Version") String version,
@@ -93,6 +98,7 @@ public class EventController {
         return ResponseEntity.ok(EnumSet.allOf(EventType.class));
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'PROMOTER', 'CHECKMAN')")
     @ApiGetAvailableTickets
     @GetMapping("/{eventId}/tickets/available")
     public ResponseEntity<TicketResponse> getAvailableTickets(@RequestHeader(value = "X-Application-Version") String version,
