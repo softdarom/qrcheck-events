@@ -14,6 +14,6 @@ public interface EventAccessService {
 
     Page<InnerEventDto> findAllActual(Pageable pageable);
 
-    Page<InnerEventDto> findAllByUserId(Long externalUserId, Pageable pageable);
+    Page<InnerEventDto> findAllByExternalUserId(Long externalUserId, Pageable pageable);
 
 }

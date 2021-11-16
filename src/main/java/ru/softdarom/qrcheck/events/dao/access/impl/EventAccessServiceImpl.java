@@ -63,7 +63,7 @@ public class EventAccessServiceImpl implements EventAccessService {
 
     @Override
     @Transactional
-    public Page<InnerEventDto> findAllByUserId(Long externalUserId, Pageable pageable) {
+    public Page<InnerEventDto> findAllByExternalUserId(Long externalUserId, Pageable pageable) {
         Assert.notNull(externalUserId, "The 'externalUserId' must not be null!");
         return eventRepository.findAllByExternalUserId(externalUserId, pageable).map(eventMapper::convertToDestination);
     }

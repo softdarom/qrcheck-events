@@ -21,6 +21,7 @@ import ru.softdarom.qrcheck.events.service.EventImageService;
 import ru.softdarom.qrcheck.events.service.EventService;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,16 +73,22 @@ public class EventServiceImpl implements EventService {
     public Page<EventResponse> getAll(Pageable pageable) {
         var authentication = getAuthentication();
         var externalUserId = (Long) authentication.getPrincipal();
-        LOGGER.info("Получение всех событий для пользователя (id: {}) имеющему роли: {}", externalUserId, authentication.getAuthorities());
         var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-        if (authorities.contains("ROLE_USER")) {
+        LOGGER.info("Получение всех событий для пользователя (id: {}) имеющему роли: {}", externalUserId, authentication.getAuthorities());
+        return getAllByRole(pageable, externalUserId, authorities);
+    }
+
+    private Page<EventResponse> getAllByRole(Pageable pageable, Long externalUserId, Set<String> authorities) {
+        var commonUser = authorities.contains("ROLE_USER") || authorities.contains("ROLE_CHECKMAN");
+        var promoter = authorities.contains("ROLE_PROMOTER");
+        if (commonUser) {
+            LOGGER.info("Обычный пользователь, будут выгружены все события");
             return eventAccessService.findAllActual(pageable).map(eventResponseMapper::convertToDestination);
-        }
-        //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-58
-        else if (authorities.contains("????")) {
-            throw new UnsupportedOperationException("Unknown role");
+        } else if (promoter) {
+            LOGGER.info("Промоутер, будут выгружены события созданные этим пользователем");
+            return eventAccessService.findAllByExternalUserId(externalUserId, pageable).map(eventResponseMapper::convertToDestination);
         } else {
-            throw new UnsupportedOperationException("Unknown role");
+            throw new UnsupportedOperationException("Unknown roles: " + authorities);
         }
     }
 
