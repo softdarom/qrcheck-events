@@ -9,7 +9,10 @@ import ru.softdarom.qrcheck.events.util.JsonHelper;
 import javax.persistence.*;
 
 @Generated
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "addresses")
 @SQLDelete(sql = "UPDATE addresses SET active = false, updated = current_timestamp WHERE id = ?", check = ResultCheckStyle.COUNT)

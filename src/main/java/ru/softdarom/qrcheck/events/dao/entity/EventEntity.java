@@ -1,10 +1,7 @@
 package ru.softdarom.qrcheck.events.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Generated;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -12,17 +9,19 @@ import ru.softdarom.qrcheck.events.util.JsonHelper;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Generated
-@Data
-@ToString(of = {"id", "externalUserId", "description", "startTime", "startDate", "totalAmount", "currentAmount", "overDate", "draft"})
-@EqualsAndHashCode(of = {"id", "externalUserId", "description", "startTime", "startDate", "totalAmount", "currentAmount", "overDate", "draft"})
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(
+        callSuper = false,
+        of = {"id", "externalUserId", "description", "startDateTime", "totalAmount", "currentAmount", "overDate", "draft"}
+)
 @Entity
 @Table(name = "events")
 @SQLDelete(sql = "UPDATE events SET active = false, updated = current_timestamp WHERE id = ?", check = ResultCheckStyle.COUNT)
@@ -69,6 +68,7 @@ public class EventEntity extends AbstractBaseEntity {
             inverseJoinColumns = @JoinColumn(name = "genre_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"event_id", "genre_id"})
     )
+    @ToString.Exclude
     private Set<GenreEntity> genres = new HashSet<>();
 
     @JsonIgnore
@@ -80,6 +80,7 @@ public class EventEntity extends AbstractBaseEntity {
             orphanRemoval = true
     )
     @JoinColumn(name = "address_id")
+    @ToString.Exclude
     private AddressEntity address;
 
     @JsonIgnore
@@ -90,18 +91,22 @@ public class EventEntity extends AbstractBaseEntity {
             }
     )
     @JoinColumn(name = "event_type_id")
+    @ToString.Exclude
     private EventTypeEntity type;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true)
+    @ToString.Exclude
     private Set<ImageEntity> images = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true)
+    @ToString.Exclude
     private Set<OptionEntity> options = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true)
+    @ToString.Exclude
     private Set<TicketEntity> tickets = new HashSet<>();
 
     @Override

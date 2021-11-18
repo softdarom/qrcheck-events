@@ -33,9 +33,9 @@ public class EventAccessServiceImpl implements EventAccessService {
     @Transactional
     public InnerEventDto save(InnerEventDto dto) {
         var entity = eventMapper.convertToSource(dto);
-        LOGGER.debug("Сохранение события: {}", entity);
+        LOGGER.debug("A event will be saved: {}", entity);
         var saved = eventRepository.save(entity);
-        LOGGER.debug("Событие сохранено с id: {}", saved.getId());
+        LOGGER.debug("Event's id: {}", saved.getId());
         return eventMapper.convertToDestination(saved);
     }
 
