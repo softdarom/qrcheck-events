@@ -2,6 +2,7 @@ package ru.softdarom.qrcheck.events.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.builder.ImageBuilder;
@@ -11,11 +12,13 @@ import ru.softdarom.qrcheck.events.model.dto.FileDto;
 import ru.softdarom.qrcheck.events.model.dto.ImageDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
+import ru.softdarom.qrcheck.events.model.dto.response.FileResponse;
 import ru.softdarom.qrcheck.events.service.ContentHandlerExternalService;
 import ru.softdarom.qrcheck.events.service.EventImageService;
 import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -60,13 +63,17 @@ public class EventImageServiceImpl implements EventImageService {
     }
 
     private Set<FileDto> executeExternalSaver(Collection<MultipartFile> images) {
-        LOGGER.info("Сохранение файлов в хранилище через внешний сервис");
+        LOGGER.info("Saving files in a storage via an external service");
         var response =
                 contentHandlerExternalService.upload(
                         DEFAULT_VERSION,
                         apiKeyProperties.getToken().getOutgoing(),
                         images
                 );
-        return Set.copyOf(response.getBody().getImages());
+        var storedImages = Optional.ofNullable(response)
+                .map(HttpEntity::getBody)
+                .map(FileResponse::getImages)
+                .orElse(Set.of());
+        return Set.copyOf(storedImages);
     }
 }

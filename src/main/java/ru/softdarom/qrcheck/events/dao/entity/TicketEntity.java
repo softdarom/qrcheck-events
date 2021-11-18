@@ -1,10 +1,7 @@
 package ru.softdarom.qrcheck.events.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Generated;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -14,9 +11,10 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Generated
-@Data
-@ToString(of = {"id", "name", "quantity", "availableQuantity", "cost", "price"})
-@EqualsAndHashCode(of = {"id", "name", "quantity", "cost", "price"})
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false, of = {"id", "quantity", "cost", "price"})
 @Entity
 @Table(name = "tickets")
 @SQLDelete(sql = "UPDATE tickets SET active = false, updated = current_timestamp WHERE id = ?", check = ResultCheckStyle.COUNT)

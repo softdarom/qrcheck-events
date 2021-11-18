@@ -47,8 +47,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventResponse preSave() {
         var savedEvent = eventAccessService.save(new InnerEventDto());
-        LOGGER.info("Пре-сохранение нового события для пользователя с id: {}", savedEvent.getExternalUserId());
-        LOGGER.info("Новое событие было сохранено, id: {}", savedEvent.getId());
+        LOGGER.info("Pre-saving a new event for user: {}", savedEvent.getExternalUserId());
+        LOGGER.info("The new event was saved, id: {}", savedEvent.getId());
         return new EventResponse(savedEvent.getId());
     }
 
@@ -56,7 +56,7 @@ public class EventServiceImpl implements EventService {
     public EventResponse endSave(EventRequest request) {
         Assert.notNull(request, "The 'request' must not be null!");
         Assert.isTrue(eventAccessService.exist(request.getId()), "A event must be created earlier!");
-        LOGGER.info("Полная информация о событие с id {} будет сохранена", request.getId());
+        LOGGER.info("Full information will be saved for an event {}", request.getId());
         var innerDto = eventRequestMapper.convertToDestination(request);
         var savedEvent = eventAccessService.save(innerDto);
         return eventResponseMapper.convertToDestination(savedEvent);
@@ -65,7 +65,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventResponse getById(Long id) {
         Assert.notNull(id, "The 'id' must not be null!");
-        LOGGER.info("Получить информации о событие по id: {}", id);
+        LOGGER.info("Getting an event by id: {}", id);
         return eventResponseMapper.convertToDestination(eventAccessService.findById(id));
     }
 
@@ -74,7 +74,7 @@ public class EventServiceImpl implements EventService {
         var authentication = getAuthentication();
         var externalUserId = (Long) authentication.getPrincipal();
         var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-        LOGGER.info("Получение всех событий для пользователя (id: {}) имеющему роли: {}", externalUserId, authentication.getAuthorities());
+        LOGGER.info("Getting all events for a user (id: {}) has roles: {}", externalUserId, authentication.getAuthorities());
         return getAllByRole(pageable, externalUserId, authorities);
     }
 
@@ -82,10 +82,10 @@ public class EventServiceImpl implements EventService {
         var commonUser = authorities.contains("ROLE_USER") || authorities.contains("ROLE_CHECKMAN");
         var promoter = authorities.contains("ROLE_PROMOTER");
         if (commonUser) {
-            LOGGER.info("Обычный пользователь, будут выгружены все события");
+            LOGGER.info("A client is not promoter: all events will be unloaded");
             return eventAccessService.findAllActual(pageable).map(eventResponseMapper::convertToDestination);
         } else if (promoter) {
-            LOGGER.info("Промоутер, будут выгружены события созданные этим пользователем");
+            LOGGER.info("It is promoter. Events will be unloaded which were created the user");
             return eventAccessService.findAllByExternalUserId(externalUserId, pageable).map(eventResponseMapper::convertToDestination);
         } else {
             throw new UnsupportedOperationException("Unknown roles: " + authorities);

@@ -82,7 +82,7 @@ public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventR
 
         private void setCover(EventResponse destination, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
             if (Objects.isNull(response)) {
-                LOGGER.info("Обложки не существует. Ничего не делать");
+                LOGGER.info("A cover is not existed. Do nothing. Return.");
                 return;
             }
             destination.setCover(
@@ -94,7 +94,7 @@ public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventR
 
         private void setImages(EventResponse destination, FileResponse response, Map<Boolean, List<InnerImageDto>> cover2Images) {
             if (Objects.isNull(response)) {
-                LOGGER.info("Изображений не существует. Ничего не делать");
+                LOGGER.info("Images are not existed. Do nothing. Return.");
                 return;
             }
             destination.setImages(new ImageBuilder(response.getImages(), cover2Images.getOrDefault(Boolean.FALSE, List.of())).build());

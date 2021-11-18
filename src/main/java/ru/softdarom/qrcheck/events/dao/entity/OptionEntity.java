@@ -1,10 +1,7 @@
 package ru.softdarom.qrcheck.events.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Generated;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -14,8 +11,9 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Generated
-@Data
-@ToString(of = {"id", "name"})
+@Getter
+@Setter
+@NoArgsConstructor
 @EqualsAndHashCode(of = {"id", "name"})
 @Entity
 @Table(name = "options")
