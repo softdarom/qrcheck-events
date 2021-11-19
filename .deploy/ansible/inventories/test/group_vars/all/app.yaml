@@ -42,3 +42,4 @@ logbook:
     - /v3/api-docs/**
     - /swagger-ui/**
     - /swagger-api/**
+    - /

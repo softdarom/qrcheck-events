@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @Tag(name = "Mobile Events", description = "Контроллер взаимодействия с events")
@@ -45,7 +44,7 @@ public class EventController {
     @PreAuthorize("hasAnyRole('USER', 'PROMOTER', 'CHECKMAN')")
     @ApiGetAllEvents
     @PageableAsQueryParam
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Page<EventResponse>> getAll(@RequestHeader(value = "X-Application-Version") String version,
                                                       @ParameterObject Pageable pageable) {
         return ResponseEntity.ok(eventService.getAll(pageable));
@@ -61,14 +60,14 @@ public class EventController {
 
     @PreAuthorize("hasRole('PROMOTER')")
     @ApiPreSaveEvent
-    @PostMapping(value = "/")
+    @PostMapping
     public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
         return ResponseEntity.ok(eventService.preSave());
     }
 
     @PreAuthorize("hasRole('PROMOTER')")
     @ApiSaveEvent
-    @PutMapping(value = "/", consumes = APPLICATION_JSON_VALUE)
+    @PutMapping
     public ResponseEntity<EventResponse> saveEvent(@RequestHeader(value = "X-Application-Version") String version,
                                                    @RequestBody @Valid EventRequest request) {
         return ResponseEntity.ok(eventService.endSave(request));
