@@ -60,6 +60,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .resourceId(DISABLED_RESOURCE_ID)
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
-
     }
 }

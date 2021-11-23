@@ -37,15 +37,15 @@ import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.BEARER_SE
                         }
                 ),
                 @ApiResponse(
-                        responseCode = "404",
-                        description = "Существующие событие не найдено",
+                        responseCode = "403",
+                        description = "Неавторизованный запрос",
                         content = {
                                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                         }
                 ),
                 @ApiResponse(
-                        responseCode = "403",
-                        description = "Неавторизованный запрос",
+                        responseCode = "404",
+                        description = "Существующие событие не найдено",
                         content = {
                                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
                         }
