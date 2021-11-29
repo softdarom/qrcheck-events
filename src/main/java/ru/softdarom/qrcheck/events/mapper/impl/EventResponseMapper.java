@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.builder.ImageBuilder;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
+import ru.softdarom.qrcheck.events.mapper.Checker;
 import ru.softdarom.qrcheck.events.model.dto.PeriodDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j(topic = "MAPPER")
-public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventResponse> {
+public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventResponse> implements Checker {
 
     private static final String DEFAULT_VERSION = "v1.0.0";
 
@@ -50,13 +51,14 @@ public class EventResponseMapper extends AbstractDtoMapper<InnerEventDto, EventR
 
         @Override
         public void accept(InnerEventDto source, EventResponse destination) {
-            destination.setActual(isActual(source));
-            setPeriod(destination, source.getStartDateTime());
-            setImages(destination, source.getImages());
+            whenNotNull(source.getOverDate(), it -> setActual(destination, source), () -> destination.setActual(false));
+            whenNotNull(source.getStartDateTime(), it -> setPeriod(destination, it));
+            whenNotNull(source.getImages(), it -> setImages(destination, it));
         }
 
-        private Boolean isActual(InnerEventDto source) {
-            return source.getOverDate().isAfter(LocalDateTime.now()) && !source.getDraft();
+        private void setActual(EventResponse destination, InnerEventDto source) {
+            var actual = source.getOverDate().isAfter(LocalDateTime.now()) && !source.getDraft();
+            destination.setActual(actual);
         }
 
         private void setPeriod(EventResponse destination, LocalDateTime startDateTime) {
