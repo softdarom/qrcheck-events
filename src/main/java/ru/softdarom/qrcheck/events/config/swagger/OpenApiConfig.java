@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.softdarom.qrcheck.events.config.property.OpenApiProperties;
+import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
 
 @Configuration
 public class OpenApiConfig {
@@ -19,6 +20,7 @@ public class OpenApiConfig {
 
     private static final String BEARER_TOKEN_HEADER_NAME = "Authorization";
     private static final String BEARER_TOKEN_DESCRIPTION = "Аутентификация через oAuth 2.0";
+    private static final String API_KEY_DESCRIPTION = "Аутентификация через ApiKey";
     private static final String LICENCE = "Лицензия API";
 
     private final OpenApiProperties openApiProperties;
@@ -36,7 +38,7 @@ public class OpenApiConfig {
     }
 
     @Bean
-    Components components() {
+    Components components(ApiKeyProperties apiKeyProperties) {
         return new Components()
                 .addSecuritySchemes(BEARER_SECURITY_NAME,
                         new SecurityScheme()
@@ -45,6 +47,13 @@ public class OpenApiConfig {
                                 .in(SecurityScheme.In.HEADER)
                                 .name(BEARER_TOKEN_HEADER_NAME)
                                 .description(BEARER_TOKEN_DESCRIPTION)
+                )
+                .addSecuritySchemes(API_KEY_SECURITY_NAME,
+                        new SecurityScheme()
+                                .type(SecurityScheme.Type.APIKEY)
+                                .in(SecurityScheme.In.HEADER)
+                                .name(apiKeyProperties.getHeaderName())
+                                .description(API_KEY_DESCRIPTION)
                 );
     }
 

@@ -45,15 +45,19 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                     .disable()
                 .anonymous()
                     .disable()
-                .authorizeRequests(request -> request.anyRequest().authenticated())
+                .authorizeRequests(request ->
+                        request.antMatchers("/inner/**").hasRole("API_KEY")
+                                .antMatchers("/mobile/**").authenticated()
+                )
+                .addFilter(apiKeyAuthorizationFilter)
                 .authenticationProvider(authenticationProvider)
                 .exceptionHandling(handlerConfigurer ->
                         handlerConfigurer
-                            .authenticationEntryPoint(authenticationEntryPoint)
-                            .accessDeniedHandler(accessDeniedHandler)
+                                .authenticationEntryPoint(authenticationEntryPoint)
+                                .accessDeniedHandler(accessDeniedHandler)
                 )
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // @formatter:on
     }

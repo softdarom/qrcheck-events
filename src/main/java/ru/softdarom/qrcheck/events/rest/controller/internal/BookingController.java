@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiBookItems;
+import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiUnbookedItems;
 import ru.softdarom.qrcheck.events.model.dto.external.request.CheckEventRequest;
 import ru.softdarom.qrcheck.events.model.dto.external.response.EventInfoResponse;
 import ru.softdarom.qrcheck.events.service.external.BookService;
@@ -20,16 +22,18 @@ public class BookingController {
         this.bookService = bookService;
     }
 
+    @ApiBookItems
     @PostMapping("/{eventId}")
-    public ResponseEntity<EventInfoResponse> getEventInfoForOrderAndBook(
+    public ResponseEntity<EventInfoResponse> bookedTicketsAndOptionForCreateOrder(
             @PathVariable Long eventId,
             @RequestBody CheckEventRequest request
     ) {
         return ResponseEntity.ok(bookService.getEventInfoAndBook(eventId, request));
     }
 
+    @ApiUnbookedItems
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<EventInfoResponse> getEventInfoForOrderAndUnbooked(
+    public ResponseEntity<EventInfoResponse> unbookedTicketsAndOptionForCreateOrder(
             @PathVariable Long eventId,
             @RequestBody CheckEventRequest request
     ) {
