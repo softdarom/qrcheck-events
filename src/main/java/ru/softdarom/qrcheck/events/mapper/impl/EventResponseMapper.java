@@ -11,7 +11,7 @@ import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.FileResponse;
-import ru.softdarom.qrcheck.events.service.ContentHandlerExternalService;
+import ru.softdarom.qrcheck.events.service.external.ContentHandlerExternalService;
 import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
 
 import java.time.LocalDateTime;

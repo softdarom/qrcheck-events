@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.service;
+package ru.softdarom.qrcheck.events.service.external;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;

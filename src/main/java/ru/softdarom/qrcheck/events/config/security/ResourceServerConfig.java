@@ -10,20 +10,24 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 @Configuration
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     private static final String DISABLED_RESOURCE_ID = null;
 
+    private final AbstractPreAuthenticatedProcessingFilter apiKeyAuthorizationFilter;
     private final AuthenticationProvider authenticationProvider;
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
 
     @Autowired
-    ResourceServerConfig(@Qualifier("qrCheckAuthenticationProvider") AuthenticationProvider authenticationProvider,
+    ResourceServerConfig(@Qualifier("qrCheckApiKeyAuthorizationFilter") AbstractPreAuthenticatedProcessingFilter apiKeyAuthorizationFilter,
+                         @Qualifier("qrCheckAuthenticationProvider") AuthenticationProvider authenticationProvider,
                          @Qualifier("qrCheckAuthenticationEntryPoint") AuthenticationEntryPoint authenticationEntryPoint,
                          @Qualifier("qrCheckAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler) {
+        this.apiKeyAuthorizationFilter = apiKeyAuthorizationFilter;
         this.authenticationProvider = authenticationProvider;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;

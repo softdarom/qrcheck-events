@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import ru.softdarom.qrcheck.events.config.swagger.classes.PagedEventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
-import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -26,7 +26,7 @@ import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.BEARER_SE
                         responseCode = "200",
                         description = "События получены",
                         content = {
-                                @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))
+                                @Content(mediaType = "application/json", schema = @Schema(implementation = PagedEventResponse.class))
                         }
                 ),
                 @ApiResponse(

@@ -1,36 +1,29 @@
-package ru.softdarom.qrcheck.events.model.dto;
+package ru.softdarom.qrcheck.events.model.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Generated;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
+@NoArgsConstructor
 @Generated
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OptionDto {
+public class TicketExternalDto {
 
-    @JsonProperty("optionId")
+    @NotNull
+    @JsonProperty("id")
     private Long id;
 
     @NotNull
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("type")
+    private String type;
 
     @NotNull
-    @JsonProperty("quantity")
-    private Integer quantity;
-
-    @JsonProperty("availableQuantity")
-    private Integer availableQuantity;
-
-    @NotNull
-    @JsonProperty("cost")
-    private BigDecimal cost;
-
     @JsonProperty("price")
     private BigDecimal price;
 }

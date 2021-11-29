@@ -7,4 +7,8 @@ import java.util.Set;
 public interface TicketAccessService {
 
     Set<InnerTicketDto> findByEventIdAndActiveEvent(Long eventId);
+
+    Boolean bookTicket(Long optionId, Integer quantity);
+
+    Boolean unbookedTicket(Long ticketId, Integer quantity);
 }

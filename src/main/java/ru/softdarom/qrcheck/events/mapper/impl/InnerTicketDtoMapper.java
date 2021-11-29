@@ -40,10 +40,9 @@ public class InnerTicketDtoMapper extends AbstractDtoMapper<TicketEntity, InnerT
             source.setPrice(calculateTotalAmount(destination.getCost()));
         }
 
-        private BigDecimal calculateTotalAmount(Double cost) {
-            var costAsBigDecimal = BigDecimal.valueOf(cost);
-            var taxSum = costAsBigDecimal.multiply(BigDecimal.valueOf(properties.getGeneralTax()));
-            return costAsBigDecimal.add(taxSum);
+        private BigDecimal calculateTotalAmount(BigDecimal cost) {
+            var taxSum = cost.multiply(BigDecimal.valueOf(properties.getGeneralTax()));
+            return cost.add(taxSum);
         }
     }
 
@@ -52,7 +51,7 @@ public class InnerTicketDtoMapper extends AbstractDtoMapper<TicketEntity, InnerT
         @Override
         public void accept(TicketEntity source, InnerTicketDto destination) {
             var scaledPrice = source.getPrice().setScale(0, RoundingMode.UP);
-            destination.setPrice(scaledPrice.doubleValue());
+            destination.setPrice(scaledPrice);
         }
     }
 }

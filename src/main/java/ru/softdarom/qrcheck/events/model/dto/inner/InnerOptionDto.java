@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.Generated;
 import ru.softdarom.qrcheck.events.util.JsonHelper;
 
+import java.math.BigDecimal;
+
 @Data
 @Generated
 public class InnerOptionDto {
@@ -16,9 +18,9 @@ public class InnerOptionDto {
 
     private Integer availableQuantity;
 
-    private Double cost;
+    private BigDecimal cost;
 
-    private Double price;
+    private BigDecimal price;
 
     @Override
     public String toString() {

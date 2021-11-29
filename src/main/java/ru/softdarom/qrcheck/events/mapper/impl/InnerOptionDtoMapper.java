@@ -41,10 +41,9 @@ public class InnerOptionDtoMapper extends AbstractDtoMapper<OptionEntity, InnerO
             source.setPrice(calculateTotalAmount(destination.getCost()));
         }
 
-        private BigDecimal calculateTotalAmount(Double cost) {
-            var costAsBigDecimal = BigDecimal.valueOf(cost);
-            var taxSum = costAsBigDecimal.multiply(BigDecimal.valueOf(properties.getGeneralTax()));
-            return costAsBigDecimal.add(taxSum);
+        private BigDecimal calculateTotalAmount(BigDecimal cost) {
+            var taxSum = cost.multiply(BigDecimal.valueOf(properties.getGeneralTax()));
+            return cost.add(taxSum);
         }
     }
 
@@ -53,7 +52,7 @@ public class InnerOptionDtoMapper extends AbstractDtoMapper<OptionEntity, InnerO
         @Override
         public void accept(OptionEntity source, InnerOptionDto destination) {
             var scaledPrice = source.getPrice().setScale(0, RoundingMode.UP);
-            destination.setPrice(scaledPrice.doubleValue());
+            destination.setPrice(scaledPrice);
         }
     }
 }

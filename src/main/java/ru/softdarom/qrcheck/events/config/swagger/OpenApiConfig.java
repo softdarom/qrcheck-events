@@ -14,6 +14,7 @@ import ru.softdarom.qrcheck.events.config.property.OpenApiProperties;
 @Configuration
 public class OpenApiConfig {
 
+    public static final String API_KEY_SECURITY_NAME = "api-key";
     public static final String BEARER_SECURITY_NAME = "bearer";
 
     private static final String BEARER_TOKEN_HEADER_NAME = "Authorization";

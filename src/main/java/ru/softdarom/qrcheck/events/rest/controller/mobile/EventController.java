@@ -16,8 +16,8 @@ import ru.softdarom.qrcheck.events.model.base.ImageType;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.TicketResponse;
-import ru.softdarom.qrcheck.events.service.EventService;
-import ru.softdarom.qrcheck.events.service.TicketService;
+import ru.softdarom.qrcheck.events.service.mobile.EventService;
+import ru.softdarom.qrcheck.events.service.mobile.TicketService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;

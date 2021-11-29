@@ -94,7 +94,7 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
         private BigDecimal calculateTotalAmount(Collection<InnerTicketDto> tickets) {
             return tickets.stream()
                     .map(it -> {
-                        var costAsBigDecimal = BigDecimal.valueOf(it.getCost());
+                        var costAsBigDecimal = it.getCost();
                         var quantityAsBigDecimal = BigDecimal.valueOf(it.getQuantity());
                         //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-55
                         var totalSumWithoutTax = costAsBigDecimal.multiply(quantityAsBigDecimal);

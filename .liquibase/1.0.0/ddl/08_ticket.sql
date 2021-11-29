@@ -32,3 +32,9 @@ comment on column events.tickets.price is 'Value with tax';
 comment on column events.tickets.created is 'Time of created';
 comment on column events.tickets.updated is 'Time of the last updated';
 comment on column events.tickets.active is 'A soft deleted flag: true - active, false - deleted';
+
+--changeset Chernov-ON:1.0.0/ddl/tickets_unsigned_available_quantity
+--rollback alter table events.options drop constraint unsigned_available_quantity;
+alter table events.tickets
+    add constraint unsigned_available_quantity
+        check ( available_quantity >= 0 );
