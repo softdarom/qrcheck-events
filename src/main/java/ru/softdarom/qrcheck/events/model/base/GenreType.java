@@ -13,7 +13,7 @@ import java.util.Objects;
 public enum GenreType {
 
     SONGWRITING("Авторская песня"),
-    BLACK_METAL("Блэк-металл"),
+    BLACK_METAL("Блэк-Металл"),
     BLUES("Блюз"),
     GRINDCORE("Грайндкор"),
     JAZZ("Джаз"),
