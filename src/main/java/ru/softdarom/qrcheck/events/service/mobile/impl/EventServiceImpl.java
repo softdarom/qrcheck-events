@@ -97,7 +97,7 @@ public class EventServiceImpl implements EventService {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
         Assert.notNull(images, "The 'images' must not be null!");
         Assert.notNull(imageType, "The 'imageType' must not be null!");
-        LOGGER.info("Сохранение изображений с типом: {}", imageType);
+        LOGGER.info("Saving an image has a type: {}", imageType);
         return eventImageService.save(eventId, images, imageType);
     }
 

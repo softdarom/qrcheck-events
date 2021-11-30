@@ -2,13 +2,14 @@ package ru.softdarom.qrcheck.events.model.dto.inner;
 
 import lombok.Data;
 import lombok.Generated;
+import ru.softdarom.qrcheck.events.model.base.BookType;
 import ru.softdarom.qrcheck.events.util.JsonHelper;
 
 import java.math.BigDecimal;
 
 @Data
 @Generated
-public class InnerTicketDto {
+public class InnerTicketDto implements Bookable {
 
     private Long id;
 
@@ -25,4 +26,13 @@ public class InnerTicketDto {
         return JsonHelper.asJson(this);
     }
 
+    @Override
+    public String getName() {
+        return BookType.TICKET.name();
+    }
+
+    @Override
+    public BookType getBookType() {
+        return BookType.TICKET;
+    }
 }

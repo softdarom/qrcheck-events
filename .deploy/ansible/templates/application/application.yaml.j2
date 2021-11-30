@@ -34,8 +34,10 @@ spring:
   security:
     qrcheck:
       api-key:
+        hasApiKeyAuth: {{ spring.security.api_key.has_api_key_auth | default('true') | lower }}
         token:
           outgoing: ${API_KEY_OUTGOING}
+          incoming: ${API_KEY_INCOMING}
 
 springdoc:
   api-docs:
