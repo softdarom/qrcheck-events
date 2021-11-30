@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import ru.softdarom.qrcheck.events.model.dto.external.OptionExternalDto;
 import ru.softdarom.qrcheck.events.model.dto.external.TicketExternalDto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -19,7 +21,7 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EventInfoResponse {
 
-    @NotNull
+    @NotBlank
     @JsonProperty("eventName")
     @Schema(type = "string", description = "Наименование события")
     private String eventName;
@@ -29,11 +31,10 @@ public class EventInfoResponse {
     @Schema(description = "Время начала события")
     private LocalDateTime eventStart;
 
-    @NotNull
+    @NotEmpty
     @JsonProperty("ticketsInfo")
     private Set<TicketExternalDto> ticketsInfo;
 
-    @NotNull
     @JsonProperty("optionsInfo")
     private Set<OptionExternalDto> optionsInfo;
 }

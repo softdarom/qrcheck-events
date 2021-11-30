@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.softdarom.qrcheck.events.dao.access.OptionAccessService;
+import ru.softdarom.qrcheck.events.dao.entity.OptionEntity;
 import ru.softdarom.qrcheck.events.dao.repository.OptionRepository;
 import ru.softdarom.qrcheck.events.exception.NotFoundException;
 
@@ -20,7 +21,7 @@ public class OptionAccessServiceImpl implements OptionAccessService {
     }
 
     @Override
-    public boolean isEventHasOptions(Long eventId) {
+    public boolean hasEventOptions(Long eventId) {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
         return optionRepository.isEventHasOptions(eventId);
     }
@@ -32,7 +33,7 @@ public class OptionAccessServiceImpl implements OptionAccessService {
         Assert.notNull(quantity, "The 'quantity' must not be null!");
         var option = optionRepository.findById(optionId)
                 .orElseThrow(() -> new NotFoundException("Not found option with id: " + optionId));
-        if (option.getAvailableQuantity() - quantity >= 0) {
+        if (isCanBooked(option, quantity)) {
             option.setAvailableQuantity(option.getAvailableQuantity() - quantity);
             optionRepository.save(option);
             return true;
@@ -51,5 +52,9 @@ public class OptionAccessServiceImpl implements OptionAccessService {
         option.setAvailableQuantity(option.getAvailableQuantity() + quantity);
         optionRepository.save(option);
         return true;
+    }
+
+    private boolean isCanBooked(OptionEntity option, Integer bookingQuantity) {
+        return option.getAvailableQuantity() - bookingQuantity >= 0;
     }
 }

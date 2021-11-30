@@ -23,7 +23,7 @@ public class BookingController {
     }
 
     @ApiBookItems
-    @PostMapping("/{eventId}")
+    @PostMapping("/{eventId}/book")
     public ResponseEntity<EventInfoResponse> bookedTicketsAndOptionForCreateOrder(
             @PathVariable Long eventId,
             @RequestBody CheckEventRequest request
@@ -32,7 +32,7 @@ public class BookingController {
     }
 
     @ApiUnbookedItems
-    @DeleteMapping("/{eventId}")
+    @DeleteMapping("/{eventId}/unbooked")
     public ResponseEntity<EventInfoResponse> unbookedTicketsAndOptionForCreateOrder(
             @PathVariable Long eventId,
             @RequestBody CheckEventRequest request

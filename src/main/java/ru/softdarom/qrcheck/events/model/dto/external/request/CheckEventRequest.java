@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.Generated;
 import ru.softdarom.qrcheck.events.model.dto.external.BookedExternalDto;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Set;
 
@@ -13,7 +13,7 @@ import java.util.Set;
 @Generated
 public class CheckEventRequest {
 
-    @NotNull
+    @NotEmpty
     @JsonProperty("ticketsIds")
     private Collection<BookedExternalDto> tickets;
 

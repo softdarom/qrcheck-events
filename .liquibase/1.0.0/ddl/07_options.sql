@@ -15,7 +15,9 @@ create table events.options
             references events.events,
     name               varchar(255),
     quantity           int                                               not null,
-    available_quantity int                                               not null,
+    available_quantity int                                               not null
+        constraint unsigned_available_quantity
+            check ( available_quantity >= 0 ),
     cost               decimal(9, 2)                                     not null,
     price              decimal(9, 2)                                     not null,
     created            timestamp(0) default now()                        not null,
@@ -34,9 +36,3 @@ comment on column events.options.price is 'Value with tax';
 comment on column events.options.created is 'Time of created';
 comment on column events.options.updated is 'Time of the last updated';
 comment on column events.options.active is 'A soft deleted flag: true - active, false - deleted';
-
---changeset Chernov-ON:1.0.0/ddl/options_unsigned_available_quantity
---rollback alter table events.options drop constraint unsigned_available_quantity;
-alter table events.options
-    add constraint unsigned_available_quantity
-        check ( available_quantity >= 0 );

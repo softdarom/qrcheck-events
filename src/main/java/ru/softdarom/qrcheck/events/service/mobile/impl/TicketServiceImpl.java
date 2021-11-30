@@ -35,6 +35,6 @@ public class TicketServiceImpl implements TicketService {
         var tickets = ticketAccessService.findByEventIdAndActiveEvent(eventId).stream()
                 .map(ticketMapper::convertToDestination)
                 .collect(Collectors.toSet());
-        return new TicketResponse(tickets, optionAccessService.isEventHasOptions(eventId));
+        return new TicketResponse(tickets, optionAccessService.hasEventOptions(eventId));
     }
 }
