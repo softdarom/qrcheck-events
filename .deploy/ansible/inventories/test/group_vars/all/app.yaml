@@ -42,9 +42,6 @@ springdoc:
     enabled: true
 
 logbook:
-  strategy: body-only-if-status-at-least
-  format:
-    style: http
   exclude:
     - /actuator/**
     - /v3/api-docs/**
