@@ -54,7 +54,6 @@ public class EventRequest {
     @JsonProperty("tickets")
     private Collection<TicketDto> tickets;
 
-    @NotEmpty
     @JsonProperty("options")
     private Collection<OptionDto> options;
 
