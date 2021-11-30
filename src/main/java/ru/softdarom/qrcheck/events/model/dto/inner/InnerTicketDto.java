@@ -27,11 +27,6 @@ public class InnerTicketDto implements Bookable {
     }
 
     @Override
-    public String getName() {
-        return BookType.TICKET.name();
-    }
-
-    @Override
     public BookType getBookType() {
         return BookType.TICKET;
     }

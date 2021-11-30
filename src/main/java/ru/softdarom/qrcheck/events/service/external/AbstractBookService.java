@@ -15,8 +15,7 @@ public abstract class AbstractBookService implements BookService {
 
 
     protected Map<Long, BookedExternalDto> getId2DtoMap(Collection<BookedExternalDto> itemRequest) {
-        return itemRequest.stream()
-                .collect(Collectors.toMap(BookedExternalDto::getId, Function.identity()));
+        return itemRequest.stream().collect(Collectors.toMap(BookedExternalDto::getId, Function.identity()));
     }
 
     protected <T> Set<T> changeBookedStatuses(Collection<? extends Bookable> bookables, Map<Long, BookedExternalDto> bookItems,
@@ -30,7 +29,7 @@ public abstract class AbstractBookService implements BookService {
                 .collect(Collectors.toSet());
     }
 
-    protected <T extends Bookable, R> R changeBookedStatus(T bookable, BookedExternalDto dto, BiPredicate<Long, Integer> predicate, Function<Bookable, R> function) {
+    protected <T extends Bookable, R> R changeBookedStatus(T bookable, BookedExternalDto dto, BiPredicate<Long, Integer> predicate, Function<T, R> function) {
         if (!predicate.test(dto.getId(), dto.getQuantity())) {
             var message = String.format("There are not enough bookable items (type is '%s') with id: %s", bookable.getBookType(), bookable.getId());
             throw new InvalidBookOperation(message);

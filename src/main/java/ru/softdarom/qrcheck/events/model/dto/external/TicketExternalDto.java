@@ -25,14 +25,6 @@ public class TicketExternalDto {
     private Long id;
 
     @NotNull
-    @JsonProperty("type")
-    @Schema(
-            type = "string",
-            description = "Тип билета"
-    )
-    private String type;
-
-    @NotNull
     @JsonProperty("price")
     @Schema(
             type = "integer", format = "decimal", minimum = "0",

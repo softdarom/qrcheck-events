@@ -46,7 +46,8 @@ public class BookServiceImpl extends AbstractBookService {
         return buildResponse(eventId, request, optionAccessService::unbookedOption, ticketAccessService::unbookedTicket);
     }
 
-    private EventInfoResponse buildResponse(Long eventId, CheckEventRequest request, BiPredicate<Long, Integer> optionPredicate, BiPredicate<Long, Integer> ticketPredicate) {
+    private EventInfoResponse buildResponse(Long eventId, CheckEventRequest request,
+                                            BiPredicate<Long, Integer> optionPredicate, BiPredicate<Long, Integer> ticketPredicate) {
         var event = eventAccessService.findById(eventId);
         var response = new EventInfoResponse();
         response.setEventName(event.getName());
@@ -57,18 +58,16 @@ public class BookServiceImpl extends AbstractBookService {
     }
 
     private <T extends Bookable> OptionExternalDto buildExternalOption(T option) {
-        var optionResp = new OptionExternalDto();
-        optionResp.setId(option.getId());
-        optionResp.setName(option.getName());
-        optionResp.setPrice(option.getPrice());
-        return optionResp;
+        var dto = new OptionExternalDto();
+        dto.setId(option.getId());
+        dto.setPrice(option.getPrice());
+        return dto;
     }
 
     private <T extends Bookable> TicketExternalDto buildExternalTicket(T ticket) {
-        var ticketResp = new TicketExternalDto();
-        ticketResp.setId(ticket.getId());
-        ticketResp.setPrice(ticket.getPrice());
-        ticketResp.setType("SOME_TYPE");
-        return ticketResp;
+        var dto = new TicketExternalDto();
+        dto.setId(ticket.getId());
+        dto.setPrice(ticket.getPrice());
+        return dto;
     }
 }

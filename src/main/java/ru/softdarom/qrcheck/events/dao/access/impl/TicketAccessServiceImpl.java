@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j(topic = "SERVICE")
+@Slf4j(topic = "ACCESS-SERVICE")
 public class TicketAccessServiceImpl implements TicketAccessService {
 
     private final TicketRepository ticketRepository;

@@ -8,8 +8,6 @@ public interface Bookable {
 
     Long getId();
 
-    String getName();
-
     BigDecimal getPrice();
 
     BookType getBookType();

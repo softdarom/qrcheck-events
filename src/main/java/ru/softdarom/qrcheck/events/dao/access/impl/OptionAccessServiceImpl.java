@@ -12,7 +12,7 @@ import ru.softdarom.qrcheck.events.exception.NotFoundException;
 import javax.transaction.Transactional;
 
 @Service
-@Slf4j(topic = "SERVICE")
+@Slf4j(topic = "ACCESS-SERVICE")
 public class OptionAccessServiceImpl implements OptionAccessService {
 
     private final OptionRepository optionRepository;

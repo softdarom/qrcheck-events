@@ -25,14 +25,6 @@ public class OptionExternalDto {
     private Long id;
 
     @NotNull
-    @JsonProperty("name")
-    @Schema(
-            type = "string",
-            description = "Наименовании опции"
-    )
-    private String name;
-
-    @NotNull
     @JsonProperty("price")
     @Schema(
             type = "integer", format = "decimal", minimum = "0",
