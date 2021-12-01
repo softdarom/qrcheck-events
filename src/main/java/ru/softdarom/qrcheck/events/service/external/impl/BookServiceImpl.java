@@ -6,10 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
 import ru.softdarom.qrcheck.events.dao.access.OptionAccessService;
 import ru.softdarom.qrcheck.events.dao.access.TicketAccessService;
-import ru.softdarom.qrcheck.events.model.dto.external.OptionExternalDto;
-import ru.softdarom.qrcheck.events.model.dto.external.TicketExternalDto;
+import ru.softdarom.qrcheck.events.model.dto.external.BookingItemExternalDto;
 import ru.softdarom.qrcheck.events.model.dto.external.request.CheckEventRequest;
-import ru.softdarom.qrcheck.events.model.dto.external.response.EventInfoResponse;
+import ru.softdarom.qrcheck.events.model.dto.external.response.BookingInfoResponse;
 import ru.softdarom.qrcheck.events.model.dto.inner.Bookable;
 import ru.softdarom.qrcheck.events.service.external.AbstractBookService;
 
@@ -31,7 +30,7 @@ public class BookServiceImpl extends AbstractBookService {
     }
 
     @Override
-    public EventInfoResponse getEventInfoAndBook(Long eventId, CheckEventRequest request) {
+    public BookingInfoResponse bookItems(Long eventId, CheckEventRequest request) {
         LOGGER.info("Booking for tickets and options");
         LOGGER.debug("Tickets: {}", request.getTickets());
         LOGGER.debug("Options: {}", request.getOptions());
@@ -39,33 +38,24 @@ public class BookServiceImpl extends AbstractBookService {
     }
 
     @Override
-    public EventInfoResponse getEventInfoAndUnbooked(Long eventId, CheckEventRequest request) {
+    public BookingInfoResponse unbookedItems(Long eventId, CheckEventRequest request) {
         LOGGER.info("Cancel a book for tickets and options");
         LOGGER.debug("Tickets: {}", request.getTickets());
         LOGGER.debug("Options: {}", request.getOptions());
         return buildResponse(eventId, request, optionAccessService::unbookedOption, ticketAccessService::unbookedTicket);
     }
 
-    private EventInfoResponse buildResponse(Long eventId, CheckEventRequest request,
-                                            BiPredicate<Long, Integer> optionPredicate, BiPredicate<Long, Integer> ticketPredicate) {
+    private BookingInfoResponse buildResponse(Long eventId, CheckEventRequest request,
+                                              BiPredicate<Long, Integer> optionPredicate, BiPredicate<Long, Integer> ticketPredicate) {
         var event = eventAccessService.findById(eventId);
-        var response = new EventInfoResponse();
-        response.setEventName(event.getName());
-        response.setEventStart(event.getStartDateTime());
-        response.setOptionsInfo(changeBookedStatuses(event.getOptions(), getId2DtoMap(request.getOptions()), optionPredicate, this::buildExternalOption));
-        response.setTicketsInfo(changeBookedStatuses(event.getTickets(), getId2DtoMap(request.getTickets()), ticketPredicate, this::buildExternalTicket));
+        var response = new BookingInfoResponse();
+        response.setOptionsInfo(changeBookedStatuses(event.getOptions(), getId2DtoMap(request.getOptions()), optionPredicate, this::buildExternalItem));
+        response.setTicketsInfo(changeBookedStatuses(event.getTickets(), getId2DtoMap(request.getTickets()), ticketPredicate, this::buildExternalItem));
         return response;
     }
 
-    private <T extends Bookable> OptionExternalDto buildExternalOption(T option) {
-        var dto = new OptionExternalDto();
-        dto.setId(option.getId());
-        dto.setPrice(option.getPrice());
-        return dto;
-    }
-
-    private <T extends Bookable> TicketExternalDto buildExternalTicket(T ticket) {
-        var dto = new TicketExternalDto();
+    private <T extends Bookable> BookingItemExternalDto buildExternalItem(T ticket) {
+        var dto = new BookingItemExternalDto();
         dto.setId(ticket.getId());
         dto.setPrice(ticket.getPrice());
         return dto;

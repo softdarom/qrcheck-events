@@ -20,11 +20,11 @@ public abstract class AbstractBookService implements BookService {
 
     protected <T> Set<T> changeBookedStatuses(Collection<? extends Bookable> bookables, Map<Long, BookedExternalDto> bookItems,
                                               BiPredicate<Long, Integer> predicate, Function<Bookable, T> function) {
-        var neededTicket = bookables.stream()
+        var neededItems = bookables.stream()
                 .filter(it -> bookItems.containsKey(it.getId()))
                 .collect(Collectors.toSet());
-        checkCountOfNeededAndExternalItems(neededTicket, bookItems.keySet());
-        return neededTicket.stream()
+        checkCountOfNeededAndExternalItems(neededItems, bookItems.keySet());
+        return neededItems.stream()
                 .map(it -> changeBookedStatus(it, bookItems.get(it.getId()), predicate, function))
                 .collect(Collectors.toSet());
     }

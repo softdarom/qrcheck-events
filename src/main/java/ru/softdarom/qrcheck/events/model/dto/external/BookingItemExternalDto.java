@@ -14,13 +14,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Generated
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TicketExternalDto {
+public class BookingItemExternalDto {
 
     @NotNull
     @JsonProperty("id")
     @Schema(
             type = "integer", format = "int64", minimum = "0",
-            description = "Идентификатор билета который забронирован"
+            description = "Идентификатор элемента который забронирован"
     )
     private Long id;
 
@@ -28,7 +28,7 @@ public class TicketExternalDto {
     @JsonProperty("price")
     @Schema(
             type = "integer", format = "decimal", minimum = "0",
-            description = "Цена билета"
+            description = "Цена элемента за штуку"
     )
     private BigDecimal price;
 }

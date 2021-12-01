@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiBookItems;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiUnbookedItems;
 import ru.softdarom.qrcheck.events.model.dto.external.request.CheckEventRequest;
-import ru.softdarom.qrcheck.events.model.dto.external.response.EventInfoResponse;
+import ru.softdarom.qrcheck.events.model.dto.external.response.BookingInfoResponse;
 import ru.softdarom.qrcheck.events.service.external.BookService;
 
 @Tag(name = "Internal Events", description = "Внутренний контроллер взаимодействия с events")
@@ -24,19 +24,19 @@ public class BookingController {
 
     @ApiBookItems
     @PostMapping("/{eventId}/book")
-    public ResponseEntity<EventInfoResponse> bookedTicketsAndOptionForCreateOrder(
+    public ResponseEntity<BookingInfoResponse> bookedTicketsAndOptionForCreateOrder(
             @PathVariable Long eventId,
             @RequestBody CheckEventRequest request
     ) {
-        return ResponseEntity.ok(bookService.getEventInfoAndBook(eventId, request));
+        return ResponseEntity.ok(bookService.bookItems(eventId, request));
     }
 
     @ApiUnbookedItems
     @DeleteMapping("/{eventId}/unbooked")
-    public ResponseEntity<EventInfoResponse> unbookedTicketsAndOptionForCreateOrder(
+    public ResponseEntity<BookingInfoResponse> unbookedTicketsAndOptionForCreateOrder(
             @PathVariable Long eventId,
             @RequestBody CheckEventRequest request
     ) {
-        return ResponseEntity.ok(bookService.getEventInfoAndUnbooked(eventId, request));
+        return ResponseEntity.ok(bookService.unbookedItems(eventId, request));
     }
 }

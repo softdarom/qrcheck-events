@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import ru.softdarom.qrcheck.events.model.dto.external.response.EventInfoResponse;
+import ru.softdarom.qrcheck.events.model.dto.external.response.BookingInfoResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 
 import java.lang.annotation.Retention;
@@ -26,7 +26,7 @@ import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.API_KEY_S
                         responseCode = "200",
                         description = "Билеты и/или опции забронированы",
                         content = {
-                                @Content(mediaType = "application/json", schema = @Schema(implementation = EventInfoResponse.class))
+                                @Content(mediaType = "application/json", schema = @Schema(implementation = BookingInfoResponse.class))
                         }
                 ),
                 @ApiResponse(
