@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.service;
+package ru.softdarom.qrcheck.events.service.mobile;
 
 import ru.softdarom.qrcheck.events.model.dto.response.TicketResponse;
 

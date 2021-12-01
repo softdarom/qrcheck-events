@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.service.impl;
+package ru.softdarom.qrcheck.events.service.mobile.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,8 @@ import ru.softdarom.qrcheck.events.model.dto.ImageDto;
 import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.FileResponse;
-import ru.softdarom.qrcheck.events.service.ContentHandlerExternalService;
-import ru.softdarom.qrcheck.events.service.EventImageService;
+import ru.softdarom.qrcheck.events.service.external.ContentHandlerExternalService;
+import ru.softdarom.qrcheck.events.service.mobile.EventImageService;
 import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
 
 import java.util.Collection;

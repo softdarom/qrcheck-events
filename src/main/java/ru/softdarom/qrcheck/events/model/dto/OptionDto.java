@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Generated;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Data
 @Generated
@@ -28,8 +29,8 @@ public class OptionDto {
 
     @NotNull
     @JsonProperty("cost")
-    private Double cost;
+    private BigDecimal cost;
 
     @JsonProperty("price")
-    private Double price;
+    private BigDecimal price;
 }

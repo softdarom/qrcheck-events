@@ -34,8 +34,10 @@ spring:
   security:
     qrcheck:
       api-key:
+        hasApiKeyAuth: {{ spring.security.api_key.has_api_key_auth | default('true') | lower }}
         token:
           outgoing: ${API_KEY_OUTGOING}
+          incoming: ${API_KEY_INCOMING}
 
 springdoc:
   api-docs:
@@ -61,7 +63,8 @@ logging:
   config: config/logback.groovy
 
 logbook:
-  strategy: {{ logbook.strategy }}
+  strategy: {{ logbook.strategy | default('body-only-if-status-at-least') }}
+  minimum-status: {{ logbook.minimum_status | default(200) }}
   format:
     style: {{ logbook.format.style | default('http') }}
   logger:

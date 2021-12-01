@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import ru.softdarom.qrcheck.events.config.swagger.classes.PagedEventResponse;
+import ru.softdarom.qrcheck.events.model.dto.external.response.BookingInfoResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 
 import java.lang.annotation.Retention;
@@ -14,19 +14,19 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
-import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.BEARER_SECURITY_NAME;
+import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.API_KEY_SECURITY_NAME;
 
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
-        summary = "Получение всех событий",
-        security = @SecurityRequirement(name = BEARER_SECURITY_NAME),
+        summary = "Бронирование билетов и опций на событие",
+        security = @SecurityRequirement(name = API_KEY_SECURITY_NAME),
         responses = {
                 @ApiResponse(
                         responseCode = "200",
-                        description = "События получены",
+                        description = "Билеты и/или опции забронированы",
                         content = {
-                                @Content(mediaType = "application/json", schema = @Schema(implementation = PagedEventResponse.class))
+                                @Content(mediaType = "application/json", schema = @Schema(implementation = BookingInfoResponse.class))
                         }
                 ),
                 @ApiResponse(
@@ -51,5 +51,5 @@ import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.BEARER_SE
                 )
         }
 )
-public @interface ApiGetAllEvents {
+public @interface ApiBookItems {
 }

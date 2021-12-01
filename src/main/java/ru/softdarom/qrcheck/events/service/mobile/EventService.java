@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.service;
+package ru.softdarom.qrcheck.events.service.mobile;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

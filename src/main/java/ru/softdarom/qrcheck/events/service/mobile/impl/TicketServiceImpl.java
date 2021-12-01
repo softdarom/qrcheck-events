@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.service.impl;
+package ru.softdarom.qrcheck.events.service.mobile.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import ru.softdarom.qrcheck.events.dao.access.OptionAccessService;
 import ru.softdarom.qrcheck.events.dao.access.TicketAccessService;
 import ru.softdarom.qrcheck.events.mapper.impl.TicketResponseMapper;
 import ru.softdarom.qrcheck.events.model.dto.response.TicketResponse;
-import ru.softdarom.qrcheck.events.service.TicketService;
+import ru.softdarom.qrcheck.events.service.mobile.TicketService;
 
 import java.util.stream.Collectors;
 
@@ -35,6 +35,6 @@ public class TicketServiceImpl implements TicketService {
         var tickets = ticketAccessService.findByEventIdAndActiveEvent(eventId).stream()
                 .map(ticketMapper::convertToDestination)
                 .collect(Collectors.toSet());
-        return new TicketResponse(tickets, optionAccessService.isEventHasOptions(eventId));
+        return new TicketResponse(tickets, optionAccessService.hasEventOptions(eventId));
     }
 }

@@ -34,8 +34,10 @@ spring:
   security:
     qrcheck:
       api-key:
+        hasApiKeyAuth: true
         token:
           outgoing: ${API_KEY_OUTGOING}
+          incoming: ${API_KEY_INCOMING}
       oauth2:
         auth-server:
           host: ${AUTH_HANDLER_URL}
@@ -61,6 +63,7 @@ outbound:
 
 logbook:
   strategy: body-only-if-status-at-least
+  minimum-status: 200
   format:
     style: http
   logger:

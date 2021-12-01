@@ -11,9 +11,4 @@ public enum ImageType {
     COVER(true);
 
     private final boolean cover;
-
-    @Override
-    public String toString() {
-        return String.valueOf(cover);
-    }
 }

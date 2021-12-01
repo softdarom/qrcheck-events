@@ -14,7 +14,9 @@ create table events.tickets
         constraint tickets_events_id_fk
             references events.events,
     quantity           int                                               not null,
-    available_quantity int                                               not null,
+    available_quantity int                                               not null
+        constraint unsigned_available_quantity
+            check ( available_quantity >= 0 ),
     cost               decimal(9, 2)                                     not null,
     price              decimal(9, 2)                                     not null,
     created            timestamp(0) default now()                        not null,

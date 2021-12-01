@@ -15,7 +15,9 @@ create table events.options
             references events.events,
     name               varchar(255),
     quantity           int                                               not null,
-    available_quantity int                                               not null,
+    available_quantity int                                               not null
+        constraint unsigned_available_quantity
+            check ( available_quantity >= 0 ),
     cost               decimal(9, 2)                                     not null,
     price              decimal(9, 2)                                     not null,
     created            timestamp(0) default now()                        not null,
