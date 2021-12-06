@@ -11,19 +11,19 @@ import ru.softdarom.qrcheck.events.model.dto.external.response.BookingInfoRespon
 import ru.softdarom.qrcheck.events.service.external.BookService;
 
 @Tag(name = "Internal Events", description = "Внутренний контроллер взаимодействия с events")
-@RestController(value = "internalEventController")
-@RequestMapping("/internal/events")
-public class BookingController {
+@RestController(value = "bookingEventController")
+@RequestMapping("/internal/booking/events/{eventId}")
+public class BookingEventController {
 
     private final BookService bookService;
 
     @Autowired
-    BookingController(BookService bookService) {
+    BookingEventController(BookService bookService) {
         this.bookService = bookService;
     }
 
     @ApiBookItems
-    @PostMapping("/{eventId}/book")
+    @PostMapping
     public ResponseEntity<BookingInfoResponse> bookedTicketsAndOptionForCreateOrder(
             @PathVariable Long eventId,
             @RequestBody CheckEventRequest request
@@ -32,7 +32,7 @@ public class BookingController {
     }
 
     @ApiUnbookedItems
-    @DeleteMapping("/{eventId}/unbooked")
+    @DeleteMapping
     public ResponseEntity<BookingInfoResponse> unbookedTicketsAndOptionForCreateOrder(
             @PathVariable Long eventId,
             @RequestBody CheckEventRequest request
