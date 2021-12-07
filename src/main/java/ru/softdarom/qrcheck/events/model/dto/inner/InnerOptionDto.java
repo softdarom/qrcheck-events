@@ -13,6 +13,8 @@ public class InnerOptionDto implements Bookable {
 
     private Long id;
 
+    private String name;
+
     private Integer quantity;
 
     private Integer availableQuantity;

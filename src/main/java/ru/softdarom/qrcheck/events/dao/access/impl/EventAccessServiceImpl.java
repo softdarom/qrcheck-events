@@ -14,6 +14,9 @@ import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j(topic = "ACCESS-SERVICE")
@@ -66,5 +69,13 @@ public class EventAccessServiceImpl implements EventAccessService {
     public Page<InnerEventDto> findAllByExternalUserId(Long externalUserId, Pageable pageable) {
         Assert.notNull(externalUserId, "The 'externalUserId' must not be null!");
         return eventRepository.findAllByExternalUserId(externalUserId, pageable).map(eventMapper::convertToDestination);
+    }
+
+    @Override
+    @Transactional
+    public Set<InnerEventDto> findAllByIds(Collection<Long> eventsId) {
+        return eventRepository.findAllById(eventsId).stream()
+                .map(eventMapper::convertToDestination)
+                .collect(Collectors.toSet());
     }
 }
