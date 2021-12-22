@@ -8,9 +8,9 @@ import ru.softdarom.qrcheck.events.dao.access.TicketAccessService;
 import ru.softdarom.qrcheck.events.dao.entity.TicketEntity;
 import ru.softdarom.qrcheck.events.dao.repository.TicketRepository;
 import ru.softdarom.qrcheck.events.exception.NotFoundException;
-import ru.softdarom.qrcheck.events.mapper.impl.InnerTicketDtoMapper;
+import ru.softdarom.qrcheck.events.mapper.impl.InternalTicketDtoMapper;
 import ru.softdarom.qrcheck.events.model.base.ActiveType;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerTicketDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalTicketDto;
 
 import javax.transaction.Transactional;
 import java.util.Set;
@@ -21,17 +21,17 @@ import java.util.stream.Collectors;
 public class TicketAccessServiceImpl implements TicketAccessService {
 
     private final TicketRepository ticketRepository;
-    private final InnerTicketDtoMapper ticketMapper;
+    private final InternalTicketDtoMapper ticketMapper;
 
     @Autowired
-    TicketAccessServiceImpl(TicketRepository ticketRepository, InnerTicketDtoMapper ticketMapper) {
+    TicketAccessServiceImpl(TicketRepository ticketRepository, InternalTicketDtoMapper ticketMapper) {
         this.ticketRepository = ticketRepository;
         this.ticketMapper = ticketMapper;
     }
 
     @Override
     @Transactional
-    public Set<InnerTicketDto> findByEventIdAndActiveEvent(Long eventId) {
+    public Set<InternalTicketDto> findByEventIdAndActiveEvent(Long eventId) {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
         return ticketRepository.findAllByEventIdAndEvent_Active(eventId, ActiveType.ENABLED).stream()
                 .map(ticketMapper::convertToDestination)

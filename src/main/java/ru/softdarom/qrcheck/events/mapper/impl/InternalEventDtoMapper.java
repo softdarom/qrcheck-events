@@ -13,8 +13,8 @@ import ru.softdarom.qrcheck.events.dao.repository.GenreRepository;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerTicketDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalTicketDto;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Component
-public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEventDto> {
+public class InternalEventDtoMapper extends AbstractDtoMapper<EventEntity, InternalEventDto> {
 
     private static final Long DEFAULT_OVER_HOURS = 2L;
     private static final BigDecimal DEFAULT_CURRENT_AMOUNT = BigDecimal.ZERO;
@@ -35,22 +35,22 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
     private final TaxProperties properties;
     private final GenreRepository genreRepository;
     private final EventTypeRepository eventTypeRepository;
-    private final InnerTicketDtoMapper innerTicketDtoMapper;
-    private final InnerOptionDtoMapper innerOptionDtoMapper;
-    private final InnerImageDtoMapper innerImageDtoMapper;
+    private final InternalTicketDtoMapper internalTicketDtoMapper;
+    private final InternalOptionDtoMapper internalOptionDtoMapper;
+    private final InternalImageDtoMapper internalImageDtoMapper;
 
-    protected InnerEventDtoMapper(ModelMapper modelMapper, TaxProperties properties,
-                                  GenreRepository genreRepository, EventTypeRepository eventTypeRepository,
-                                  InnerTicketDtoMapper innerTicketDtoMapper,
-                                  InnerOptionDtoMapper innerOptionDtoMapper,
-                                  InnerImageDtoMapper innerImageDtoMapper) {
+    protected InternalEventDtoMapper(ModelMapper modelMapper, TaxProperties properties,
+                                     GenreRepository genreRepository, EventTypeRepository eventTypeRepository,
+                                     InternalTicketDtoMapper internalTicketDtoMapper,
+                                     InternalOptionDtoMapper internalOptionDtoMapper,
+                                     InternalImageDtoMapper internalImageDtoMapper) {
         super(modelMapper);
         this.properties = properties;
         this.genreRepository = genreRepository;
         this.eventTypeRepository = eventTypeRepository;
-        this.innerTicketDtoMapper = innerTicketDtoMapper;
-        this.innerOptionDtoMapper = innerOptionDtoMapper;
-        this.innerImageDtoMapper = innerImageDtoMapper;
+        this.internalTicketDtoMapper = internalTicketDtoMapper;
+        this.internalOptionDtoMapper = internalOptionDtoMapper;
+        this.internalImageDtoMapper = internalImageDtoMapper;
     }
 
     @Override
@@ -69,17 +69,17 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
     }
 
     @Transactional
-    public class SourceConverter implements BiConsumer<InnerEventDto, EventEntity> {
+    public class SourceConverter implements BiConsumer<InternalEventDto, EventEntity> {
 
         @Override
-        public void accept(InnerEventDto destination, EventEntity source) {
+        public void accept(InternalEventDto destination, EventEntity source) {
             source.setExternalUserId((Long) getAuthentication().getPrincipal());
             source.setCurrentAmount(DEFAULT_CURRENT_AMOUNT);
             source.setDraft(Boolean.TRUE);
             updateSource(destination, source);
         }
 
-        private void updateSource(InnerEventDto destination, EventEntity source) {
+        private void updateSource(InternalEventDto destination, EventEntity source) {
             if (Objects.isNull(destination.getId())) {
                 return;
             }
@@ -91,7 +91,7 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
             source.setGenres(getGenres(destination.getGenres()));
         }
 
-        private BigDecimal calculateTotalAmount(Collection<InnerTicketDto> tickets) {
+        private BigDecimal calculateTotalAmount(Collection<InternalTicketDto> tickets) {
             return tickets.stream()
                     .map(it -> {
                         var quantityAsBigDecimal = BigDecimal.valueOf(it.getQuantity());
@@ -120,19 +120,19 @@ public class InnerEventDtoMapper extends AbstractDtoMapper<EventEntity, InnerEve
         }
     }
 
-    public class DestinationConverter implements BiConsumer<EventEntity, InnerEventDto> {
+    public class DestinationConverter implements BiConsumer<EventEntity, InternalEventDto> {
 
         @Override
-        public void accept(EventEntity source, InnerEventDto destination) {
+        public void accept(EventEntity source, InternalEventDto destination) {
             if (Objects.isNull(source.getDraft()) || Boolean.TRUE.equals(source.getDraft())) {
                 return;
             }
 
             destination.setType(source.getType().getName());
             destination.setGenres(source.getGenres().stream().map(GenreEntity::getName).collect(Collectors.toSet()));
-            destination.setTickets(innerTicketDtoMapper.convertToDestinations(source.getTickets()));
-            destination.setOptions(innerOptionDtoMapper.convertToDestinations(source.getOptions()));
-            destination.setImages(innerImageDtoMapper.convertToDestinations(source.getImages()));
+            destination.setTickets(internalTicketDtoMapper.convertToDestinations(source.getTickets()));
+            destination.setOptions(internalOptionDtoMapper.convertToDestinations(source.getOptions()));
+            destination.setImages(internalImageDtoMapper.convertToDestinations(source.getImages()));
         }
     }
 }

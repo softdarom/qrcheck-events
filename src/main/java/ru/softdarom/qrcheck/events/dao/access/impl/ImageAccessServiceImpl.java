@@ -8,8 +8,8 @@ import ru.softdarom.qrcheck.events.dao.entity.ImageEntity;
 import ru.softdarom.qrcheck.events.dao.repository.EventRepository;
 import ru.softdarom.qrcheck.events.dao.repository.ImageRepository;
 import ru.softdarom.qrcheck.events.exception.NotFoundException;
-import ru.softdarom.qrcheck.events.mapper.impl.InnerImageDtoMapper;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
+import ru.softdarom.qrcheck.events.mapper.impl.InternalImageDtoMapper;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalImageDto;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
@@ -20,28 +20,28 @@ public class ImageAccessServiceImpl implements ImageAccessService {
 
     private final ImageRepository imageRepository;
     private final EventRepository eventRepository;
-    private final InnerImageDtoMapper innerImageMapper;
+    private final InternalImageDtoMapper internalImageMapper;
 
     @Autowired
     ImageAccessServiceImpl(ImageRepository imageRepository,
                            EventRepository eventRepository,
-                           InnerImageDtoMapper innerImageMapper) {
+                           InternalImageDtoMapper internalImageMapper) {
         this.imageRepository = imageRepository;
         this.eventRepository = eventRepository;
-        this.innerImageMapper = innerImageMapper;
+        this.internalImageMapper = internalImageMapper;
     }
 
     @Transactional
     @Override
-    public Set<InnerImageDto> save(Long eventId, Collection<InnerImageDto> images) {
+    public Set<InternalImageDto> save(Long eventId, Collection<InternalImageDto> images) {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
         Assert.notNull(images, "The 'eventId' must not be null!");
         var event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Not found event by id: " + eventId));
-        var imageEntities = innerImageMapper.convertToSources(images);
+        var imageEntities = internalImageMapper.convertToSources(images);
         for (ImageEntity entity : imageEntities) {
             entity.setEvent(event);
         }
         var savedImages = imageRepository.saveAll(imageEntities);
-        return innerImageMapper.convertToDestinations(savedImages);
+        return internalImageMapper.convertToDestinations(savedImages);
     }
 }

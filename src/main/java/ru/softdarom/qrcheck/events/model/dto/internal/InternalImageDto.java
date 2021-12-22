@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.model.dto.inner;
+package ru.softdarom.qrcheck.events.model.dto.internal;
 
 import lombok.Data;
 import lombok.Generated;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Generated
-public class InnerImageDto {
+public class InternalImageDto {
 
     private Long id;
 
@@ -15,7 +15,7 @@ public class InnerImageDto {
 
     private Boolean cover;
 
-    public InnerImageDto(Long externalImageId, Boolean cover) {
+    public InternalImageDto(Long externalImageId, Boolean cover) {
         this.externalImageId = externalImageId;
         this.cover = cover;
     }

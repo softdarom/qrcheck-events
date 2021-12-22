@@ -3,21 +3,20 @@ package ru.softdarom.qrcheck.events.mapper.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.config.property.TaxProperties;
-import ru.softdarom.qrcheck.events.dao.entity.OptionEntity;
+import ru.softdarom.qrcheck.events.dao.entity.TicketEntity;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerOptionDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalTicketDto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.function.BiConsumer;
 
 @Component
-public class InnerOptionDtoMapper extends AbstractDtoMapper<OptionEntity, InnerOptionDto> {
-
+public class InternalTicketDtoMapper extends AbstractDtoMapper<TicketEntity, InternalTicketDto> {
     //ToDo https://softdarom.myjetbrains.com/youtrack/issue/QRC-55
     private final TaxProperties properties;
 
-    protected InnerOptionDtoMapper(ModelMapper modelMapper, TaxProperties properties) {
+    protected InternalTicketDtoMapper(ModelMapper modelMapper, TaxProperties properties) {
         super(modelMapper);
         this.properties = properties;
     }
@@ -26,33 +25,33 @@ public class InnerOptionDtoMapper extends AbstractDtoMapper<OptionEntity, InnerO
     protected void setupMapper() {
         modelMapper
                 .createTypeMap(sourceClass, destinationClass)
-                .addMappings(mapping -> mapping.skip(InnerOptionDto::setPrice))
+                .addMappings(mapping -> mapping.skip(InternalTicketDto::setPrice))
                 .setPostConverter(toDestinationConverter(new DestinationConverter()));
         modelMapper
                 .createTypeMap(destinationClass, sourceClass)
-                .addMappings(mapping -> mapping.map(InnerOptionDto::getQuantity, OptionEntity::setAvailableQuantity))
+                .addMappings(mapping -> mapping.map(InternalTicketDto::getQuantity, TicketEntity::setAvailableQuantity))
                 .setPostConverter(toSourceConverter(new SourceConverter()));
     }
 
-    public class SourceConverter implements BiConsumer<InnerOptionDto, OptionEntity> {
+    public static class DestinationConverter implements BiConsumer<TicketEntity, InternalTicketDto> {
 
         @Override
-        public void accept(InnerOptionDto destination, OptionEntity source) {
+        public void accept(TicketEntity source, InternalTicketDto destination) {
+            var scaledPrice = source.getPrice().setScale(0, RoundingMode.UP);
+            destination.setPrice(scaledPrice);
+        }
+    }
+
+    public class SourceConverter implements BiConsumer<InternalTicketDto, TicketEntity> {
+
+        @Override
+        public void accept(InternalTicketDto destination, TicketEntity source) {
             source.setPrice(calculateTotalAmount(destination.getCost()));
         }
 
         private BigDecimal calculateTotalAmount(BigDecimal cost) {
             var taxSum = cost.multiply(BigDecimal.valueOf(properties.getGeneralTax()));
             return cost.add(taxSum);
-        }
-    }
-
-    public static class DestinationConverter implements BiConsumer<OptionEntity, InnerOptionDto> {
-
-        @Override
-        public void accept(OptionEntity source, InnerOptionDto destination) {
-            var scaledPrice = source.getPrice().setScale(0, RoundingMode.UP);
-            destination.setPrice(scaledPrice);
         }
     }
 }

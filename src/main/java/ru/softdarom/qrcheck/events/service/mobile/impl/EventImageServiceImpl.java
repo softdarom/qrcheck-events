@@ -10,7 +10,7 @@ import ru.softdarom.qrcheck.events.dao.access.ImageAccessService;
 import ru.softdarom.qrcheck.events.model.base.ImageType;
 import ru.softdarom.qrcheck.events.model.dto.FileDto;
 import ru.softdarom.qrcheck.events.model.dto.ImageDto;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.FileResponse;
 import ru.softdarom.qrcheck.events.service.external.ContentHandlerExternalService;
@@ -44,10 +44,10 @@ public class EventImageServiceImpl implements EventImageService {
     @Override
     public EventResponse save(Long eventId, Collection<MultipartFile> images, ImageType imageType) {
         var files = executeExternalSaver(images);
-        var innerImages = files.stream()
-                .map(it -> new InnerImageDto(it.getId(), imageType.isCover()))
+        var internalImages = files.stream()
+                .map(it -> new InternalImageDto(it.getId(), imageType.isCover()))
                 .collect(Collectors.toSet());
-        var savedImages = new ImageBuilder(files, imageAccessService.save(eventId, innerImages)).build();
+        var savedImages = new ImageBuilder(files, imageAccessService.save(eventId, internalImages)).build();
         return buildResponse(eventId, imageType, savedImages);
     }
 

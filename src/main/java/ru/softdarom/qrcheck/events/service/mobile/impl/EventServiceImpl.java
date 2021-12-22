@@ -14,7 +14,7 @@ import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
 import ru.softdarom.qrcheck.events.mapper.impl.EventRequestMapper;
 import ru.softdarom.qrcheck.events.mapper.impl.EventResponseMapper;
 import ru.softdarom.qrcheck.events.model.base.ImageType;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.service.mobile.EventImageService;
@@ -46,7 +46,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventResponse preSave() {
-        var savedEvent = eventAccessService.save(new InnerEventDto());
+        var savedEvent = eventAccessService.save(new InternalEventDto());
         LOGGER.info("Pre-saving a new event for user: {}", savedEvent.getExternalUserId());
         LOGGER.info("The new event was saved, id: {}", savedEvent.getId());
         return new EventResponse(savedEvent.getId());
@@ -57,8 +57,8 @@ public class EventServiceImpl implements EventService {
         Assert.notNull(request, "The 'request' must not be null!");
         Assert.isTrue(eventAccessService.exist(request.getId()), "A event must be created earlier!");
         LOGGER.info("Full information will be saved for an event {}", request.getId());
-        var innerDto = eventRequestMapper.convertToDestination(request);
-        var savedEvent = eventAccessService.save(innerDto);
+        var internalDto = eventRequestMapper.convertToDestination(request);
+        var savedEvent = eventAccessService.save(internalDto);
         return eventResponseMapper.convertToDestination(savedEvent);
     }
 

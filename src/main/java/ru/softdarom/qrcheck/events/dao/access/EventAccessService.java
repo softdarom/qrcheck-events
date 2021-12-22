@@ -2,22 +2,22 @@ package ru.softdarom.qrcheck.events.dao.access;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerEventDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
 
 import java.util.Collection;
 import java.util.Set;
 
 public interface EventAccessService {
 
-    InnerEventDto save(InnerEventDto dto);
+    InternalEventDto save(InternalEventDto dto);
 
     boolean exist(Long id);
 
-    InnerEventDto findById(Long id);
+    InternalEventDto findById(Long id);
 
-    Page<InnerEventDto> findAllActual(Pageable pageable);
+    Page<InternalEventDto> findAllActual(Pageable pageable);
 
-    Page<InnerEventDto> findAllByExternalUserId(Long externalUserId, Pageable pageable);
+    Page<InternalEventDto> findAllByExternalUserId(Long externalUserId, Pageable pageable);
 
-    Set<InnerEventDto> findAllByIds(Collection<Long> eventsId);
+    Set<InternalEventDto> findAllByIds(Collection<Long> eventsId);
 }
