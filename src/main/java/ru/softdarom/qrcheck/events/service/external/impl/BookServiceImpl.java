@@ -9,7 +9,7 @@ import ru.softdarom.qrcheck.events.dao.access.TicketAccessService;
 import ru.softdarom.qrcheck.events.model.dto.external.BookingItemExternalDto;
 import ru.softdarom.qrcheck.events.model.dto.external.request.CheckEventRequest;
 import ru.softdarom.qrcheck.events.model.dto.external.response.BookingInfoResponse;
-import ru.softdarom.qrcheck.events.model.dto.inner.Bookable;
+import ru.softdarom.qrcheck.events.model.dto.internal.Bookable;
 import ru.softdarom.qrcheck.events.service.external.AbstractBookService;
 
 import java.util.function.BiPredicate;

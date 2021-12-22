@@ -4,12 +4,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.dao.entity.ImageEntity;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerImageDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalImageDto;
 
 @Component
-public class InnerImageDtoMapper extends AbstractDtoMapper<ImageEntity, InnerImageDto> {
+public class InternalImageDtoMapper extends AbstractDtoMapper<ImageEntity, InternalImageDto> {
 
-    protected InnerImageDtoMapper(ModelMapper modelMapper) {
+    protected InternalImageDtoMapper(ModelMapper modelMapper) {
         super(modelMapper);
     }
 

@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.model.dto.inner;
+package ru.softdarom.qrcheck.events.model.dto.internal;
 
 import ru.softdarom.qrcheck.events.model.base.BookType;
 

@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.model.dto.TicketDto;
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerTicketDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalTicketDto;
 
 @Component
 @Slf4j(topic = "MAPPER")
-public class TicketResponseMapper extends AbstractDtoMapper<InnerTicketDto, TicketDto> {
+public class TicketResponseMapper extends AbstractDtoMapper<InternalTicketDto, TicketDto> {
 
     @Autowired
     TicketResponseMapper(ModelMapper modelMapper) {

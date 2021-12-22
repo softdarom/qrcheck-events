@@ -1,12 +1,12 @@
 package ru.softdarom.qrcheck.events.dao.access;
 
-import ru.softdarom.qrcheck.events.model.dto.inner.InnerTicketDto;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalTicketDto;
 
 import java.util.Set;
 
 public interface TicketAccessService {
 
-    Set<InnerTicketDto> findByEventIdAndActiveEvent(Long eventId);
+    Set<InternalTicketDto> findByEventIdAndActiveEvent(Long eventId);
 
     Boolean bookTicket(Long optionId, Integer quantity);
 

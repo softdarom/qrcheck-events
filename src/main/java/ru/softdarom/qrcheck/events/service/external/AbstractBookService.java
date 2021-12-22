@@ -2,7 +2,7 @@ package ru.softdarom.qrcheck.events.service.external;
 
 import ru.softdarom.qrcheck.events.exception.InvalidBookOperation;
 import ru.softdarom.qrcheck.events.model.dto.external.BookedExternalDto;
-import ru.softdarom.qrcheck.events.model.dto.inner.Bookable;
+import ru.softdarom.qrcheck.events.model.dto.internal.Bookable;
 
 import java.util.Collection;
 import java.util.Map;

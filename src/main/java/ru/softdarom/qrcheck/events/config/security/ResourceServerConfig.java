@@ -46,7 +46,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .anonymous()
                     .disable()
                 .authorizeRequests(request ->
-                        request.antMatchers("/inner/**").hasRole("API_KEY")
+                        request.antMatchers("/internal/**").hasRole("API_KEY")
                                 .antMatchers("/mobile/**").authenticated()
                 )
                 .addFilter(apiKeyAuthorizationFilter)

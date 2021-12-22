@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.model.dto.inner;
+package ru.softdarom.qrcheck.events.model.dto.internal;
 
 import lombok.Data;
 import lombok.Generated;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @Generated
-public class InnerOptionDto implements Bookable {
+public class InternalOptionDto implements Bookable {
 
     private Long id;
 

@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.model.dto.inner;
+package ru.softdarom.qrcheck.events.model.dto.internal;
 
 import lombok.Data;
 import lombok.Generated;
@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @Data
 @Generated
-public class InnerEventDto {
+public class InternalEventDto {
 
     private Long id;
 
@@ -36,15 +36,15 @@ public class InnerEventDto {
 
     private Collection<GenreType> genres;
 
-    private InnerAddressDto address;
+    private InternalAddressDto address;
 
     private EventType type;
 
-    private Collection<InnerImageDto> images;
+    private Collection<InternalImageDto> images;
 
-    private Collection<InnerOptionDto> options;
+    private Collection<InternalOptionDto> options;
 
-    private Collection<InnerTicketDto> tickets;
+    private Collection<InternalTicketDto> tickets;
 
     @Override
     public String toString() {

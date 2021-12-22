@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.model.dto.inner;
+package ru.softdarom.qrcheck.events.model.dto.internal;
 
 import lombok.Data;
 import lombok.Generated;
@@ -6,7 +6,7 @@ import ru.softdarom.qrcheck.events.util.JsonHelper;
 
 @Data
 @Generated
-public class InnerAddressDto {
+public class InternalAddressDto {
 
     private Long id;
 
