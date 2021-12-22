@@ -22,3 +22,11 @@ comment on column events.addresses.address is 'Full address of event';
 comment on column events.addresses.created is 'Time of created';
 comment on column events.addresses.updated is 'Time of the last updated';
 comment on column events.addresses.active is 'A soft deleted flag: true - active, false - deleted';
+
+--changeset eekovtun:1.0.0/ddl/addresses_audit context:!local
+--rollback drop trigger addresses_audit on events.addresses;
+create trigger addresses_audit
+    after insert or update or delete
+    on events.addresses
+    for each row
+execute procedure audit.audit_func();

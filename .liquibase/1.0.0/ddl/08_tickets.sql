@@ -34,3 +34,11 @@ comment on column events.tickets.price is 'Value with tax';
 comment on column events.tickets.created is 'Time of created';
 comment on column events.tickets.updated is 'Time of the last updated';
 comment on column events.tickets.active is 'A soft deleted flag: true - active, false - deleted';
+
+--changeset eekovtun:1.0.0/ddl/tickets_audit context:!local
+--rollback drop trigger tickets_audit on events.tickets;
+create trigger tickets_audit
+    after insert or update or delete
+    on events.tickets
+    for each row
+execute procedure audit.audit_func();
