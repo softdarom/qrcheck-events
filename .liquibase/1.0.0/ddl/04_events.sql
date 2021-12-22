@@ -45,3 +45,11 @@ comment on column events.events.draft is 'Is it draft? If yes, then will be true
 comment on column events.events.created is 'Time of created';
 comment on column events.events.updated is 'Time of the last updated';
 comment on column events.events.active is 'A soft deleted flag: true - active, false - deleted';
+
+--changeset eekovtun:1.0.0/ddl/events_audit context:!local
+--rollback drop trigger events_audit on events.events;
+create trigger events_audit
+    after insert or update or delete
+    on events.events
+    for each row
+execute procedure audit.audit_func();

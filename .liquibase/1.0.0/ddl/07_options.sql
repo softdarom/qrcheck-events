@@ -36,3 +36,11 @@ comment on column events.options.price is 'Value with tax';
 comment on column events.options.created is 'Time of created';
 comment on column events.options.updated is 'Time of the last updated';
 comment on column events.options.active is 'A soft deleted flag: true - active, false - deleted';
+
+--changeset eekovtun:1.0.0/ddl/options_audit context:!local
+--rollback drop trigger options_audit on events.options;
+create trigger options_audit
+    after insert or update or delete
+    on events.options
+    for each row
+execute procedure audit.audit_func();

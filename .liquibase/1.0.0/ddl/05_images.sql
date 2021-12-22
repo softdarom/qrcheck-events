@@ -28,3 +28,11 @@ comment on column events.images.external_image_id is 'Is cover? If yes, then wil
 comment on column events.images.created is 'Time of created';
 comment on column events.images.updated is 'Time of the last updated';
 comment on column events.images.active is 'A soft deleted flag: true - active, false - deleted';
+
+--changeset eekovtun:1.0.0/ddl/images_audit context:!local
+--rollback drop trigger images_audit on events.images;
+create trigger images_audit
+    after insert or update or delete
+    on events.images
+    for each row
+execute procedure audit.audit_func();

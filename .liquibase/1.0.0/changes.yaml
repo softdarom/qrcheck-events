@@ -29,7 +29,7 @@ databaseChangeLog:
       file: ddl/07_options.sql
       relativeToChangelogFile: true
   - include:
-      file: ddl/08_ticket.sql
+      file: ddl/08_tickets.sql
       relativeToChangelogFile: true
 
   - include:
