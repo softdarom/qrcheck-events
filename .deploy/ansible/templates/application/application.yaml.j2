@@ -58,6 +58,8 @@ outbound:
   feign:
     content-handler:
       host: "http://content-handler:8000"
+    checkman-handler:
+      host: "http://checkman-handler:8000"
 
 logging:
   config: config/logback.groovy

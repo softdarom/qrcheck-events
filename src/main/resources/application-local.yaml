@@ -60,6 +60,8 @@ outbound:
   feign:
     content-handler:
       host: "${CONTENT_HANDLER_URL}"
+    checkman-handler:
+      host: "${CHECKMAN_HANDLER_URL}"
 
 logbook:
   strategy: body-only-if-status-at-least
