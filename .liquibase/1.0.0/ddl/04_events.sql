@@ -33,9 +33,10 @@ create table events.events
 comment on table events.events is 'Table stores events';
 comment on column events.events.id is 'Primary key of the table';
 comment on column events.events.address_id is 'Reference on address id';
-comment on column events.events.address_id is 'User primary key of the user-handler service';
+comment on column events.events.event_type_id is 'Reference on event type id';
+comment on column events.events.external_user_id is 'User owner primary key of the user-handler service';
 comment on column events.events.name is 'Event name';
-comment on column events.events.name is 'Event age restrictions';
+comment on column events.events.age_restrictions is 'Event age restrictions';
 comment on column events.events.description is 'Description of event';
 comment on column events.events.start_date_time is 'Time and date of start event';
 comment on column events.events.total_amount is 'Total amount for the event';
