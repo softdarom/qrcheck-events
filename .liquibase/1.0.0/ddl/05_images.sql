@@ -24,7 +24,7 @@ comment on table events.images is 'Table stores images';
 comment on column events.images.id is 'Primary key of the table';
 comment on column events.images.event_id is 'Reference on event id';
 comment on column events.images.external_image_id is 'Image primary key of an external content service';
-comment on column events.images.external_image_id is 'Is cover? If yes, then will be true and conversely';
+comment on column events.images.cover is 'Is cover? If yes, then will be true and conversely';
 comment on column events.images.created is 'Time of created';
 comment on column events.images.updated is 'Time of the last updated';
 comment on column events.images.active is 'A soft deleted flag: true - active, false - deleted';
