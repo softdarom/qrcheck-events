@@ -48,7 +48,7 @@ ext {
     set("swaggerVersion", "1.5.9")
     set("logstashVersion", "5.2")
     set("qrcheckSecurityStarterVersion", "1.2.0")
-    set("logbackVersion", "1.2.3")
+    set("logbackVersion", "1.3.0-alpha12")
     set("postgresVersion", "42.2.5")
     set("snakeyamlVersion", "1.29")
     set("junitVersion", "5.4.2")
@@ -81,6 +81,7 @@ dependencies {
     api "org.springdoc:springdoc-openapi-ui:${swaggerVersion}"
     api "net.logstash.logback:logstash-logback-encoder:${logstashVersion}"
     api "ru.softdarom.security:qrcheck-security-starter:${qrcheckSecurityStarterVersion}"
+    api "io.github.openfeign:feign-okhttp:10.2.0"
 
     runtimeOnly "org.codehaus.groovy:groovy-all:${groovyVersion}"
     runtimeOnly "org.postgresql:postgresql:${postgresVersion}"

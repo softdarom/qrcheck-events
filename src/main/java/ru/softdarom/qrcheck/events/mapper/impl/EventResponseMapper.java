@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.builder.ImageBuilder;
+import ru.softdarom.qrcheck.events.client.ContentHandlerExternalService;
 import ru.softdarom.qrcheck.events.mapper.AbstractDtoMapper;
 import ru.softdarom.qrcheck.events.mapper.Checker;
 import ru.softdarom.qrcheck.events.model.dto.PeriodDto;
@@ -11,7 +12,6 @@ import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
 import ru.softdarom.qrcheck.events.model.dto.internal.InternalImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.FileResponse;
-import ru.softdarom.qrcheck.events.service.external.ContentHandlerExternalService;
 import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
 
 import java.time.LocalDateTime;
