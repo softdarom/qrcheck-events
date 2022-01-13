@@ -41,7 +41,6 @@ public class EventController {
         this.ticketService = ticketService;
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'PROMOTER', 'CHECKMAN')")
     @ApiGetAllEvents
     @PageableAsQueryParam
     @GetMapping
@@ -50,7 +49,6 @@ public class EventController {
         return ResponseEntity.ok(eventService.getAll(pageable));
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'PROMOTER', 'CHECKMAN')")
     @ApiGetEvent
     @GetMapping("/{eventId}")
     public ResponseEntity<EventResponse> get(@RequestHeader(value = "X-Application-Version") String version,
@@ -58,14 +56,14 @@ public class EventController {
         return ResponseEntity.ok(eventService.getById(eventId));
     }
 
-    @PreAuthorize("hasRole('PROMOTER')")
+    @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiPreSaveEvent
     @PostMapping
     public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
         return ResponseEntity.ok(eventService.preSave());
     }
 
-    @PreAuthorize("hasRole('PROMOTER')")
+    @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiSaveEvent
     @PutMapping
     public ResponseEntity<EventResponse> saveEvent(@RequestHeader(value = "X-Application-Version") String version,
@@ -73,7 +71,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.endSave(request));
     }
 
-    @PreAuthorize("hasRole('PROMOTER')")
+    @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiSaveEventImages
     @PostMapping(value = "/images/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EventResponse> saveEventImages(@RequestHeader(value = "X-Application-Version") String version,
@@ -82,7 +80,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.saveImages(eventId, images, ImageType.PHOTOGRAPHY));
     }
 
-    @PreAuthorize("hasRole('PROMOTER')")
+    @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiSaveEventCover
     @PostMapping(value = "/images/cover/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EventResponse> saveEventCover(@RequestHeader(value = "X-Application-Version") String version,
@@ -97,7 +95,6 @@ public class EventController {
         return ResponseEntity.ok(EnumSet.allOf(EventType.class));
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'PROMOTER', 'CHECKMAN')")
     @ApiGetAvailableTickets
     @GetMapping("/{eventId}/tickets/available")
     public ResponseEntity<TicketResponse> getAvailableTickets(@RequestHeader(value = "X-Application-Version") String version,

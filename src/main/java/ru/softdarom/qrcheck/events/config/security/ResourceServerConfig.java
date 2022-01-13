@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import ru.softdarom.qrcheck.events.model.base.RoleType;
 
 @Configuration
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
@@ -46,8 +47,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .anonymous()
                     .disable()
                 .authorizeRequests(request ->
-                        request.antMatchers("/internal/**").hasRole("API_KEY")
-                                .antMatchers("/mobile/**").authenticated()
+                        request.antMatchers("/internal/**").hasAnyRole(RoleType.getInternalAbilityRoles())
+                                .antMatchers("/mobile/**").hasAnyRole(RoleType.getMobileAbilityRoles())
                 )
                 .addFilter(apiKeyAuthorizationFilter)
                 .authenticationProvider(authenticationProvider)

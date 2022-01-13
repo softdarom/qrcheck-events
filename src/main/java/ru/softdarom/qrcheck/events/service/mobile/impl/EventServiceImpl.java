@@ -4,9 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,11 +15,10 @@ import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.service.mobile.EventImageService;
+import ru.softdarom.qrcheck.events.service.mobile.EventReflectorService;
 import ru.softdarom.qrcheck.events.service.mobile.EventService;
 
 import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j(topic = "SERVICE")
@@ -32,16 +28,19 @@ public class EventServiceImpl implements EventService {
     private final EventRequestMapper eventRequestMapper;
     private final EventResponseMapper eventResponseMapper;
     private final EventImageService eventImageService;
+    private final EventReflectorService eventReflectorService;
 
     @Autowired
     EventServiceImpl(EventAccessService eventAccessService,
                      EventRequestMapper eventRequestMapper,
                      EventResponseMapper eventResponseMapper,
-                     EventImageService eventImageService) {
+                     EventImageService eventImageService,
+                     EventReflectorService eventReflectorService) {
         this.eventAccessService = eventAccessService;
         this.eventRequestMapper = eventRequestMapper;
         this.eventResponseMapper = eventResponseMapper;
         this.eventImageService = eventImageService;
+        this.eventReflectorService = eventReflectorService;
     }
 
     @Override
@@ -71,25 +70,9 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<EventResponse> getAll(Pageable pageable) {
-        var authentication = getAuthentication();
-        var externalUserId = (Long) authentication.getPrincipal();
-        var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-        LOGGER.info("Getting all events for a user (id: {}) has roles: {}", externalUserId, authentication.getAuthorities());
-        return getAllByRole(pageable, externalUserId, authorities);
-    }
-
-    private Page<EventResponse> getAllByRole(Pageable pageable, Long externalUserId, Set<String> authorities) {
-        var commonUser = authorities.contains("ROLE_USER") || authorities.contains("ROLE_CHECKMAN");
-        var promoter = authorities.contains("ROLE_PROMOTER");
-        if (commonUser) {
-            LOGGER.info("A client is not promoter: all events will be unloaded");
-            return eventAccessService.findAllActual(pageable).map(eventResponseMapper::convertToDestination);
-        } else if (promoter) {
-            LOGGER.info("It is promoter. Events will be unloaded which were created the user");
-            return eventAccessService.findAllByExternalUserId(externalUserId, pageable).map(eventResponseMapper::convertToDestination);
-        } else {
-            throw new UnsupportedOperationException("Unknown roles: " + authorities);
-        }
+        Assert.notNull(pageable, "The 'pageable' must not ne null!");
+        LOGGER.info("Getting all events");
+        return eventReflectorService.getAllByRole(pageable).map(eventResponseMapper::convertToDestination);
     }
 
     @Override
@@ -99,9 +82,5 @@ public class EventServiceImpl implements EventService {
         Assert.notNull(imageType, "The 'imageType' must not be null!");
         LOGGER.info("Saving an image has a type: {}", imageType);
         return eventImageService.save(eventId, images, imageType);
-    }
-
-    private Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
     }
 }
