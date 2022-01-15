@@ -9,7 +9,6 @@ import ru.softdarom.qrcheck.events.model.dto.external.response.EventInfoResponse
 import ru.softdarom.qrcheck.events.service.external.ExternalEventService;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class ExternalEventServiceImpl implements ExternalEventService {
 
     @Override
     public EventInfoResponse getEventInfo(Long eventId) {
-        return Optional.ofNullable(getEventsInfo(Set.of(eventId)).iterator().next())
+        return getEventsInfo(Set.of(eventId)).stream().findAny()
                 .orElseThrow(() -> new NotFoundException("Not found event with id: " + eventId));
     }
 }
