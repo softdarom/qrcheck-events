@@ -139,3 +139,11 @@ liquibase {
         }
     }
 }
+
+task liquibaseChangelogArchive(type: Zip) {
+    from "$buildDir/resources/main/liquibase/"
+    archiveName "sql.zip"
+    destinationDirectory.set(file("$buildDir/liquibase"))
+}
+
+tasks.getByName("assemble").finalizedBy("liquibaseChangelogArchive")
