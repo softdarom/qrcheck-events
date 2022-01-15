@@ -1,8 +1,8 @@
 package ru.softdarom.qrcheck.events.builder;
 
 
-import liquibase.util.file.FilenameUtils;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import ru.softdarom.qrcheck.events.model.dto.FileDto;
 import ru.softdarom.qrcheck.events.model.dto.ImageDto;
 import ru.softdarom.qrcheck.events.model.dto.internal.InternalImageDto;
