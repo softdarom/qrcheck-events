@@ -20,6 +20,10 @@ server:
   tomcat:
     mbeanregistry:
       enabled: {{ application.tomcat.mbeanregistry.enabled | default('true') | lower }}
+  servlet:
+    encoding:
+      charset: {{ application.servlet.encoding.charset | default('UTF-8') }}
+      force-response: {{ application.servlet.encoding.force_response | default('true') | lower }}
 
 management:
   server:
