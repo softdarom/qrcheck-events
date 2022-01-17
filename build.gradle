@@ -69,6 +69,7 @@ dependencies {
 
     runtimeOnly "org.postgresql:postgresql:42.3.1"
     runtimeOnly "org.codehaus.groovy:groovy:3.0.9"
+    runtimeOnly "org.codehaus.groovy:groovy-json:3.0.9"
 
     compileOnly "org.projectlombok:lombok"
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
@@ -142,8 +143,14 @@ liquibase {
 
 task liquibaseChangelogArchive(type: Zip) {
     from "$buildDir/resources/main/liquibase/"
-    archiveName "sql.zip"
-    destinationDirectory.set(file("$buildDir/liquibase"))
+    archiveName "liquibase.zip"
+    destinationDirectory.set(file("$buildDir"))
 }
 
-tasks.getByName("assemble").finalizedBy("liquibaseChangelogArchive")
+task deployConfigsArchive(type: Zip) {
+    from ".deploy/"
+    archiveName "deploy.zip"
+    destinationDirectory.set(file("$buildDir"))
+}
+
+tasks.getByName("assemble").finalizedBy("liquibaseChangelogArchive", "deployConfigsArchive")
