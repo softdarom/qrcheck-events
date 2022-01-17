@@ -121,8 +121,9 @@ test {
 
 
 liquibase {
+    def propertiesPath = System.getenv("LIQUIBASE_PROPERTIES_PATH") ?: ".deploy/ansible/configs/liquibase/liquibase.properties"
     def properties = new Properties()
-    def propertyFile = file(".deploy/ansible/configs/liquibase/liquibase.properties")
+    def propertyFile = file("${propertiesPath}")
 
     if (propertyFile.exists()) {
         propertyFile.withInputStream { properties.load(it) }
