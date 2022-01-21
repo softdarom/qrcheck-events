@@ -49,6 +49,10 @@ spring:
         token:
           outgoing: ${API_KEY_OUTGOING}
           incoming: ${API_KEY_INCOMING}
+  servlet:
+    multipart:
+      max-file-size: {{ spring.servlet.multipart.max_file_size | default('15MB') }}
+      max-request-size: {{ spring.servlet.multipart.max_request_size | default('300MB') }}
 
 springdoc:
   api-docs:

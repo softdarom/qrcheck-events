@@ -52,6 +52,10 @@ spring:
       oauth2:
         auth-server:
           host: ${AUTH_HANDLER_URL}
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 300MB
 
 springdoc:
   api-docs:
