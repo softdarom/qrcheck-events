@@ -9,4 +9,5 @@ public interface ImageAccessService {
 
     Set<InternalImageDto> save(Long eventId, Collection<InternalImageDto> images);
 
+    void deleteAll(Collection<Long> imageIds);
 }

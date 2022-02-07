@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.builder.ImageBuilder;
 import ru.softdarom.qrcheck.events.client.ContentHandlerExternalService;
@@ -43,12 +44,21 @@ public class EventImageServiceImpl implements EventImageService {
 
     @Override
     public EventResponse save(Long eventId, Collection<MultipartFile> images, ImageType imageType) {
+        Assert.notNull(eventId, "The 'eventId' must not be null!");
+        Assert.notNull(images, "The 'images' must not be null!");
+        Assert.notNull(imageType, "The 'imageType' must not be null!");
         var files = executeExternalSaver(images);
         var internalImages = files.stream()
                 .map(it -> new InternalImageDto(it.getId(), imageType.isCover()))
                 .collect(Collectors.toSet());
         var savedImages = new ImageBuilder(files, imageAccessService.save(eventId, internalImages)).build();
         return buildResponse(eventId, imageType, savedImages);
+    }
+
+    @Override
+    public void removeAll(Collection<Long> imageIds) {
+        Assert.notEmpty(imageIds, "The 'imageIds' must not be null or empty!");
+        imageAccessService.deleteAll(imageIds);
     }
 
     private EventResponse buildResponse(Long eventId, ImageType imageType, Collection<ImageDto> savedImages) {

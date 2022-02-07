@@ -10,4 +10,5 @@ public interface EventImageService {
 
     EventResponse save(Long eventId, Collection<MultipartFile> images, ImageType imageType);
 
+    void removeAll(Collection<Long> imageIds);
 }

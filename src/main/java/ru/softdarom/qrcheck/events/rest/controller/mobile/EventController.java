@@ -21,6 +21,7 @@ import ru.softdarom.qrcheck.events.service.mobile.TicketService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
@@ -87,6 +88,15 @@ public class EventController {
                                                         @PathVariable("eventId") Long eventId,
                                                         @RequestParam("cover") MultipartFile cover) {
         return ResponseEntity.ok(eventService.saveImages(eventId, Set.of(cover), ImageType.COVER));
+    }
+
+    @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
+    @ApiDeteleEventImage
+    @DeleteMapping(value = "/images/{imageIds}")
+    public ResponseEntity<Void> deleteEventCover(@RequestHeader(value = "X-Application-Version") String version,
+                                                 @NotEmpty @PathVariable("imageIds") Collection<Long> imageIds) {
+        eventService.deleteImages(imageIds);
+        return ResponseEntity.ok().build();
     }
 
     @ApiGetAllEventTypes

@@ -20,4 +20,6 @@ public interface EventService {
     Page<EventResponse> getAll(Pageable pageable);
 
     EventResponse saveImages(Long eventId, Collection<MultipartFile> images, ImageType imageType);
+
+    void deleteImages(Collection<Long> imageIds);
 }
