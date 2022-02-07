@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,7 @@ import ru.softdarom.qrcheck.events.service.mobile.EventReflectorService;
 import ru.softdarom.qrcheck.events.service.mobile.EventService;
 
 import java.util.Collection;
+import java.util.Objects;
 
 @Service
 @Slf4j(topic = "SERVICE")
@@ -55,6 +58,7 @@ public class EventServiceImpl implements EventService {
     public EventResponse endSave(EventRequest request) {
         Assert.notNull(request, "The 'request' must not be null!");
         Assert.isTrue(eventAccessService.exist(request.getId()), "A event must be created earlier!");
+        checkEditAccess(request.getId());
         LOGGER.info("Full information will be saved for an event {}", request.getId());
         var internalDto = eventRequestMapper.convertToDestination(request);
         var savedEvent = eventAccessService.save(internalDto);
@@ -82,5 +86,18 @@ public class EventServiceImpl implements EventService {
         Assert.notNull(imageType, "The 'imageType' must not be null!");
         LOGGER.info("Saving an image has a type: {}", imageType);
         return eventImageService.save(eventId, images, imageType);
+    }
+
+    private void checkEditAccess(Long eventId) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var currentUserId = (Long) authentication.getPrincipal();
+        LOGGER.info("Checking edit access an event: {} for an user: {}", eventId, currentUserId);
+
+        var idHasAccess = eventAccessService.findById(eventId).getExternalUserId();
+        if (Objects.equals(currentUserId, idHasAccess)) {
+            LOGGER.debug("Ids a promoter who created an event and the current user are equal. Do nothing. Return.");
+            return;
+        }
+        throw new AccessDeniedException("The event was created another promoter!");
     }
 }
