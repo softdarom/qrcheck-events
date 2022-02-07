@@ -1,8 +1,8 @@
 package ru.softdarom.qrcheck.events.dao.access.impl;
 
-import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.softdarom.qrcheck.events.dao.access.ImageAccessService;
 import ru.softdarom.qrcheck.events.dao.entity.ImageEntity;
 import ru.softdarom.qrcheck.events.dao.repository.EventRepository;
@@ -35,7 +35,7 @@ public class ImageAccessServiceImpl implements ImageAccessService {
     @Override
     public Set<InternalImageDto> save(Long eventId, Collection<InternalImageDto> images) {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
-        Assert.notNull(images, "The 'eventId' must not be null!");
+        Assert.notEmpty(images, "The 'images' must not be null or empty!");
         var event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Not found event by id: " + eventId));
         var imageEntities = internalImageMapper.convertToSources(images);
         for (ImageEntity entity : imageEntities) {
@@ -43,5 +43,12 @@ public class ImageAccessServiceImpl implements ImageAccessService {
         }
         var savedImages = imageRepository.saveAll(imageEntities);
         return internalImageMapper.convertToDestinations(savedImages);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAll(Collection<Long> imageIds) {
+        Assert.notEmpty(imageIds, "The 'imageIds' must not be null or empty!");
+        imageRepository.deleteAllByIdIn(imageIds);
     }
 }

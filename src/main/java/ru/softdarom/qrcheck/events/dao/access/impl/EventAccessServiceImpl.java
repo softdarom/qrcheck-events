@@ -73,7 +73,7 @@ public class EventAccessServiceImpl implements EventAccessService {
 
     @Override
     @Transactional
-    public Page<InternalEventDto> findAllByExternalUserIds(Set<Long> externalUserIds, Pageable pageable) {
+    public Page<InternalEventDto> findAllByExternalUserIds(Collection<Long> externalUserIds, Pageable pageable) {
         Assert.notEmpty(externalUserIds, "The 'externalUserIds' must not be empty or null!");
         return eventRepository.findAllByExternalUserIdIn(externalUserIds, pageable).map(eventMapper::convertToDestination);
     }
@@ -81,8 +81,16 @@ public class EventAccessServiceImpl implements EventAccessService {
     @Override
     @Transactional
     public Set<InternalEventDto> findAllByIds(Collection<Long> eventsId) {
+        Assert.notEmpty(eventsId, "The 'eventsId' must not be empty or null!");
         return eventRepository.findAllById(eventsId).stream()
                 .map(eventMapper::convertToDestination)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public Set<Long> findExternalUserIds(Collection<Long> imageIds) {
+        Assert.notEmpty(imageIds, "The 'imageIds' must not be empty or null!");
+        return eventRepository.findAllExternalUserIds(imageIds);
     }
 }

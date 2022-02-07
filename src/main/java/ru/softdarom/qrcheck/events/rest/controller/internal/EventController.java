@@ -9,6 +9,7 @@ import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiGetEventsByIds;
 import ru.softdarom.qrcheck.events.model.dto.external.response.EventInfoResponse;
 import ru.softdarom.qrcheck.events.service.external.ExternalEventService;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Tag(name = "Internal Events", description = "Внутренний контроллер взаимодействия с events")
@@ -25,7 +26,7 @@ public class EventController {
 
     @ApiGetEventsByIds
     @GetMapping
-    public ResponseEntity<Set<EventInfoResponse>> getEventsInfo(@RequestParam Set<Long> eventsId) {
+    public ResponseEntity<Set<EventInfoResponse>> getEventsInfo(@RequestParam Collection<Long> eventsId) {
         return ResponseEntity.ok(eventService.getEventsInfo(eventsId));
     }
 

@@ -22,6 +22,7 @@ import ru.softdarom.qrcheck.events.service.mobile.EventService;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @Slf4j(topic = "SERVICE")
@@ -58,7 +59,7 @@ public class EventServiceImpl implements EventService {
     public EventResponse endSave(EventRequest request) {
         Assert.notNull(request, "The 'request' must not be null!");
         Assert.isTrue(eventAccessService.exist(request.getId()), "A event must be created earlier!");
-        checkEditAccess(request.getId());
+        checkEditAccess(eventAccessService.findById(request.getId()).getExternalUserId());
         LOGGER.info("Full information will be saved for an event {}", request.getId());
         var internalDto = eventRequestMapper.convertToDestination(request);
         var savedEvent = eventAccessService.save(internalDto);
@@ -84,20 +85,33 @@ public class EventServiceImpl implements EventService {
         Assert.notNull(eventId, "The 'eventId' must not be null!");
         Assert.notNull(images, "The 'images' must not be null!");
         Assert.notNull(imageType, "The 'imageType' must not be null!");
+        Assert.isTrue(eventAccessService.exist(eventId), "A event must be created earlier!");
+        checkEditAccess(eventAccessService.findById(eventId).getExternalUserId());
         LOGGER.info("Saving an image has a type: {}", imageType);
         return eventImageService.save(eventId, images, imageType);
     }
 
-    private void checkEditAccess(Long eventId) {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        var currentUserId = (Long) authentication.getPrincipal();
-        LOGGER.info("Checking edit access an event: {} for an user: {}", eventId, currentUserId);
+    @Override
+    public void deleteImages(Collection<Long> imageIds) {
+        Assert.notEmpty(imageIds, "The 'imageIds' must not be null or empty!");
+        checkDeleteAccess(eventAccessService.findExternalUserIds(imageIds));
+        LOGGER.info("Deleting images: {}", imageIds);
+        eventImageService.removeAll(imageIds);
+    }
 
-        var idHasAccess = eventAccessService.findById(eventId).getExternalUserId();
-        if (Objects.equals(currentUserId, idHasAccess)) {
-            LOGGER.debug("Ids a promoter who created an event and the current user are equal. Do nothing. Return.");
+    private void checkEditAccess(Long resourceCreatorId) {
+        checkDeleteAccess(Set.of(resourceCreatorId));
+    }
+
+    private void checkDeleteAccess(Collection<Long> externalUserIds) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var currentUserId = authentication.getPrincipal();
+        LOGGER.info("Checking edit access a resource for an user: {}", currentUserId);
+        var hasAccess = externalUserIds.stream().allMatch(it -> Objects.equals(it, currentUserId));
+        if (hasAccess) {
+            LOGGER.debug("Ids a promoter who created a resource and the current user are equal. Do nothing. Return.");
             return;
         }
-        throw new AccessDeniedException("The event was created another promoter!");
+        throw new AccessDeniedException("One or some resources were created another promoter!");
     }
 }

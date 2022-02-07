@@ -10,6 +10,7 @@ import ru.softdarom.qrcheck.events.util.JsonHelper;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -114,7 +115,7 @@ public class EventEntity extends AbstractBaseEntity {
         return JsonHelper.asJson(this);
     }
 
-    public void setImages(Set<ImageEntity> images) {
+    public void setImages(Collection<ImageEntity> images) {
         this.images.clear();
         if (Objects.nonNull(images)) {
             this.images.addAll(images);
@@ -122,7 +123,7 @@ public class EventEntity extends AbstractBaseEntity {
         }
     }
 
-    public void setOptions(Set<OptionEntity> options) {
+    public void setOptions(Collection<OptionEntity> options) {
         this.options.clear();
         if (Objects.nonNull(options)) {
             this.options.addAll(options);
@@ -130,7 +131,7 @@ public class EventEntity extends AbstractBaseEntity {
         }
     }
 
-    public void setTickets(Set<TicketEntity> tickets) {
+    public void setTickets(Collection<TicketEntity> tickets) {
         this.tickets.clear();
         if (Objects.nonNull(tickets)) {
             this.tickets.addAll(tickets);
