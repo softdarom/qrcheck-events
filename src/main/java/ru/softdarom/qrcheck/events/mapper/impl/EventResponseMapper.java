@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 @Slf4j(topic = "MAPPER")
 public class EventResponseMapper extends AbstractDtoMapper<InternalEventDto, EventResponse> implements Checker {
 
-    private static final String DEFAULT_VERSION = "v1.0.0";
-
     private final ApiKeyProperties properties;
     private final ContentHandlerExternalService contentHandlerExternalService;
 
@@ -72,7 +70,6 @@ public class EventResponseMapper extends AbstractDtoMapper<InternalEventDto, Eve
             var externalImageIds = images.stream().map(InternalImageDto::getExternalImageId).collect(Collectors.toSet());
             var response =
                     contentHandlerExternalService.get(
-                            DEFAULT_VERSION,
                             properties.getToken().getOutgoing(),
                             externalImageIds
                     ).getBody();
