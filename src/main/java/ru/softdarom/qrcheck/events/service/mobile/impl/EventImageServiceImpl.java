@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 @Slf4j(topic = "SERVICE")
 public class EventImageServiceImpl implements EventImageService {
 
-    private static final String DEFAULT_VERSION = "v1.0.0";
-
     private final ApiKeyProperties apiKeyProperties;
     private final ContentHandlerExternalService contentHandlerExternalService;
     private final ImageAccessService imageAccessService;
@@ -75,11 +73,7 @@ public class EventImageServiceImpl implements EventImageService {
     private Set<FileDto> executeExternalSaver(Collection<MultipartFile> images) {
         LOGGER.info("Saving files in a storage via an external service");
         var response =
-                contentHandlerExternalService.upload(
-                        DEFAULT_VERSION,
-                        apiKeyProperties.getToken().getOutgoing(),
-                        images
-                );
+                contentHandlerExternalService.upload(apiKeyProperties.getToken().getOutgoing(), images);
         var storedImages = Optional.ofNullable(response)
                 .map(HttpEntity::getBody)
                 .map(FileResponse::getImages)

@@ -15,14 +15,12 @@ public interface ContentHandlerExternalService {
 
     @PostMapping(value = "/files/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<FileResponse> upload(
-            @RequestHeader("X-Application-Version") String version,
             @RequestHeader("X-ApiKey-Authorization") String apiKey,
             @RequestPart("files") Collection<MultipartFile> files
     );
 
     @GetMapping("/files/{fileIds}")
     ResponseEntity<FileResponse> get(
-            @RequestHeader("X-Application-Version") String version,
             @RequestHeader("X-ApiKey-Authorization") String apiKey,
             @PathVariable("fileIds") Collection<Long> imageIds
     );
