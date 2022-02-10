@@ -13,6 +13,8 @@ public interface EventService {
 
     EventResponse preSave();
 
+    EventResponse editEvent(EventRequest request);
+
     EventResponse endSave(EventRequest request);
 
     EventResponse getById(Long id);
