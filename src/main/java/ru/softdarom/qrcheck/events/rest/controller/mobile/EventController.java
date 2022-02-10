@@ -73,6 +73,14 @@ public class EventController {
     }
 
     @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
+    @ApiEditEvent
+    @PatchMapping
+    public ResponseEntity<EventResponse> editEvent(@RequestHeader(value = "X-Application-Version") String version,
+                                                   @RequestBody @Valid EventRequest request) {
+        return ResponseEntity.ok(eventService.editEvent(request));
+    }
+
+    @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiSaveEventImages
     @PostMapping(value = "/images/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EventResponse> saveEventImages(@RequestHeader(value = "X-Application-Version") String version,
