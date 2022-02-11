@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.service.external.impl;
+package ru.softdarom.qrcheck.events.service.internal.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
 import ru.softdarom.qrcheck.events.exception.NotFoundException;
 import ru.softdarom.qrcheck.events.mapper.impl.ExternalEventResponseMapper;
 import ru.softdarom.qrcheck.events.model.dto.external.response.EventInfoResponse;
-import ru.softdarom.qrcheck.events.service.external.ExternalEventService;
+import ru.softdarom.qrcheck.events.service.internal.ExternalEventService;
 
 import java.util.Collection;
 import java.util.Set;

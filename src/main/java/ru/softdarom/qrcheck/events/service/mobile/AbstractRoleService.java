@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
 
 @Service
-public abstract class AbstractRoleReflectService implements RoleReflectService {
+public abstract class AbstractRoleService implements RoleService {
 
     protected final EventAccessService eventAccessService;
 
     @Autowired
-    protected AbstractRoleReflectService(EventAccessService eventAccessService) {
+    protected AbstractRoleService(EventAccessService eventAccessService) {
         this.eventAccessService = eventAccessService;
     }
 

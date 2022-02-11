@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiGetEventsById;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiGetEventsByIds;
 import ru.softdarom.qrcheck.events.model.dto.external.response.EventInfoResponse;
-import ru.softdarom.qrcheck.events.service.external.ExternalEventService;
+import ru.softdarom.qrcheck.events.service.internal.ExternalEventService;
 
 import java.util.Collection;
 import java.util.Set;

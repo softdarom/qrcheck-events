@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.service.external;
+package ru.softdarom.qrcheck.events.service.internal;
 
 import ru.softdarom.qrcheck.events.exception.InvalidBookOperation;
 import ru.softdarom.qrcheck.events.model.dto.external.BookedExternalDto;
