@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
+import ru.softdarom.qrcheck.events.dao.entity.EventEntity;
 import ru.softdarom.qrcheck.events.dao.repository.EventRepository;
 import ru.softdarom.qrcheck.events.exception.NotFoundException;
 import ru.softdarom.qrcheck.events.mapper.impl.InternalEventDtoMapper;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j(topic = "ACCESS-SERVICE")
 public class EventAccessServiceImpl implements EventAccessService {
+
+    private static final String NOT_NULL_ERROR_MESSAGE_PATTERN = "The '%s' must not be null!";
 
     private final EventRepository eventRepository;
     private final InternalEventDtoMapper eventMapper;
@@ -45,14 +48,23 @@ public class EventAccessServiceImpl implements EventAccessService {
     @Override
     @Transactional
     public boolean exist(Long id) {
-        Assert.notNull(id, "The 'id' must not be null!");
+        Assert.notNull(id, String.format(NOT_NULL_ERROR_MESSAGE_PATTERN, "id"));
         return eventRepository.existsById(id);
     }
 
     @Override
     @Transactional
+    public boolean isDraft(Long id) {
+        Assert.notNull(id, String.format(NOT_NULL_ERROR_MESSAGE_PATTERN, "id"));
+        return eventRepository.findById(id)
+                .map(EventEntity::getDraft)
+                .orElseThrow(() -> new NotFoundException("The event not found by id " + id));
+    }
+
+    @Override
+    @Transactional
     public InternalEventDto findById(Long id) {
-        Assert.notNull(id, "The 'id' must not be null!");
+        Assert.notNull(id, String.format(NOT_NULL_ERROR_MESSAGE_PATTERN, "id"));
         return eventRepository.findById(id)
                 .map(eventMapper::convertToDestination)
                 .orElseThrow(() -> new NotFoundException("The event not found by id " + id));
@@ -67,14 +79,14 @@ public class EventAccessServiceImpl implements EventAccessService {
     @Override
     @Transactional
     public Page<InternalEventDto> findAllByExternalUserId(Long externalUserId, Pageable pageable) {
-        Assert.notNull(externalUserId, "The 'externalUserId' must not be null!");
+        Assert.notNull(externalUserId, String.format(NOT_NULL_ERROR_MESSAGE_PATTERN, "externalUserId"));
         return eventRepository.findAllByExternalUserId(externalUserId, pageable).map(eventMapper::convertToDestination);
     }
 
     @Override
     @Transactional
     public Page<InternalEventDto> findAllByExternalUserIds(Collection<Long> externalUserIds, Pageable pageable) {
-        Assert.notEmpty(externalUserIds, "The 'externalUserIds' must not be empty or null!");
+        Assert.notEmpty(externalUserIds, String.format(NOT_NULL_ERROR_MESSAGE_PATTERN, "externalUserIds"));
         return eventRepository.findAllByExternalUserIdIn(externalUserIds, pageable).map(eventMapper::convertToDestination);
     }
 

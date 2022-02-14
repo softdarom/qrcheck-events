@@ -9,22 +9,22 @@ import ru.softdarom.qrcheck.events.client.CheckmanHandlerExternalService;
 import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
 import ru.softdarom.qrcheck.events.model.base.RoleType;
 import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
-import ru.softdarom.qrcheck.events.service.mobile.AbstractRoleReflectService;
+import ru.softdarom.qrcheck.events.service.mobile.AbstractRoleService;
 import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
 
 import java.util.Set;
 
 @Service
 @Slf4j(topic = "SERVICE")
-public class CheckmanReflectServiceImpl extends AbstractRoleReflectService {
+public class CheckmanServiceImpl extends AbstractRoleService {
 
     private final CheckmanHandlerExternalService checkmanHandler;
     private final ApiKeyProperties properties;
 
     @Autowired
-    CheckmanReflectServiceImpl(EventAccessService eventAccessService,
-                               CheckmanHandlerExternalService checkmanHandler,
-                               ApiKeyProperties properties) {
+    CheckmanServiceImpl(EventAccessService eventAccessService,
+                        CheckmanHandlerExternalService checkmanHandler,
+                        ApiKeyProperties properties) {
         super(eventAccessService);
         this.checkmanHandler = checkmanHandler;
         this.properties = properties;

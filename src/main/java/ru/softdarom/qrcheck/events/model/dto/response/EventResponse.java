@@ -61,7 +61,6 @@ public class EventResponse {
 
     @NotEmpty
     @JsonProperty("images")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Collection<ImageDto> images;
 
     @NotEmpty

@@ -10,17 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
-import ru.softdarom.qrcheck.events.mapper.impl.EventRequestMapper;
-import ru.softdarom.qrcheck.events.mapper.impl.EventResponseMapper;
 import ru.softdarom.qrcheck.events.model.base.ImageType;
 import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
-import ru.softdarom.qrcheck.events.service.mobile.EventImageService;
-import ru.softdarom.qrcheck.events.service.mobile.EventReflectorService;
-import ru.softdarom.qrcheck.events.service.mobile.EventService;
-import ru.softdarom.qrcheck.events.service.mobile.OrdersReflectService;
+import ru.softdarom.qrcheck.events.service.mobile.*;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -29,26 +25,23 @@ import java.util.Set;
 @Slf4j(topic = "SERVICE")
 public class EventServiceImpl implements EventService {
 
+    private final EventPresenterService eventPresenterService;
     private final EventAccessService eventAccessService;
-    private final EventRequestMapper eventRequestMapper;
-    private final EventResponseMapper eventResponseMapper;
     private final EventImageService eventImageService;
-    private final EventReflectorService eventReflectorService;
-    private final OrdersReflectService ordersReflectService;
+    private final EventRoleService eventRoleService;
+    private final OrderService orderService;
 
     @Autowired
-    EventServiceImpl(EventAccessService eventAccessService,
-                     EventRequestMapper eventRequestMapper,
-                     EventResponseMapper eventResponseMapper,
+    EventServiceImpl(EventPresenterService eventPresenterService,
+                     EventAccessService eventAccessService,
                      EventImageService eventImageService,
-                     EventReflectorService eventReflectorService,
-                     OrdersReflectService ordersReflectService) {
+                     EventRoleService eventRoleService,
+                     OrderService orderService) {
+        this.eventPresenterService = eventPresenterService;
         this.eventAccessService = eventAccessService;
-        this.eventRequestMapper = eventRequestMapper;
-        this.eventResponseMapper = eventResponseMapper;
         this.eventImageService = eventImageService;
-        this.eventReflectorService = eventReflectorService;
-        this.ordersReflectService = ordersReflectService;
+        this.eventRoleService = eventRoleService;
+        this.orderService = orderService;
     }
 
     @Override
@@ -61,27 +54,38 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventResponse endSave(EventRequest request) {
-        return editExistingEvent(request, String.format("Full information will be saved for an event %s", request.getId()));
+        Assert.notNull(request, "The 'request' must not be null!");
+        checkAccessEndSave(request.getId());
+        LOGGER.info("Full information will be saved for an event: {}", request.getId());
+        return edit(request);
     }
 
     @Override
     public EventResponse editEvent(EventRequest request) {
-        checkEditAccess(request.getId());
-        return editExistingEvent(request, String.format("Event %s will be edited", request.getId()));
+        Assert.notNull(request, "The 'request' must not be null!");
+        checkAccessEdit(request.getId());
+        LOGGER.info("Existed event will be edited: {}", request.getId());
+        return edit(request);
+    }
+
+    private EventResponse edit(EventRequest request) {
+        LOGGER.debug("New data: {}", request);
+        var internalDto = eventPresenterService.presentAsInternalDto(request);
+        return eventPresenterService.presentAsResponse(eventAccessService.save(internalDto));
     }
 
     @Override
-    public EventResponse getById(Long id) {
-        Assert.notNull(id, "The 'id' must not be null!");
-        LOGGER.info("Getting an event by id: {}", id);
-        return eventResponseMapper.convertToDestination(eventAccessService.findById(id));
+    public EventResponse getById(Long eventId) {
+        Assert.notNull(eventId, "The 'id' must not be null!");
+        LOGGER.info("Getting an event by id: {}", eventId);
+        return eventPresenterService.presentAsResponse(eventAccessService.findById(eventId));
     }
 
     @Override
     public Page<EventResponse> getAll(Pageable pageable) {
         Assert.notNull(pageable, "The 'pageable' must not ne null!");
         LOGGER.info("Getting all events");
-        return eventReflectorService.getAllByRole(pageable).map(eventResponseMapper::convertToDestination);
+        return eventRoleService.getAllByRole(pageable);
     }
 
     @Override
@@ -103,14 +107,29 @@ public class EventServiceImpl implements EventService {
         eventImageService.removeAll(imageIds);
     }
 
-    private EventResponse editExistingEvent(EventRequest request, String loggerMessage) {
-        Assert.notNull(request, "The 'request' must not be null!");
-        Assert.isTrue(eventAccessService.exist(request.getId()), "An event must be created earlier!");
-        checkAccess(Set.of(eventAccessService.findById(request.getId()).getExternalUserId()));
-        LOGGER.info(loggerMessage);
-        var internalDto = eventRequestMapper.convertToDestination(request);
-        var savedEvent = eventAccessService.save(internalDto);
-        return eventResponseMapper.convertToDestination(savedEvent);
+    private void checkAccessEndSave(Long eventId) {
+        var draft = eventAccessService.isDraft(eventId);
+        if (!draft) {
+            throw new AccessDeniedException("The event has already been created fully established and cannot be 'post save'!");
+        }
+        var savedEvent = eventAccessService.findById(eventId);
+        checkAccess(Set.of(savedEvent.getExternalUserId()));
+        LOGGER.debug("The event {} can be 'post save'.", eventId);
+    }
+
+    private void checkAccessEdit(Long eventId) {
+        LOGGER.info("Checking edit access the event : {}", eventId);
+        var savedEvent = eventAccessService.findById(eventId);
+        var externalUserId = savedEvent.getExternalUserId();
+        checkAccess(Set.of(externalUserId));
+        if (Boolean.TRUE.equals(savedEvent.getDraft())) {
+            throw new AccessDeniedException("The event has not been created yet fully established and cannot be edited!");
+        } else if (LocalDateTime.now().isAfter(savedEvent.getOverDate())) {
+            throw new AccessDeniedException("The event has already been started and cannot be edited!");
+        } else if (Boolean.TRUE.equals(orderService.doesAnyOrderExist(eventId))) {
+            throw new AccessDeniedException("The event for which at least one ticket has been sold cannot be changed!");
+        }
+        LOGGER.debug("The event {} can be edited.", eventId);
     }
 
     private void checkAccess(Collection<Long> externalUserIds) {
@@ -124,13 +143,4 @@ public class EventServiceImpl implements EventService {
         }
         throw new AccessDeniedException("One or some resources were created another promoter!");
     }
-
-    private void checkEditAccess(Long eventId) {
-        LOGGER.info("Checking edit access the event : {}", eventId);
-        if (ordersReflectService.doesAnyOrderExist(eventId)) {
-            throw new AccessDeniedException("An event for which at least one ticket has been sold cannot be changed!");
-        }
-        LOGGER.debug("Event {} can be edited.", eventId);
-    }
-
 }

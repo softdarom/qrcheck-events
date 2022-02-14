@@ -9,7 +9,7 @@ import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiBookItems;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiUnbookedItems;
 import ru.softdarom.qrcheck.events.model.dto.external.request.CheckEventRequest;
 import ru.softdarom.qrcheck.events.model.dto.external.response.BookingInfoResponse;
-import ru.softdarom.qrcheck.events.service.external.BookService;
+import ru.softdarom.qrcheck.events.service.internal.BookService;
 
 @Tag(name = "Internal Booking Events", description = "Внутренний контроллер взаимодействия бронирования")
 @RestController(value = "bookingEventController")

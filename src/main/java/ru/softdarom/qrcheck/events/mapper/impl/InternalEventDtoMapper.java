@@ -1,7 +1,6 @@
 package ru.softdarom.qrcheck.events.mapper.impl;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.config.property.TaxProperties;
@@ -73,18 +72,21 @@ public class InternalEventDtoMapper extends AbstractDtoMapper<EventEntity, Inter
 
         @Override
         public void accept(InternalEventDto destination, EventEntity source) {
-            source.setExternalUserId((Long) getAuthentication().getPrincipal());
-            source.setCurrentAmount(DEFAULT_CURRENT_AMOUNT);
-            source.setDraft(Boolean.TRUE);
-            updateSource(destination, source);
+            if (isPreCreate(destination.getId())) {
+                source.setExternalUserId(getExternalUserId());
+                source.setCurrentAmount(DEFAULT_CURRENT_AMOUNT);
+                source.setDraft(Boolean.TRUE);
+            } else if (isEndCreate(destination.getDraft())) {
+                source.setDraft(Boolean.FALSE);
+                updateSource(destination, source);
+            } else if (isEdit(destination.getDraft())) {
+                updateSource(destination, source);
+            }
         }
 
         private void updateSource(InternalEventDto destination, EventEntity source) {
-            if (Objects.isNull(destination.getId())) {
-                return;
-            }
-
-            source.setDraft(Boolean.FALSE);
+            source.setExternalUserId(getExternalUserId());
+            source.setCurrentAmount(DEFAULT_CURRENT_AMOUNT);
             source.setTotalAmount(calculateTotalAmount(destination.getTickets()));
             source.setOverDate(calculateOverDate(destination.getStartDateTime()));
             source.setType(getEvent(destination.getType()));
@@ -115,8 +117,20 @@ public class InternalEventDtoMapper extends AbstractDtoMapper<EventEntity, Inter
             return eventTypeRepository.findByName(type);
         }
 
-        private Authentication getAuthentication() {
-            return SecurityContextHolder.getContext().getAuthentication();
+        private Long getExternalUserId() {
+            return (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+
+        private boolean isPreCreate(Long destinationId) {
+            return Objects.isNull(destinationId);
+        }
+
+        private boolean isEndCreate(Boolean draft) {
+            return Boolean.TRUE.equals(draft);
+        }
+
+        private boolean isEdit(Boolean draft) {
+            return Boolean.FALSE.equals(draft);
         }
     }
 

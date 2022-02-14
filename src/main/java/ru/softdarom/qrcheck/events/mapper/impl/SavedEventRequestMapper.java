@@ -11,9 +11,9 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 
 @Component
-public class EventRequestMapper extends AbstractDtoMapper<EventRequest, InternalEventDto> {
+public class SavedEventRequestMapper extends AbstractDtoMapper<EventRequest, InternalEventDto> {
 
-    public EventRequestMapper(ModelMapper modelMapper) {
+    public SavedEventRequestMapper(ModelMapper modelMapper) {
         super(modelMapper);
     }
 
@@ -21,10 +21,7 @@ public class EventRequestMapper extends AbstractDtoMapper<EventRequest, Internal
     protected void setupMapper() {
         modelMapper
                 .createTypeMap(sourceClass, destinationClass)
-                .addMappings(mapping -> {
-                    mapping.map(src -> Boolean.FALSE, InternalEventDto::setDraft);
-                    mapping.map(EventRequest::getEvent, InternalEventDto::setType);
-                })
+                .addMappings(mapping -> mapping.map(src -> Boolean.FALSE, InternalEventDto::setDraft))
                 .setPostConverter(toDestinationConverter(new DestinationConverter()));
         modelMapper.createTypeMap(destinationClass, sourceClass);
     }

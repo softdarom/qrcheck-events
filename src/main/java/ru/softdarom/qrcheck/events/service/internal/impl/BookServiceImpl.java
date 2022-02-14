@@ -1,4 +1,4 @@
-package ru.softdarom.qrcheck.events.service.external.impl;
+package ru.softdarom.qrcheck.events.service.internal.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import ru.softdarom.qrcheck.events.model.dto.external.BookingItemExternalDto;
 import ru.softdarom.qrcheck.events.model.dto.external.request.CheckEventRequest;
 import ru.softdarom.qrcheck.events.model.dto.external.response.BookingInfoResponse;
 import ru.softdarom.qrcheck.events.model.dto.internal.Bookable;
-import ru.softdarom.qrcheck.events.service.external.AbstractBookService;
+import ru.softdarom.qrcheck.events.service.internal.AbstractBookService;
 
 import java.util.function.BiPredicate;
 

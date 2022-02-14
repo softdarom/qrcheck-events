@@ -13,6 +13,8 @@ public interface EventAccessService {
 
     boolean exist(Long id);
 
+    boolean isDraft(Long id);
+
     InternalEventDto findById(Long id);
 
     Page<InternalEventDto> findAllActual(Pageable pageable);

@@ -1,6 +1,6 @@
 package ru.softdarom.qrcheck.events.service.mobile;
 
-public interface OrdersReflectService {
+public interface OrderService {
 
     Boolean doesAnyOrderExist(Long eventId);
 

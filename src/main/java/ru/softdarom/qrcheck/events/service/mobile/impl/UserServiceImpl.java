@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
 import ru.softdarom.qrcheck.events.model.base.RoleType;
 import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
-import ru.softdarom.qrcheck.events.service.mobile.AbstractRoleReflectService;
+import ru.softdarom.qrcheck.events.service.mobile.AbstractRoleService;
 
 @Service
 @Slf4j(topic = "SERVICE")
-public class UserReflectServiceImpl extends AbstractRoleReflectService {
+public class UserServiceImpl extends AbstractRoleService {
 
     @Autowired
-    UserReflectServiceImpl(EventAccessService eventAccessService) {
+    UserServiceImpl(EventAccessService eventAccessService) {
         super(eventAccessService);
     }
 
