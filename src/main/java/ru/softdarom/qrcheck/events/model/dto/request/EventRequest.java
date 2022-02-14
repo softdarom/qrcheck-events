@@ -9,6 +9,7 @@ import ru.softdarom.qrcheck.events.model.dto.AddressDto;
 import ru.softdarom.qrcheck.events.model.dto.OptionDto;
 import ru.softdarom.qrcheck.events.model.dto.PeriodDto;
 import ru.softdarom.qrcheck.events.model.dto.TicketDto;
+import ru.softdarom.qrcheck.events.rest.validation.DateConstraint;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -48,6 +49,7 @@ public class EventRequest {
 
     @NotNull
     @JsonProperty("period")
+    @DateConstraint
     private PeriodDto period;
 
     @NotEmpty
