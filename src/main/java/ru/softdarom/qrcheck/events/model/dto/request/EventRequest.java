@@ -3,6 +3,7 @@ package ru.softdarom.qrcheck.events.model.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Generated;
+import ru.softdarom.qrcheck.events.config.validator.annotations.DateConstraint;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.dto.AddressDto;
@@ -48,6 +49,7 @@ public class EventRequest {
 
     @NotNull
     @JsonProperty("period")
+    @DateConstraint
     private PeriodDto period;
 
     @NotEmpty
