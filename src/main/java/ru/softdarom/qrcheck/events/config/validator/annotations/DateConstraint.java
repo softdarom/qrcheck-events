@@ -1,4 +1,6 @@
-package ru.softdarom.qrcheck.events.rest.validation;
+package ru.softdarom.qrcheck.events.config.validator.annotations;
+
+import ru.softdarom.qrcheck.events.config.validator.DateConstraintValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -12,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = DateConstraintValidator.class)
 public @interface DateConstraint {
 
-    String message() default "";
+    String message() default "Start date and time must be before than now!";
 
     Class<?>[] groups() default {};
 

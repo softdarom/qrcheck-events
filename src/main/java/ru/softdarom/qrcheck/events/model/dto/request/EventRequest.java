@@ -3,13 +3,13 @@ package ru.softdarom.qrcheck.events.model.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Generated;
+import ru.softdarom.qrcheck.events.config.validator.annotations.DateConstraint;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.dto.AddressDto;
 import ru.softdarom.qrcheck.events.model.dto.OptionDto;
 import ru.softdarom.qrcheck.events.model.dto.PeriodDto;
 import ru.softdarom.qrcheck.events.model.dto.TicketDto;
-import ru.softdarom.qrcheck.events.rest.validation.DateConstraint;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

@@ -1,5 +1,6 @@
-package ru.softdarom.qrcheck.events.rest.validation;
+package ru.softdarom.qrcheck.events.config.validator;
 
+import ru.softdarom.qrcheck.events.config.validator.annotations.DateConstraint;
 import ru.softdarom.qrcheck.events.model.dto.PeriodDto;
 
 import javax.validation.ConstraintValidator;
