@@ -6,8 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.softdarom.qrcheck.events.model.base.RoleType;
-import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
-import ru.softdarom.qrcheck.events.service.mobile.EventPresenterService;
+import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
 import ru.softdarom.qrcheck.events.service.mobile.EventRoleService;
 import ru.softdarom.qrcheck.events.service.mobile.RoleService;
 
@@ -23,14 +22,11 @@ import java.util.stream.Collectors;
 public class EventRoleServiceImpl implements EventRoleService {
 
     private final Set<RoleService> roleServices;
-    private final EventPresenterService eventPresenterService;
-
     private Map<RoleType, RoleService> roleToRoleService;
 
     @Autowired
-    EventRoleServiceImpl(Set<RoleService> roleServices, EventPresenterService eventPresenterService) {
+    EventRoleServiceImpl(Set<RoleService> roleServices) {
         this.roleServices = roleServices;
-        this.eventPresenterService = eventPresenterService;
     }
 
     @PostConstruct
@@ -41,7 +37,7 @@ public class EventRoleServiceImpl implements EventRoleService {
     }
 
     @Override
-    public Page<EventResponse> getAllByRole(Pageable pageable) {
+    public Page<InternalEventDto> getAllByRole(Pageable pageable) {
         var currentRole =
                 RoleType.rolesOfAuthorities()
                         .stream()
@@ -52,6 +48,6 @@ public class EventRoleServiceImpl implements EventRoleService {
         if (Objects.isNull(roleService)) {
             throw new UnsupportedOperationException("Not found a role service for a role: " + currentRole);
         }
-        return roleService.getAll(pageable).map(eventPresenterService::presentAsResponse);
+        return roleService.getAll(pageable);
     }
 }

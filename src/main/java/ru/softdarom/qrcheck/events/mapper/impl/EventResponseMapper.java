@@ -41,7 +41,6 @@ public class EventResponseMapper extends AbstractDtoMapper<InternalEventDto, Eve
     protected void setupMapper() {
         modelMapper
                 .createTypeMap(sourceClass, destinationClass)
-                .addMappings(mapping -> mapping.map(InternalEventDto::getType, EventResponse::setEvent))
                 .setPostConverter(toDestinationConverter(new DestinationConverter()));
     }
 

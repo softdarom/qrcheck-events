@@ -56,6 +56,15 @@ spring:
     multipart:
       max-file-size: 15MB
       max-request-size: 300MB
+  web:
+    locale:
+      standard: ru
+      supports:
+        - en
+      encoding: UTF-8
+      message-paths:
+        - i18n/genres
+        - i18n/event_types
 
 springdoc:
   api-docs:

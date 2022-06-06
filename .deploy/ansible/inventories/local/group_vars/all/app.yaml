@@ -40,11 +40,3 @@ spring:
 springdoc:
   api_docs:
     enabled: true
-
-logbook:
-  exclude:
-    - /actuator/**
-    - /v3/api-docs/**
-    - /swagger-ui/**
-    - /swagger-api/**
-    - /

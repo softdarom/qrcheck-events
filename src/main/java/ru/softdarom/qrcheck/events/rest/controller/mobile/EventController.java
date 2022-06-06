@@ -13,17 +13,19 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.*;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.ImageType;
+import ru.softdarom.qrcheck.events.model.dto.LocaleTypeDto;
 import ru.softdarom.qrcheck.events.model.dto.request.EventRequest;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.TicketResponse;
 import ru.softdarom.qrcheck.events.service.mobile.EventService;
+import ru.softdarom.qrcheck.events.service.mobile.LocaleTypeService;
 import ru.softdarom.qrcheck.events.service.mobile.TicketService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
-import java.util.EnumSet;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -36,10 +38,15 @@ public class EventController {
     private final EventService eventService;
     private final TicketService ticketService;
 
+    private final LocaleTypeService<EventType> eventTypeService;
+
     @Autowired
-    EventController(EventService eventService, TicketService ticketService) {
+    EventController(EventService eventService,
+                    TicketService ticketService,
+                    LocaleTypeService<EventType> eventTypeService) {
         this.eventService = eventService;
         this.ticketService = ticketService;
+        this.eventTypeService = eventTypeService;
     }
 
     @ApiGetAllEvents
@@ -109,8 +116,9 @@ public class EventController {
 
     @ApiGetAllEventTypes
     @GetMapping("/types")
-    public ResponseEntity<Set<EventType>> getAllTypes(@RequestHeader(value = "X-Application-Version") String version) {
-        return ResponseEntity.ok(EnumSet.allOf(EventType.class));
+    public ResponseEntity<Set<LocaleTypeDto>> getAllTypes(@RequestHeader(value = "X-Application-Version") String version,
+                                                          Locale locale) {
+        return ResponseEntity.ok(eventTypeService.getLocaleTypes(locale));
     }
 
     @ApiGetAvailableTickets

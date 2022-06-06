@@ -6,7 +6,9 @@ plugins {
     id "org.liquibase.gradle" version "2.1.1"
 }
 
-group = "ru.softdarom.qrcheck"
+group = "ru.softdarom.qrcheck.events"
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 jar {
     enabled = false
@@ -60,14 +62,14 @@ dependencies {
     api "org.zalando:logbook-spring-boot-starter:2.14.0"
     api "p6spy:p6spy:3.9.1"
     api "org.modelmapper:modelmapper:2.4.5"
-    api "org.springdoc:springdoc-openapi-ui:1.6.4"
+    api "org.springdoc:springdoc-openapi-ui:1.6.9"
     api "net.logstash.logback:logstash-logback-encoder:7.0.1"
     api "ru.softdarom.security:qrcheck-security-starter:1.2.0"
     api "net.minidev:json-smart:2.4.7"
     api "com.zaxxer:HikariCP:5.0.1"
     api "net.ttddyy:datasource-proxy:1.7"
 
-    runtimeOnly "org.postgresql:postgresql:42.3.1"
+    runtimeOnly 'org.postgresql:postgresql:42.3.3'
     runtimeOnly "org.codehaus.groovy:groovy:3.0.9"
     runtimeOnly "org.codehaus.groovy:groovy-json:3.0.9"
 
@@ -82,7 +84,7 @@ dependencies {
     liquibaseRuntime "org.liquibase:liquibase-core:3.10.3"
     liquibaseRuntime "org.liquibase:liquibase-groovy-dsl:3.0.2"
     liquibaseRuntime "ch.qos.logback:logback-classic:1.2.10"
-    liquibaseRuntime "org.postgresql:postgresql:42.3.1"
+    liquibaseRuntime 'org.postgresql:postgresql:42.3.3'
     liquibaseRuntime "org.yaml:snakeyaml:1.29"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"

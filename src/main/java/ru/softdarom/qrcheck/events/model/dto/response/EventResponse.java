@@ -29,7 +29,7 @@ public class EventResponse {
 
     @NotNull
     @JsonProperty("type")
-    private EventType event;
+    private EventType type;
 
     @NotEmpty
     @JsonProperty("ageRestrictions")
