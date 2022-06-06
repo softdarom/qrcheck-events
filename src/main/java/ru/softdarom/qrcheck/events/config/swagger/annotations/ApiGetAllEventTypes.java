@@ -1,11 +1,13 @@
 package ru.softdarom.qrcheck.events.config.swagger.annotations;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import ru.softdarom.qrcheck.events.model.base.EventType;
+import ru.softdarom.qrcheck.events.model.dto.LocaleTypeDto;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
 
 import java.lang.annotation.Retention;
@@ -19,6 +21,15 @@ import static java.lang.annotation.ElementType.METHOD;
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
         summary = "Получение всех типов событий",
+        parameters = {
+                @Parameter(
+                        in = ParameterIn.HEADER,
+                        name = "Accept-Language",
+                        description = "Header для установки locale",
+                        example = "ru",
+                        schema = @Schema(implementation = String.class)
+                )
+        },
         responses = {
                 @ApiResponse(
                         responseCode = "200",
@@ -27,7 +38,7 @@ import static java.lang.annotation.ElementType.METHOD;
                                 @Content(
                                         mediaType = "application/json",
                                         array = @ArraySchema(
-                                                schema = @Schema(implementation = EventType.class),
+                                                schema = @Schema(implementation = LocaleTypeDto.class),
                                                 uniqueItems = true
                                         )
                                 )

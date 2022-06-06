@@ -85,7 +85,7 @@ public class EventServiceImpl implements EventService {
     public Page<EventResponse> getAll(Pageable pageable) {
         Assert.notNull(pageable, "The 'pageable' must not ne null!");
         LOGGER.info("Getting all events");
-        return eventRoleService.getAllByRole(pageable);
+        return eventRoleService.getAllByRole(pageable).map(eventPresenterService::presentAsResponse);
     }
 
     @Override

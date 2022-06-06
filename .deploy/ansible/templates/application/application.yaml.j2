@@ -53,6 +53,12 @@ spring:
     multipart:
       max-file-size: {{ spring.servlet.multipart.max_file_size | default('15MB') }}
       max-request-size: {{ spring.servlet.multipart.max_request_size | default('300MB') }}
+  web:
+    locale:
+      standard: {{ spring.web.locale.standard | default('ru') }}
+      supports: {{ spring.web.locale.supports | default(['en']) | join(', ') }}
+      encoding: {{ spring.web.locale.standard | default('UTF-8') }}
+      message-paths: {{ spring.web.locale.supports | default(['i18n/genres', 'i18n/event_types']) | join(', ') }}
 
 springdoc:
   api-docs:
@@ -88,4 +94,4 @@ logbook:
     style: {{ logbook.format.style | default('http') }}
   logger:
     name: REST
-  exclude: {{ logbook.exclude | join(', ') }}
+  exclude: {{ logbook.exclude | default(['/actuator/**', '/v3/api-docs/**', '/swagger-ui/**', '/swagger-api/**', '/']) | join(', ') }}
