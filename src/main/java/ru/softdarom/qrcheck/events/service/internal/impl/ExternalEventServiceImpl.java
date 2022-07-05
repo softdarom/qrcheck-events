@@ -27,9 +27,13 @@ public class ExternalEventServiceImpl implements ExternalEventService {
 
     @Override
     public Set<EventInfoResponse> getEventsInfo(Collection<Long> eventsId) {
-        return eventAccessService.findAllByIds(eventsId).stream()
+        var events = eventAccessService.findAllByIds(eventsId).stream()
                 .map(mapper::convertToDestination)
                 .collect(Collectors.toSet());
+        if (events.isEmpty()) {
+            throw new NotFoundException("Events not found!");
+        }
+        return events;
     }
 
     @Override

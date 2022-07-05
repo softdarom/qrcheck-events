@@ -44,11 +44,11 @@ spring:
             include-parameter-values: {{ spring.sleuth.jdbc.p6spy.tracing.include_parameter_values | default('true') | lower }}
   security:
     qrcheck:
-      api-key:
-        hasApiKeyAuth: {{ spring.security.api_key.has_api_key_auth | default('true') | lower }}
+      apikey:
+        enabled: {{ spring.qrcheck.api_key.enabled | default('true') | lower }}
         token:
-          outgoing: ${API_KEY_OUTGOING}
-          incoming: ${API_KEY_INCOMING}
+          outgoing: ${DEFAULT_API_KEY_OUTGOING}
+
   servlet:
     multipart:
       max-file-size: {{ spring.servlet.multipart.max_file_size | default('15MB') }}
@@ -72,7 +72,7 @@ springdoc:
     version: {{ lookup('env', 'DOCKER_VERSION') | default('unknown') }}
     licence-url: https://qrchk.ru/licence
     owner-name: QRCheck
-    owner-url: https://qrchk.ru
+    owner-url: www.qrchk.ru
     owner-email: it.support@softdarom.ru
 
 outbound:
