@@ -44,6 +44,13 @@ import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.API_KEY_S
                         }
                 ),
                 @ApiResponse(
+                        responseCode = "404",
+                        description = "События не найдены",
+                        content = {
+                                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+                        }
+                ),
+                @ApiResponse(
                         responseCode = "500", description = "Неизвестная ошибка",
                         content = {
                                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))

@@ -24,7 +24,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private final AccessDeniedHandler accessDeniedHandler;
 
     @Autowired
-    ResourceServerConfig(@Qualifier("qrCheckApiKeyAuthorizationFilter") AbstractPreAuthenticatedProcessingFilter apiKeyAuthorizationFilter,
+    ResourceServerConfig(@Qualifier("qrCheckApiKeyExternalAuthorizationFilter") AbstractPreAuthenticatedProcessingFilter apiKeyAuthorizationFilter,
                          @Qualifier("qrCheckAuthenticationProvider") AuthenticationProvider authenticationProvider,
                          @Qualifier("qrCheckAuthenticationEntryPoint") AuthenticationEntryPoint authenticationEntryPoint,
                          @Qualifier("qrCheckAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler) {

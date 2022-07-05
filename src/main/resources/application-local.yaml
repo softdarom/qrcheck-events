@@ -45,13 +45,11 @@ spring:
   security:
     qrcheck:
       api-key:
-        hasApiKeyAuth: true
+        enabled: true
         token:
-          outgoing: ${API_KEY_OUTGOING}
-          incoming: ${API_KEY_INCOMING}
-      oauth2:
-        auth-server:
-          host: ${AUTH_HANDLER_URL}
+          outgoing: ${DEFAULT_API_KEY_OUTGOING}
+      auth-server:
+        host: ${AUTH_HANDLER_URL}
   servlet:
     multipart:
       max-file-size: 15MB
@@ -77,7 +75,7 @@ springdoc:
     version: V1
     licence-url: https://qrchk.ru/licence
     owner-name: QRCheck
-    owner-url: https://qrchk.ru
+    owner-url: www.qrchk.ru
     owner-email: it.support@softdarom.ru
 
 outbound:
