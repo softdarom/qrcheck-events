@@ -2,6 +2,7 @@ package ru.softdarom.qrcheck.events.mapper.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.softdarom.qrcheck.events.builder.ImageBuilder;
 import ru.softdarom.qrcheck.events.client.ContentHandlerExternalService;
@@ -12,7 +13,7 @@ import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
 import ru.softdarom.qrcheck.events.model.dto.internal.InternalImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.FileResponse;
-import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
+import ru.softdarom.security.oauth2.service.AuthExternalService;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -26,14 +27,17 @@ import java.util.stream.Collectors;
 @Slf4j(topic = "MAPPER")
 public class EventResponseMapper extends AbstractDtoMapper<InternalEventDto, EventResponse> implements Checker {
 
-    private final ApiKeyProperties properties;
     private final ContentHandlerExternalService contentHandlerExternalService;
+    private final AuthExternalService authExternalService;
+
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     protected EventResponseMapper(ModelMapper modelMapper,
-                                  ApiKeyProperties properties,
-                                  ContentHandlerExternalService contentHandlerExternalService) {
+                                  ContentHandlerExternalService contentHandlerExternalService,
+                                  AuthExternalService authExternalService) {
         super(modelMapper);
-        this.properties = properties;
+        this.authExternalService = authExternalService;
         this.contentHandlerExternalService = contentHandlerExternalService;
     }
 
@@ -69,7 +73,7 @@ public class EventResponseMapper extends AbstractDtoMapper<InternalEventDto, Eve
             var externalImageIds = images.stream().map(InternalImageDto::getExternalImageId).collect(Collectors.toSet());
             var response =
                     contentHandlerExternalService.get(
-                            properties.getToken().getOutgoing(),
+                            authExternalService.getOutgoingToken(applicationName),
                             externalImageIds
                     ).getBody();
             var cover2Images = images.stream().collect(Collectors.partitioningBy(InternalImageDto::getCover));
