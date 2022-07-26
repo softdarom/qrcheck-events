@@ -2,6 +2,7 @@ package ru.softdarom.qrcheck.events.service.mobile.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import ru.softdarom.qrcheck.events.dao.access.EventAccessService;
 import ru.softdarom.qrcheck.events.model.base.RoleType;
 import ru.softdarom.qrcheck.events.model.dto.internal.InternalEventDto;
 import ru.softdarom.qrcheck.events.service.mobile.AbstractRoleService;
-import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
+import ru.softdarom.security.oauth2.service.AuthExternalService;
 
 import java.util.Set;
 
@@ -19,15 +20,18 @@ import java.util.Set;
 public class CheckmanServiceImpl extends AbstractRoleService {
 
     private final CheckmanHandlerExternalService checkmanHandler;
-    private final ApiKeyProperties properties;
+    private final AuthExternalService authExternalService;
+
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     @Autowired
     CheckmanServiceImpl(EventAccessService eventAccessService,
                         CheckmanHandlerExternalService checkmanHandler,
-                        ApiKeyProperties properties) {
+                        AuthExternalService authExternalService) {
         super(eventAccessService);
         this.checkmanHandler = checkmanHandler;
-        this.properties = properties;
+        this.authExternalService = authExternalService;
     }
 
     @Override
@@ -38,7 +42,7 @@ public class CheckmanServiceImpl extends AbstractRoleService {
     }
 
     private Set<Long> extractPromoterIds() {
-        var response = checkmanHandler.getPromoterIds(properties.getToken().getOutgoing(), getExternalUserId());
+        var response = checkmanHandler.getPromoterIds(authExternalService.getOutgoingToken(applicationName), getExternalUserId());
         return response.getBody();
     }
 

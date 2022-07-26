@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ru.softdarom.qrcheck.events.config.FeignConfig;
 
+import java.util.UUID;
+
 @FeignClient(name = "orders", url = "${outbound.feign.orders.host}", configuration = FeignConfig.class)
 public interface OrdersExternalService {
 
     @GetMapping("/internal/orders/exist/{eventId}")
     Boolean doesAnyOrderExist(
-            @RequestHeader("X-ApiKey-Authorization") String apiKey,
+            @RequestHeader("X-ApiKey-Authorization") UUID apiKey,
             @PathVariable("eventId") Long eventId
     );
 }

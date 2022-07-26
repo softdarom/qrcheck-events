@@ -2,6 +2,7 @@ package ru.softdarom.qrcheck.events.service.mobile.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -16,7 +17,7 @@ import ru.softdarom.qrcheck.events.model.dto.internal.InternalImageDto;
 import ru.softdarom.qrcheck.events.model.dto.response.EventResponse;
 import ru.softdarom.qrcheck.events.model.dto.response.FileResponse;
 import ru.softdarom.qrcheck.events.service.mobile.EventImageService;
-import ru.softdarom.security.oauth2.config.property.ApiKeyProperties;
+import ru.softdarom.security.oauth2.service.AuthExternalService;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -27,15 +28,17 @@ import java.util.stream.Collectors;
 @Slf4j(topic = "SERVICE")
 public class EventImageServiceImpl implements EventImageService {
 
-    private final ApiKeyProperties apiKeyProperties;
     private final ContentHandlerExternalService contentHandlerExternalService;
     private final ImageAccessService imageAccessService;
+    private final AuthExternalService authExternalService;
+
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     @Autowired
-    EventImageServiceImpl(ApiKeyProperties apiKeyProperties,
-                          ContentHandlerExternalService contentHandlerExternalService,
-                          ImageAccessService imageAccessService) {
-        this.apiKeyProperties = apiKeyProperties;
+    EventImageServiceImpl(ContentHandlerExternalService contentHandlerExternalService,
+                          ImageAccessService imageAccessService, AuthExternalService authExternalService) {
+        this.authExternalService = authExternalService;
         this.contentHandlerExternalService = contentHandlerExternalService;
         this.imageAccessService = imageAccessService;
     }
@@ -73,7 +76,7 @@ public class EventImageServiceImpl implements EventImageService {
     private Set<FileDto> executeExternalSaver(Collection<MultipartFile> images) {
         LOGGER.info("Saving files in a storage via an external service");
         var response =
-                contentHandlerExternalService.upload(apiKeyProperties.getToken().getOutgoing(), images);
+                contentHandlerExternalService.upload(authExternalService.getOutgoingToken(applicationName), images);
         var storedImages = Optional.ofNullable(response)
                 .map(HttpEntity::getBody)
                 .map(FileResponse::getImages)
