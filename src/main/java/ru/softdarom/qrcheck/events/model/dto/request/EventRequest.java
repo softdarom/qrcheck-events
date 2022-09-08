@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Generated;
 import ru.softdarom.qrcheck.events.config.validator.annotations.DateConstraint;
+import ru.softdarom.qrcheck.events.config.validator.annotations.PriceConstraint;
 import ru.softdarom.qrcheck.events.model.base.EventType;
 import ru.softdarom.qrcheck.events.model.base.GenreType;
 import ru.softdarom.qrcheck.events.model.dto.AddressDto;
@@ -17,6 +18,7 @@ import java.util.Collection;
 
 @Data
 @Generated
+@PriceConstraint
 public class EventRequest {
 
     @NotNull

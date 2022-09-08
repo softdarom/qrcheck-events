@@ -30,6 +30,13 @@ import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.BEARER_SE
                         }
                 ),
                 @ApiResponse(
+                        responseCode = "400",
+                        description = "Некорректный запрос",
+                        content = {
+                                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+                        }
+                ),
+                @ApiResponse(
                         responseCode = "401",
                         description = "Отсутствует авторизация",
                         content = {

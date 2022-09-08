@@ -4,11 +4,14 @@ import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.softdarom.qrcheck.events.exception.InvalidBookOperation;
 import ru.softdarom.qrcheck.events.exception.NotFoundException;
 import ru.softdarom.qrcheck.events.model.dto.response.ErrorResponse;
+
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -38,6 +41,16 @@ public class EventsExceptionHandler {
     ResponseEntity<ErrorResponse> notAcceptable(InvalidBookOperation e) {
         LOGGER.error(e.getMessage(), e);
         return ResponseEntity.status(NOT_ACCEPTABLE).body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<ErrorResponse> notValidRequest(MethodArgumentNotValidException e) {
+        LOGGER.error(e.getMessage(), e);
+        var result = e.getBindingResult();
+        var errors = result.getAllErrors().stream()
+                .map(it -> "Object '" + it.getObjectName() + "' has errors: " + it.getDefaultMessage())
+                .collect(Collectors.joining("], [", "[", "]"));
+        return ResponseEntity.badRequest().body(new ErrorResponse(errors));
     }
 
     @ExceptionHandler(Exception.class)
