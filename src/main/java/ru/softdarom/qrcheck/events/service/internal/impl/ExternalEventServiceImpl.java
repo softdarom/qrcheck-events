@@ -41,4 +41,9 @@ public class ExternalEventServiceImpl implements ExternalEventService {
         return getEventsInfo(Set.of(eventId)).stream().findAny()
                 .orElseThrow(() -> new NotFoundException("Not found event with id: " + eventId));
     }
+
+    @Override
+    public Long getEventOwnerId(Long eventId) {
+        return eventAccessService.getEventOwnerId(eventId);
+    }
 }
