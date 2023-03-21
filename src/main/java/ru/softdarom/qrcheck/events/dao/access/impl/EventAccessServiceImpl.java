@@ -105,4 +105,12 @@ public class EventAccessServiceImpl implements EventAccessService {
         Assert.notEmpty(imageIds, "The 'imageIds' must not be empty or null!");
         return eventRepository.findAllExternalUserIds(imageIds);
     }
+
+    @Override
+    public Long getEventOwnerId(Long id) {
+        Assert.notNull(id, "The 'eventId' must not be null!");
+        return eventRepository.findById(id)
+                .map(EventEntity::getExternalUserId)
+                .orElseThrow(() -> new NotFoundException("The event not found by id " + id));
+    }
 }

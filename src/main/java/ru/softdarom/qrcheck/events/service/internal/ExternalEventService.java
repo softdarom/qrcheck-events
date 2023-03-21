@@ -10,4 +10,6 @@ public interface ExternalEventService {
     Set<EventInfoResponse> getEventsInfo(Collection<Long> eventsId);
 
     EventInfoResponse getEventInfo(Long eventId);
+
+    Long getEventOwnerId(Long eventId);
 }

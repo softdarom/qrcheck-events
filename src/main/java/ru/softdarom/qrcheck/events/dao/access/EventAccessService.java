@@ -26,4 +26,6 @@ public interface EventAccessService {
     Set<InternalEventDto> findAllByIds(Collection<Long> eventsId);
 
     Set<Long> findExternalUserIds(Collection<Long> imageIds);
+
+    Long getEventOwnerId(Long id);
 }
