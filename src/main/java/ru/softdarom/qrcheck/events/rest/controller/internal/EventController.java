@@ -2,7 +2,6 @@ package ru.softdarom.qrcheck.events.rest.controller.internal;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiGetEventOwnerIdById;
 import ru.softdarom.qrcheck.events.config.swagger.annotations.ApiGetEventsById;
@@ -27,14 +26,14 @@ public class EventController {
 
     @ApiGetEventsByIds
     @GetMapping
-    public ResponseEntity<Set<EventInfoResponse>> getEventsInfo(@RequestParam Collection<Long> eventsId) {
-        return ResponseEntity.ok(eventService.getEventsInfo(eventsId));
+    public Set<EventInfoResponse> getEventsInfo(@RequestParam Collection<Long> eventsId) {
+        return eventService.getEventsInfo(eventsId);
     }
 
     @ApiGetEventsById
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventInfoResponse> getEventInfo(@PathVariable("eventId") Long eventId) {
-        return ResponseEntity.ok(eventService.getEventInfo(eventId));
+    public EventInfoResponse getEventInfo(@PathVariable("eventId") Long eventId) {
+        return eventService.getEventInfo(eventId);
     }
 
     @ApiGetEventOwnerIdById
