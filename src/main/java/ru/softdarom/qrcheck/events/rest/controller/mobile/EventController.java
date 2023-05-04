@@ -6,7 +6,6 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,79 +51,78 @@ public class EventController {
     @ApiGetAllEvents
     @PageableAsQueryParam
     @GetMapping
-    public ResponseEntity<Page<EventResponse>> getAll(@RequestHeader(value = "X-Application-Version") String version,
-                                                      @ParameterObject Pageable pageable) {
-        return ResponseEntity.ok(eventService.getAll(pageable));
+    public Page<EventResponse> getAll(@RequestHeader(value = "X-Application-Version") String version,
+                                      @ParameterObject Pageable pageable) {
+        return eventService.getAll(pageable);
     }
 
     @ApiGetEvent
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventResponse> get(@RequestHeader(value = "X-Application-Version") String version,
-                                             @PathVariable("eventId") Long eventId) {
-        return ResponseEntity.ok(eventService.getById(eventId));
+    public EventResponse get(@RequestHeader(value = "X-Application-Version") String version,
+                             @PathVariable("eventId") Long eventId) {
+        return eventService.getById(eventId);
     }
 
     @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiPreSaveEvent
     @PostMapping
-    public ResponseEntity<EventResponse> preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
-        return ResponseEntity.ok(eventService.preSave());
+    public EventResponse preSaveEvent(@RequestHeader(value = "X-Application-Version") String version) {
+        return eventService.preSave();
     }
 
     @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiSaveEvent
     @PutMapping
-    public ResponseEntity<EventResponse> saveEvent(@RequestHeader(value = "X-Application-Version") String version,
-                                                   @RequestBody @Valid EventRequest request) {
-        return ResponseEntity.ok(eventService.endSave(request));
+    public EventResponse saveEvent(@RequestHeader(value = "X-Application-Version") String version,
+                                   @RequestBody @Valid EventRequest request) {
+        return eventService.endSave(request);
     }
 
     @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiEditEvent
     @PatchMapping
-    public ResponseEntity<EventResponse> editEvent(@RequestHeader(value = "X-Application-Version") String version,
-                                                   @RequestBody @Valid EventRequest request) {
-        return ResponseEntity.ok(eventService.editEvent(request));
+    public EventResponse editEvent(@RequestHeader(value = "X-Application-Version") String version,
+                                   @RequestBody @Valid EventRequest request) {
+        return eventService.editEvent(request);
     }
 
     @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiSaveEventImages
     @PostMapping(value = "/images/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<EventResponse> saveEventImages(@RequestHeader(value = "X-Application-Version") String version,
-                                                         @PathVariable("eventId") Long eventId,
-                                                         @RequestParam("images") Collection<MultipartFile> images) {
-        return ResponseEntity.ok(eventService.saveImages(eventId, images, ImageType.PHOTOGRAPHY));
+    public EventResponse saveEventImages(@RequestHeader(value = "X-Application-Version") String version,
+                                         @PathVariable("eventId") Long eventId,
+                                         @RequestParam("images") Collection<MultipartFile> images) {
+        return eventService.saveImages(eventId, images, ImageType.PHOTOGRAPHY);
     }
 
     @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiSaveEventCover
     @PostMapping(value = "/images/cover/{eventId}", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<EventResponse> saveEventCover(@RequestHeader(value = "X-Application-Version") String version,
-                                                        @PathVariable("eventId") Long eventId,
-                                                        @RequestParam("cover") MultipartFile cover) {
-        return ResponseEntity.ok(eventService.saveImages(eventId, Set.of(cover), ImageType.COVER));
+    public EventResponse saveEventCover(@RequestHeader(value = "X-Application-Version") String version,
+                                        @PathVariable("eventId") Long eventId,
+                                        @RequestParam("cover") MultipartFile cover) {
+        return eventService.saveImages(eventId, Set.of(cover), ImageType.COVER);
     }
 
     @PreAuthorize("hasRole(T(ru.softdarom.qrcheck.events.model.base.RoleType.Ability).PROMOTER)")
     @ApiDeteleEventImage
     @DeleteMapping(value = "/images/{imageIds}")
-    public ResponseEntity<Void> deleteEventCover(@RequestHeader(value = "X-Application-Version") String version,
-                                                 @NotEmpty @PathVariable("imageIds") Collection<Long> imageIds) {
+    public void deleteEventCover(@RequestHeader(value = "X-Application-Version") String version,
+                                 @NotEmpty @PathVariable("imageIds") Collection<Long> imageIds) {
         eventService.deleteImages(imageIds);
-        return ResponseEntity.ok().build();
     }
 
     @ApiGetAllEventTypes
     @GetMapping("/types")
-    public ResponseEntity<Set<LocaleTypeDto>> getAllTypes(@RequestHeader(value = "X-Application-Version") String version,
-                                                          Locale locale) {
-        return ResponseEntity.ok(eventTypeService.getLocaleTypes(locale));
+    public Set<LocaleTypeDto> getAllTypes(@RequestHeader(value = "X-Application-Version") String version,
+                                          Locale locale) {
+        return eventTypeService.getLocaleTypes(locale);
     }
 
     @ApiGetAvailableTickets
     @GetMapping("/{eventId}/tickets/available")
-    public ResponseEntity<TicketResponse> getAvailableTickets(@RequestHeader(value = "X-Application-Version") String version,
-                                                              @PathVariable @Min(0) Long eventId) {
-        return ResponseEntity.ok(ticketService.getAvailableTickets(eventId));
+    public TicketResponse getAvailableTickets(@RequestHeader(value = "X-Application-Version") String version,
+                                              @PathVariable @Min(0) Long eventId) {
+        return ticketService.getAvailableTickets(eventId);
     }
 }

@@ -2,7 +2,6 @@ package ru.softdarom.qrcheck.events.rest.controller.mobile;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +28,8 @@ public class GenreController {
 
     @ApiGetAllGenreTypes
     @GetMapping("/types")
-    public ResponseEntity<Set<LocaleTypeDto>> getAll(@RequestHeader(value = "X-Application-Version") String version,
-                                                     Locale locale) {
-        return ResponseEntity.ok(genreService.getLocaleTypes(locale));
+    public Set<LocaleTypeDto> getAll(@RequestHeader(value = "X-Application-Version") String version,
+                                     Locale locale) {
+        return genreService.getLocaleTypes(locale);
     }
 }

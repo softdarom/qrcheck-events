@@ -18,7 +18,7 @@ import static ru.softdarom.qrcheck.events.config.swagger.OpenApiConfig.API_KEY_S
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
-        summary = "Получение события по id",
+        summary = "Получение владельца события по id события",
         security = @SecurityRequirement(name = API_KEY_SECURITY_NAME),
         responses = {
                 @ApiResponse(
